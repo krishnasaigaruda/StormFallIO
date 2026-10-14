@@ -1,3 +1,7 @@
+# credits
+
+This is a new change for originial @krishnasaigaruda reposity StormfallIO
+
 # Stormfall
 
 A 3D battle royale that runs in your browser, built with three.js. Drop from a cargo plane, loot chests and llamas, build, fight 30 players and outlast the storm. Or play the Hunger Games, Team Deathmatch, or a map you made yourself.
@@ -5,7 +9,6 @@ A 3D battle royale that runs in your browser, built with three.js. Drop from a c
 ## Put it on the web (Cloudflare Pages)
 
 Stormfall is plain files, so no server code is needed.
-
 1. In the Cloudflare dashboard go to **Workers & Pages → Create → Pages → Upload assets** (or connect a GitHub repo).
 2. Upload this folder: `index.html`, `stormfall.html`, `assets/` and `sample/`. Leave out the `save/` folder if it's there; it's an old local copy of a profile.
 3. Open your `*.pages.dev` address. `index.html` sends visitors straight to the game.
