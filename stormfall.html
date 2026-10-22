@@ -680,7 +680,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
     <button class="btn" id="mapNew">Create new map</button><div id="mapsList" class="mapsList"></div></div></section>
   <section id="tab-events" class="tab"><div class="pane" style="max-width:1040px;width:100%;align-self:flex-start"><h3>Events <small>A new 3-day event every month. Day 2 is the main event</small></h3><div id="eventsBody"></div></div></section>
   <section id="tab-howto" class="tab"><div class="pane" style="max-width:980px;width:100%;align-self:flex-start"><h3>How to Play <small>everything you need to win</small></h3><div id="howtoBody"></div>
-    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.2</button></div></div></section>
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.3</button></div></div></section>
   <section id="tab-credits" class="tab"><div class="pane" style="max-width:820px;width:100%;align-self:flex-start"><h3>Credits <small>Thank you to these creators</small></h3><div id="creditsList" class="credits"></div></div></section>
   <section id="tab-settings" class="tab"><div class="pane settingsPane" style="width:100%;align-self:flex-start">
     <h3>Settings <small>Customize your Stormfall experience</small></h3>
@@ -4152,7 +4152,7 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
 
 
 // ---------- How to Play guide and the welcome / update notes window (opens once each time the game is opened) ----------
-const SF_VERSION='1.2';
+const SF_VERSION='1.3';
 const UPDATE_NOTES=[
   ['Monthly events','Every month now has a 3-day event, like Halloween Night in October with jack-o’-lanterns, a night sky and trick-or-treat pumpkins. Day 1 warms up, day 2 is the main event with its own special, and day 3 is the encore. Play on day 2 to earn that event’s outfit. See the <b>Events</b> tab.'],
   ['Easter eggs and 100 sidekicks','There are now 100 sidekicks. Most can only be hatched from the golden eggs in the Easter Egg Hunt event, and every egg has a 50% chance to hatch one.'],
@@ -4161,7 +4161,8 @@ const UPDATE_NOTES=[
   ['Rare and Legendary chests','Chests that glow <b style="color:#2f9bff">blue</b> or <b style="color:#ffae1a">gold</b> always hold Rare or Legendary loot. Look for the coloured gem on the lock.'],
   ['Hunger Games overhaul','No storm, and building is on. Escape forest fires, poison fog and tracker jackers, watch for hidden traps and rigged chests (look for the red tripwire), dodge Peacekeeper drones, and leave the dark nightlock berries alone. In the finale, mutts drive everyone to the Cornucopia.'],
   ['New Settings','Settings are grouped, with render scale, shadows, bloom and a separate sound-effects volume. Most of them are in the pause menu too, and Restore defaults resets everything.'],
-  ['How to Play tab','This guide is now a tab in the lobby, so you can check controls and tips any time.']];
+  ['How to Play tab','This guide is now a tab in the lobby, so you can check controls and tips any time.'],
+  ['Editing','You can currently only edit walls but how you do it is press your edit bind while looking at one of your walls then select the spaces to edit. Blue is solid, Yellow is not.']];
 function howtoHTML(){const T=TOUCH.on;const rar=RAR.map((n,i)=>`<span style="background:${RAR_COL[i]}">${n}</span>`).join('');
   const keys=T?`<dl class="howKeys"><dt>Left stick</dt><dd>Move. Push all the way to sprint</dd><dt>Drag right side</dt><dd>Look and aim</dd><dt>FIRE · AIM</dt><dd>Shoot or swing · aim down sights or scope</dd><dt>JUMP</dt><dd>Jump, dive from the plane, open the glider</dd><dt>USE</dt><dd>Open chests, pick up, drive, doors. It glows when something is in reach</dd><dt>BUILD</dt><dd>Then WALL, FLOOR, RAMP or ROOF</dd><dt>Hotbar</dt><dd>Tap a slot to switch weapons</dd><dt>Top row</dt><dd>ITEMS, DROP, SHOP, MAP, CHAT and pause</dd></dl>`
     :`<dl class="howKeys"><dt>W A S D</dt><dd>Move · Shift sprint · Ctrl crouch or slide · Space jump</dd><dt>Mouse</dt><dd>Left fire · Right aim (snipers scope in) · Wheel switch slots</dd><dt>1 to 6 · F</dt><dd>Hotbar slots · Storm Blade (sword and harvest tool)</dd><dt>E · R · H</dt><dd>Interact · reload · drop the selected item</dd><dt>Q · Z X C V · G</dt><dd>Build mode · wall, floor, ramp, roof · edit your wall</dd><dt>Space</dt><dd>Dive from the plane · open the glider (W dives faster)</dd><dt>M · Tab · U</dt><dd>Map · inventory · in-match shop</dd><dt>Enter · Esc</dt><dd>Chat · pause</dd></dl>`;
