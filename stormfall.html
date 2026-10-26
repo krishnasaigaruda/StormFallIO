@@ -712,11 +712,13 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
         <label for="arl">Auto reload<select id="arl"><option value="1" selected>On</option><option value="0">Off · press R to reload</option></select></label>
         <label for="editAfterBuild">Open edit after building<select id="editAfterBuild"><option value="1" selected>On</option><option value="0">Off</option></select></label>
         <label for="autoConfirmEdit">Auto confirm edits<select id="autoConfirmEdit"><option value="off" selected>Off</option><option value="edit">Edit</option><option value="reset">Reset</option><option value="both">Both</option></select></label>
+        <label for="turboBuild">Turbo Build<select id="turboBuild"><option value="1" selected>On</option><option value="0">Off</option></select></label>
+        <label for="editTooltip">Edit tooltip<select id="editTooltip"><option value="1" selected>On</option><option value="0">Off</option></select></label>
         <label for="setDiff">Bot difficulty<select id="setDiff"><option value="0.6">Recruit</option><option value="1" selected>Regular</option><option value="1.45">Veteran</option></select></label>
         <label for="tod">Time of day<select id="tod"><option value="dynamic" selected>Afternoon into sunset</option><option value="noon">Midday</option><option value="sunset">Golden hour</option></select></label>
         <label for="inputMode">Controls<select id="inputMode"><option value="auto" selected>Auto detect</option><option value="kbm">Keyboard and mouse</option><option value="touch">Touch (phone or tablet)</option></select></label>
         <label for="vc">Voice chat<select id="vc"><option value="0" selected>Off</option><option value="1">On · bots speak, Enter to talk</option></select></label>
-        <p class="settingsHint">Open edit after building controls whether a placed piece immediately opens its edit grid. Auto confirm Edit confirms a non-empty wall edit when you release the selection; Reset confirms once all selected cells are cleared. Bot difficulty and time of day are chosen when a match starts. Voice chat uses your browser’s speech features when supported.</p>
+        <p class="settingsHint">Turbo Build repeatedly attempts to place the selected build while you hold the build button; turn it off to place once per press and allow Open edit after building to open immediately. Auto confirm Edit confirms a non-empty wall edit when you release the selection; Reset confirms once all selected cells are cleared. Edit tooltip shows or hides build-edit controls. Bot difficulty and time of day are chosen when a match starts. Voice chat uses your browser’s speech features when supported.</p>
       </div></section>
     </div>
     <section class="settingsGroup"><h4>Controls</h4>
@@ -800,6 +802,8 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
       <label>Auto reload<select id="pArl"><option value="1">On</option><option value="0">Off</option></select></label>
       <label>Open edit after building<select id="pEditAfterBuild"><option value="1">On</option><option value="0">Off</option></select></label>
       <label>Auto confirm edits<select id="pAutoConfirmEdit"><option value="off">Off</option><option value="edit">Edit</option><option value="reset">Reset</option><option value="both">Both</option></select></label>
+      <label>Turbo Build<select id="pTurboBuild"><option value="1">On</option><option value="0">Off</option></select></label>
+      <label>Edit tooltip<select id="pEditTooltip"><option value="1">On</option><option value="0">Off</option></select></label>
       <label>Voice chat<select id="pVc"><option value="0">Off</option><option value="1">On</option></select></label>
     </div></section>
   </div>
@@ -3571,10 +3575,11 @@ function updatePlayer(dt){
   if(p.state!=='ground'){hideGhost();weakSprite.visible=false;updateArc(false);mouseLPressed=false;$('prompt').classList.add('hidden');return;}
   aimAssist(dt);
   const {f}=camVectors();
-  if(buildMode){const tg=buildTarget(p,buildType,fx,fz,pitch);const ok=!pieces.has(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a))&& p.mats[p.mat]>=10;showGhost(tg,ok);
+  if(buildMode){const tg=buildTarget(p,buildType,fx,fz,pitch),hasMats=p.mats[p.mat]>=10;const ok=!pieces.has(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a))&& hasMats;showGhost(tg,ok);
     // clicking where one of your own pieces of this type already stands opens its edit grid
     const ex=pieces.get(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a));if(mouseLPressed&& ex&& ex.owner===p&& PIECE_EDIT_GRID[ex.type]&& !uiOpen){mouseLPressed=false;hideGhost();openPieceEdit(ex,null);}
-    else if(mouseL&& ok&& !uiOpen){const np=tryBuild(p,tg);if(np&& mouseLPressed&& PROFILE.set.editAfterBuild!=='0'&& PIECE_EDIT_GRID[np.type]&& !uiOpen){mouseLPressed=false;hideGhost();openPieceEdit(np,null);}}updateArc(false);}
+    else if(mouseL&& PROFILE.set.turboBuild!=='0'&&!hasMats){mouseL=false;centerMsg('OUT OF MATERIALS','Collect materials or select another material, then press build again');}
+    else if(mouseL&& ok&& !uiOpen&&(PROFILE.set.turboBuild!=='0'||mouseLPressed)){const np=tryBuild(p,tg);if(np&& mouseLPressed&& PROFILE.set.turboBuild==='0'&& PROFILE.set.editAfterBuild!=='0'&& PIECE_EDIT_GRID[np.type]&& !uiOpen){mouseLPressed=false;hideGhost();openPieceEdit(np,null);}}updateArc(false);}
   else{hideGhost();
     if(p.sel===0){if(mouseL&& p.swing<=0&& gameTime>=(p.swingCd||0))swingPickaxe(p,camera.position.clone(),f,camDist);updateArc(false);}
     else if(it&& it.type==='gun'){const W=GUNS[it.id];updateArc(false);
@@ -4102,7 +4107,7 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
   const menu=$('menu');menu.addEventListener('pointerdown',e=>{if(e.target.closest('.pane,.modecard,button,.topbar'))return;LOBBY.drag=e.clientX;});
   addEventListener('pointermove',e=>{if(LOBBY.drag==null)return;LOBBY.rot+=(e.clientX-LOBBY.drag)*.012;LOBBY.drag=e.clientX;});addEventListener('pointerup',()=>{LOBBY.drag=null;});
   // settings persist between sessions
-  const st=PROFILE.set,settingIds=['qual','aa','sens','fov','cam','tod','diff','arl','editAfterBuild','autoConfirmEdit','vc','renderScale','shadows','bloom','sfx','mus','inputMode'];
+  const st=PROFILE.set,settingIds=['qual','aa','sens','fov','cam','tod','diff','arl','editAfterBuild','autoConfirmEdit','turboBuild','editTooltip','vc','renderScale','shadows','bloom','sfx','mus','inputMode'];
   renderControlBinds();
   let pendingControl=null;
   $('controlBindings').addEventListener('click',e=>{const clear=e.target.closest('button[data-clear]');if(clear){const action=clear.dataset.clear,slot=+clear.dataset.slot,codes=[...bindCodes(action)];codes[slot]='';CONTROL_BINDS[action]=codes;PROFILE.set.binds=Object.fromEntries(Object.entries(CONTROL_BINDS).map(([key,items])=>[key,[...items]]));saveProfile();pendingControl=null;renderControlBinds();toast('Control binding cleared');return;}
@@ -4155,10 +4160,12 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
     if(id==='arl'){$('pArl').value=value;SET.autoReload=value!=='0';}
     if(id==='editAfterBuild')$('pEditAfterBuild').value=value;
     if(id==='autoConfirmEdit')$('pAutoConfirmEdit').value=value;
+    if(id==='turboBuild')$('pTurboBuild').value=value;
+    if(id==='editTooltip'){$('pEditTooltip').value=value;editHint(uiOpen==='edit');}
     if(id==='mus')$('pMus').value=value;
     if(id==='vc')$('pVc').value=value;
   });
-  $('settingsReset').onclick=()=>{const defaults={inputMode:TOUCH.pref,qual:'auto',aa:'1',sens:'1',fov:'80',cam:'0',tod:'dynamic',diff:'1',arl:'1',editAfterBuild:'1',autoConfirmEdit:'off',vc:'0',renderScale:'1',shadows:'1',bloom:'1',sfx:'.75',mus:'.6'};
+  $('settingsReset').onclick=()=>{const defaults={inputMode:TOUCH.pref,qual:'auto',aa:'1',sens:'1',fov:'80',cam:'0',tod:'dynamic',diff:'1',arl:'1',editAfterBuild:'1',autoConfirmEdit:'off',turboBuild:'1',editTooltip:'1',vc:'0',renderScale:'1',shadows:'1',bloom:'1',sfx:'.75',mus:'.6'};
     for(const [key,value] of Object.entries(defaults)){PROFILE.set[key]=value;const control=$(key==='diff'?'diff':key);if(control)control.value=value;}
     $('setDiff').value='1';for(const id of [...settingIds,'setDiff'])$(id).dispatchEvent(new Event('input',{bubbles:true}));toast('Settings restored to defaults');};
   AQ.on=$('qual').value==='auto';SET.quality=AQ.on?(TOUCH.on?'low':'high'):$('qual').value;SET.sens=+$('sens').value;SET.fov=+$('fov').value;SET.aa=+$('aa').value;SET.cam=+$('cam').value;SET.autoReload=$('arl').value!=='0';
@@ -4683,7 +4690,7 @@ function openPieceEdit(target,hit){
   updateWallEditGrid();uiOpen='edit';freeLook=!locked;
   if(!locked)requestLock();
 }
-function editHint(on){let el=$('editHint');if(!el){el=document.createElement('div');el.id='editHint';el.innerHTML='<b>EDIT</b><span>Click or drag squares to select</span><span><kbd>Q</kbd> or <kbd>G</kbd> confirm</span><span><kbd>Esc</kbd> cancel</span>';document.body.appendChild(el);}el.classList.toggle('on',!!on);}
+function editHint(on){let el=$('editHint');if(!el){el=document.createElement('div');el.id='editHint';el.innerHTML='<b>EDIT</b><span>Click or drag squares to select</span><span><kbd>Q</kbd> or <kbd>G</kbd> confirm</span><span><kbd>Esc</kbd> cancel</span>';document.body.appendChild(el);}el.classList.toggle('on',!!on&&PROFILE.set.editTooltip!=='0');}
 function closeWallEdit(){editHint(false);wallEditPiece=null;wallEditPattern.clear();clearWallEditGrid();if(uiOpen==='edit')uiOpen=null;
   wallEditPointerId=null;wallEditStrokeTiles.clear();
   if(gameState==='play'&&!paused)requestLock();}
@@ -4838,7 +4845,7 @@ function autoQuality(dt){if(!AQ.on||gameState!=='play'||paused)return;AQ.acc+=dt
 
 // ---------- pause menu ----------
 function initPauseUI(){let exitArm=0;
-  $('pSetBtn').onclick=()=>{$('pSet').classList.toggle('hidden');$('pSens').value=SET.sens;$('pSensVal').textContent=SET.sens.toFixed(1);$('pFov').value=SET.fov;$('pFovVal').textContent=SET.fov;$('pAa').value=SET.aa;$('pMus').value=MUSIC.vol;$('pCam').value=SET.cam;$('pQual').value=AQ.on?'auto':SET.quality;$('pRenderScale').value=SET.renderScale;$('pRenderScaleVal').textContent=Math.round(SET.renderScale*100)+'%';$('pShadows').value=SET.shadows?'1':'0';$('pBloom').value=SET.bloom?'1':'0';$('pSfx').value=SET.sfx;$('pArl').value=SET.autoReload?'1':'0';$('pEditAfterBuild').value=PROFILE.set.editAfterBuild??'1';$('pAutoConfirmEdit').value=PROFILE.set.autoConfirmEdit||'off';$('pVc').value=VC.on()?'1':'0';};
+  $('pSetBtn').onclick=()=>{$('pSet').classList.toggle('hidden');$('pSens').value=SET.sens;$('pSensVal').textContent=SET.sens.toFixed(1);$('pFov').value=SET.fov;$('pFovVal').textContent=SET.fov;$('pAa').value=SET.aa;$('pMus').value=MUSIC.vol;$('pCam').value=SET.cam;$('pQual').value=AQ.on?'auto':SET.quality;$('pRenderScale').value=SET.renderScale;$('pRenderScaleVal').textContent=Math.round(SET.renderScale*100)+'%';$('pShadows').value=SET.shadows?'1':'0';$('pBloom').value=SET.bloom?'1':'0';$('pSfx').value=SET.sfx;$('pArl').value=SET.autoReload?'1':'0';$('pEditAfterBuild').value=PROFILE.set.editAfterBuild??'1';$('pAutoConfirmEdit').value=PROFILE.set.autoConfirmEdit||'off';$('pTurboBuild').value=PROFILE.set.turboBuild??'1';$('pEditTooltip').value=PROFILE.set.editTooltip??'1';$('pVc').value=VC.on()?'1':'0';};
   $('pSens').oninput=e=>{SET.sens=+e.target.value;$('sens').value=e.target.value;$('pSensVal').textContent=SET.sens.toFixed(1);$('sensVal').textContent=SET.sens.toFixed(1);PROFILE.set.sens=SET.sens;saveProfile();};
   $('pFov').oninput=e=>{SET.fov=+e.target.value;$('fov').value=e.target.value;$('pFovVal').textContent=SET.fov;$('fovVal').textContent=SET.fov;PROFILE.set.fov=SET.fov;saveProfile();};
   $('pMus').oninput=e=>{setMusicVol(+e.target.value);$('mus').value=e.target.value;$('musVal').textContent=Math.round(MUSIC.vol*100)+'%';PROFILE.set.mus=MUSIC.vol;saveProfile();};
@@ -4848,6 +4855,8 @@ function initPauseUI(){let exitArm=0;
   $('pArl').onchange=e=>{SET.autoReload=e.target.value!=='0';$('arl').value=e.target.value;PROFILE.set.arl=e.target.value;saveProfile();};
   $('pEditAfterBuild').onchange=e=>{$('editAfterBuild').value=e.target.value;PROFILE.set.editAfterBuild=e.target.value;saveProfile();};
   $('pAutoConfirmEdit').onchange=e=>{$('autoConfirmEdit').value=e.target.value;PROFILE.set.autoConfirmEdit=e.target.value;saveProfile();};
+  $('pTurboBuild').onchange=e=>{$('turboBuild').value=e.target.value;PROFILE.set.turboBuild=e.target.value;saveProfile();};
+  $('pEditTooltip').onchange=e=>{$('editTooltip').value=e.target.value;PROFILE.set.editTooltip=e.target.value;saveProfile();editHint(uiOpen==='edit');};
   $('pVc').value=VC.on()?'1':'0';$('pVc').onchange=e=>{PROFILE.set.vc=e.target.value;$('vc').value=e.target.value;saveProfile();if(!VC.on())VC.stop();};
   $('vc').addEventListener('input',()=>{$('pVc').value=$('vc').value;});
   $('pQual').onchange=e=>{const v=e.target.value;AQ.on=v==='auto';SET.quality=AQ.on?(TOUCH.on?'low':'high'):v;$('qual').value=v;applyQuality();PROFILE.set.qual=v;saveProfile();};
