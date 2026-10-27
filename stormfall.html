@@ -3802,7 +3802,7 @@ const COS={skin:{list:SKIN_LIST,by:SKIN_BY,label:'Outfits'},tool:{list:TOOLS,by:
 
 // ---------- profile (saved in this browser) ----------
 const STORE_KEY='stormfall.profile.v2';
-const RANK_TIERS=[{name:'Bronze',min:0,color:'#b87333',numeral:'I'},{name:'Silver',min:300,color:'#c0c6cc',numeral:'II'},{name:'Gold',min:800,color:'#e7b93f',numeral:'III'},{name:'Platinum',min:1500,color:'#5ac7b5',numeral:'IV'},{name:'Diamond',min:2600,color:'#58bde8',numeral:'V'},{name:'Elite',min:4000,color:'#a65bdb',numeral:'VI'},{name:'Champion',min:6000,color:'#e64545',numeral:'VII'},{name:'Unreal',min:8500,color:'#e9f6ff',numeral:'VIII'}];
+const RANK_TIERS=[{name:'Bronze',min:0,color:'#b87333',numeral:'I'},{name:'Silver',min:300,color:'#c0c6cc',numeral:'II'},{name:'Gold',min:800,color:'#e7b93f',numeral:'III'},{name:'Platinum',min:1500,color:'#5ac7b5',numeral:'IV'},{name:'Diamond',min:2600,color:'#58bde8',numeral:'V'},{name:'Elite',min:4000,color:'#a65bdb',numeral:'VI'},{name:'Champion',min:6000,color:'#e64545',numeral:'VII'},{name:'Unreal',min:8500,color:'#e9f6ff',numeral:'VIII'},{name:'Unreal Legends',min:15000,color:'#9c31a4',numeral:'IX'}];
 const COMPETITIVE_MODES=new Set(['br','nobuild']);
 function rankedMode(){return COMPETITIVE_MODES.has(MODE.id)&&!MODE.respawn;}
 function rankFor(points){let rank=RANK_TIERS[0];for(const tier of RANK_TIERS)if(points>=tier.min)rank=tier;return rank;}
