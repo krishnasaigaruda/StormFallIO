@@ -495,6 +495,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .cmk{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;transform:rotate(45deg);border:1px solid rgba(0,0,0,.6)}
 .cmk::after{content:attr(data-d);position:absolute;left:14px;top:-1px;transform:rotate(-45deg);font:700 10px var(--display);color:var(--text);white-space:nowrap;text-shadow:0 1px 2px #000}
 .cmk.ping{background:#ffd23f}.cmk.drop{background:#9b6bff}
+.cmk.marked{width:auto;height:auto;margin-left:-7px;transform:none;border:0;background:none;color:#ff4d4d;font:900 15px/14px sans-serif;text-shadow:0 1px 3px #000}
 .cmk.crown{width:auto;height:auto;margin-left:-7px;transform:none;border:0;background:none;color:#ffd65a;font:900 17px/14px sans-serif;text-shadow:0 1px 3px #000}
 #veh{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 16px 7px;backdrop-filter:blur(4px)}
 #veh .spd{display:flex;align-items:baseline;gap:5px}
@@ -633,7 +634,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
   <div id="dmgnums"></div>
   <div id="alt" class="hidden"><small>ALT</small><div class="rail"><i id="altMark"></i></div><b id="altTxt">0</b></div>
 
-  <div id="compass"><div id="compassStrip"></div><div class="needle"></div><div id="heading">0</div><div id="cmPing" class="cmk ping hidden"></div><div id="cmDrop" class="cmk drop hidden"></div><div id="cmCrown" class="cmk crown hidden">♛</div></div>
+  <div id="compass"><div id="compassStrip"></div><div class="needle"></div><div id="heading">0</div><div id="cmPing" class="cmk ping hidden"></div><div id="cmDrop" class="cmk drop hidden"></div><div id="cmCrown" class="cmk crown hidden">♛</div><div id="cmMarked" class="cmk marked hidden">!</div></div>
 
   <div id="tr">
     <canvas id="minimap" width="210" height="210"></canvas>
@@ -730,7 +731,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
     <button class="btn" id="mapNew">Create new map</button><div id="mapsList" class="mapsList"></div></div></section>
   <section id="tab-events" class="tab"><div class="pane" style="max-width:1040px;width:100%;align-self:flex-start"><h3>Events <small>A new 3-day event every month. Day 2 is the main event</small></h3><div id="eventsBody"></div></div></section>
   <section id="tab-howto" class="tab"><div class="pane" style="max-width:980px;width:100%;align-self:flex-start"><h3>How to Play <small>everything you need to win</small></h3><div id="howtoBody"></div>
-    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.3</button></div></div></section>
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.7</button></div></div></section>
   <section id="tab-credits" class="tab"><div class="pane" style="max-width:820px;width:100%;align-self:flex-start"><h3>Credits <small>Thank you to these creators</small></h3><div id="creditsList" class="credits"></div></div></section>
   <section id="tab-settings" class="tab"><div class="pane settingsPane" style="width:100%;align-self:flex-start">
     <h3>Settings <small>Customize your Stormfall experience</small></h3>
@@ -911,6 +912,8 @@ const SUN_DIR=new V3(.52,.58,.38).normalize();
 const RAR=['Common','Uncommon','Rare','Epic','Legendary','Mythic','Exotic'];
 const RAR_COL=['#a9adb3','#4fc33a','#2f9bff','#b45cff','#ffae1a','#ffd700','#00cfff'];
 const RAR_MULT=[1,1.05,1.1,1.16,1.22,1.34,2.00];
+const EXOTIC_BY_GUN={ar:'speedyAR',smg:'troubleSMG',shotgun:'chainShotgun',pistol:'markerPistol',sniper:'boomSniper',rocket:'homingRocketLauncher'};
+const EXOTIC_NAMES={speedyAR:'Speedy AR',troubleSMG:'Trouble SMG',chainShotgun:'Chain Shotgun',markerPistol:'Marker Pistol',boomSniper:'Boom Sniper',homingRocketLauncher:'Homing Rocket Launcher'};
 const GUNS={
  ar:{name:'Assault Rifle',short:'AR',dmg:30,rate:5.5,mag:30,reload:2.3,ammo:'medium',spread:.03,ads:.006,bloom:.009,maxBloom:.055,range:320,auto:true,hs:1.5,pellets:1,fov:52,rar:[0,6],w:30,snd:'ar',score:55,speed:310,kick:.011},
  smg:{name:'Submachine Gun',short:'SMG',dmg:16,rate:12,mag:30,reload:2.0,ammo:'light',spread:.045,ads:.026,bloom:.005,maxBloom:.055,range:160,auto:true,hs:1.5,pellets:1,fov:62,rar:[0,6],w:22,snd:'smg',score:46,speed:240,kick:.006},
@@ -1543,15 +1546,15 @@ function updateTrees(dt){
 }
 
 // ============================================================ ITEMS
-function rollRarity(bias=0){const w=[56-bias*16,30,11+bias*7,2.5+bias*5,.6+bias*3,.12+bias*1.1,.04+bias*.5].map(x=>Math.max(0,x));let s=w.reduce((a,b)=>a+b),r=Math.random()*s;for(let i=0;i<7;i++){r-=w[i];if(r<0)return i;}return 0;}
+function rollRarity(bias=0){const w=[56-bias*16,30,11+bias*7,2.5+bias*5,.6+bias*3,.12+bias*1.1,.04+bias*.5].map(x=>Math.max(0,x)),other=w.slice(0,6).reduce((a,b)=>a+b,0),base=w[6]/(other+w[6]),target=Math.min(.99,base*(isSpriteWeekend()?4:2));w[6]=other*target/(1-target);let s=w.reduce((a,b)=>a+b),r=Math.random()*s;for(let i=0;i<7;i++){r-=w[i];if(r<0)return i;}return 0;}
 function randomGun(bias=0,minRarity=0){const ids=Object.keys(GUNS);let s=ids.reduce((a,k)=>a+GUNS[k].w,0),r=Math.random()*s,id=ids[0];for(const k of ids){r-=GUNS[k].w;if(r<0){id=k;break;}}
-  const g=GUNS[id];return {type:'gun',id,r:clamp(Math.max(minRarity,rollRarity(bias)),g.rar[0],g.rar[1]),mag:g.mag};}
+  const g=GUNS[id],rarity=clamp(Math.max(minRarity,rollRarity(bias)),g.rar[0],g.rar[1]);return {type:'gun',id,r:rarity,mag:g.mag,...(rarity===6?{exotic:EXOTIC_BY_GUN[id]}:{})};}
 function randomHeal(minRarity=0){if(minRarity>0){const ids=Object.keys(HEALS).filter(id=>HEALS[id].rar>=minRarity),id=pick(ids);return {type:'heal',id,r:HEALS[id].rar,count:HEALS[id].give};}
   const r=Math.random();const id=r<.32?'bandage':r<.46?'medkit':r<.72?'mini':r<.88?'shield':r<.97?'slurp':'chug';return {type:'heal',id,r:HEALS[id].rar,count:HEALS[id].give};}
 function grenadeItem(){const q=Math.random();const id=q<.65?'grenade':q<.88?'shock':'pad';return {type:'throw',id,r:THROWS[id].rar,count:THROWS[id].give};}
 function ammoFor(gid){const a=GUNS[gid].ammo;return {type:'ammo',id:a,count:AMMO[a].give};}
 function randomLoot(){if(spritesAllowed()&&Math.random()<.003*(isSpriteWeekend()?3:1))return {type:'throw',id:'extractor',r:4,count:THROWS.extractor.give};const r=Math.random();if(r<.28)return randomGun();if(r<.52)return randomHeal();if(r<.58)return grenadeItem();if(r<.72){const id=Math.random()<.5?'pizza':'meat';return {type:'food',id,r:FOOD[id].rar,count:1};}if(r<.76)return {type:'gas',r:1,count:1};if(r<.92)return {type:'ammo',id:pick(['light','medium','medium','heavy','shells','shells','rockets']),count:0};return {type:'mat',id:pick(MAT_ORDER),count:30};}
-function itemName(it){if(it.type==='sprite')return SPRITE_DEF[it.id].name;if(it.type==='gold')return it.count+' Gold';if(it.type==='gas')return 'Gas Can';if(it.type==='food')return FOOD[it.id].name;if(it.type==='gun')return RAR[it.r]+' '+GUNS[it.id].name;if(it.type==='heal')return HEALS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='throw')return THROWS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='ammo')return AMMO[it.id].name+' ×'+it.count;return MATS[it.id].name+' ×'+it.count;}
+function itemName(it){if(it.type==='sprite')return SPRITE_DEF[it.id].name;if(it.type==='gold')return it.count+' Gold';if(it.type==='gas')return 'Gas Can';if(it.type==='food')return FOOD[it.id].name;if(it.type==='gun')return it.exotic?EXOTIC_NAMES[it.exotic]:RAR[it.r]+' '+GUNS[it.id].name;if(it.type==='heal')return HEALS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='throw')return THROWS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='ammo')return AMMO[it.id].name+' ×'+it.count;return MATS[it.id].name+' ×'+it.count;}
 const GUN_GEO={};
 function gunGeo(id,r){const k=id+r;if(GUN_GEO[k])return GUN_GEO[k];
   const M='#2a2d31',P='#1b1c1e',W='#6a4426',A=RAR_COL[r],S='#3c4046';const B=(w,h,d,c,x,y,z,rx=0)=>({g:new THREE.BoxGeometry(w,h,d),c,p:[x,y,z],r:[rx,0,0]});const Cy=(r0,l,c,x,y,z,seg=10)=>({g:new THREE.CylinderGeometry(r0,r0,l,seg),c,p:[x,y,z],r:[Math.PI/2,0,0]});
@@ -2165,7 +2168,11 @@ function freeTracer(t){if(!t)return;t.used=false;t.m.visible=false;}
 const _tv=new V3();
 function shortTracer(a,b){const t=getTracer();t.m.position.copy(b);_tv.copy(b).add(b).sub(a);t.m.lookAt(_tv);t.m.scale.set(1,1,a.distanceTo(b));t.life=.05;t.fade=true;}
 function fireGun(c,origin,dir,near,ads){if(c===player)MUSIC.combat=gameTime;
-  scareBirds(c.pos,100);const it=c.item;const W=GUNS[it.id];it.mag--;c.fireCd=1/W.rate;c.healing=null;
+  scareBirds(c.pos,100);const it=c.item;let W=GUNS[it.id];if(it.exotic)W={...W,exotic:it.exotic,r:it.r,name:EXOTIC_NAMES[it.exotic]};
+  if(it.exotic==='speedyAR'){const elapsed=gameTime-(it.exoticLastShot??-10);it.exoticHeat=Math.max(0,(it.exoticHeat||0)-Math.max(0,elapsed-.45)*.55);it.exoticHeat=Math.min(1,it.exoticHeat+.12);it.exoticLastShot=gameTime;W={...W,rate:W.rate*(1+it.exoticHeat)};}
+  if(it.exotic==='troubleSMG')W={...W,dmg:3.5,pellets:4,spread:.12,ads:.09,range:42};
+  if(it.exotic==='chainShotgun')W={...W,dmg:3,pellets:1,speed:165,range:45,spread:.012};
+  it.mag--;c.fireCd=1/W.rate;c.healing=null;
   const mz=muzzleWorld(c);
   if(c===player){sfx(W.snd);recoilKick(W);}else sfxAt(W.snd,c.pos.x,c.pos.y,c.pos.z);
   if(c.held)c.held.position.z=.07;
@@ -2175,7 +2182,7 @@ function fireGun(c,origin,dir,near,ads){if(c===player)MUSIC.combat=gameTime;
   if(c===player||c.pos.distanceToSquared(player.pos)<1600){flashLight.position.copy(mz);flashLight.intensity=8;}
   const sprd=currentSpread(c,W,ads);
   if(W.projectile){const h=castRay(origin,dir,W.range,c,near);const d=h.point.clone().sub(mz).normalize();
-    const tgt=it.r>=6?(c===player?(ROCK.locked?ROCK.target:null):(c.ai&& c.ai.enemy&& c.ai.vis?c.ai.enemy:null)):null;spawnRocket(c,mz,d,it.r,tgt);if(c===player){ROCK.t=0;ROCK.locked=false;}c.bloom=0;return;}
+    const tgt=it.exotic==='homingRocketLauncher'?(c===player?(ROCK.locked?ROCK.target:null):(c.ai&& c.ai.enemy&& c.ai.vis?c.ai.enemy:null)):null;spawnRocket(c,mz,d,it.r,tgt);if(c===player){ROCK.t=0;ROCK.locked=false;}c.bloom=0;return;}
   const dmgBase=W.dmg*RAR_MULT[it.r];
   if(W.pellets>1){const hitChars=new Map();
     const dm=c===player?aimMagnet(dir,W):dir;for(let i=0;i<W.pellets;i++){const d=spreadDir(dm,sprd);const h=castRay(origin,d,W.range,c,near);shatterAlong(origin,d,h.dist);if(Math.random()<.5)shortTracer(mz,h.point);if(!h.ud)continue;
@@ -2184,16 +2191,19 @@ function fireGun(c,origin,dir,near,ads){if(c===player)MUSIC.combat=gameTime;
   // ballistic bullet: aim from the camera/eye ray, launched from the muzzle
   const d0=spreadDir(c===player?aimMagnet(dir,W):dir,sprd);const aim=castRay(origin,d0,W.range,c,near);
   let bd=aim.dist>3?aim.point.clone().sub(mz).normalize():d0;
-  spawnBullet(c,mz,bd,W,it);
+  spawnBullet(c,mz,bd,W,it,it.exotic==='chainShotgun'?2:null);
   c.bloom=Math.min(W.maxBloom,c.bloom+W.bloom);
 }
-function spawnBullet(c,o,dir,W,it){
+function spawnBullet(c,o,dir,W,it,chainTier=null){
   const tof=W.range/W.speed;const drop=.5*BULLET_G*tof*tof;
-  const b={pos:o.clone(),vel:dir.clone().multiplyScalar(W.speed),owner:c,dmg:W.dmg*RAR_MULT[it.r],W,travel:0,o:o.clone(),e:o.clone().addScaledVector(dir,W.range).add(new V3(0,-drop*.5,0)),tracer:getTracer(),cand:[],pen:W.id==='sniper'?2:1};
+  const b={pos:o.clone(),vel:dir.clone().multiplyScalar(W.speed),owner:c,dmg:chainTier===null?W.dmg*RAR_MULT[it.r]:chainTier===0?W.dmg*RAR_MULT[it.r]:0,W,it,chainTier,travel:0,o:o.clone(),e:o.clone().addScaledVector(dir,W.range).add(new V3(0,-drop*.5,0)),tracer:getTracer(),cand:[],pen:W.id==='sniper'?2:1};
   const margin=drop*.5+1.5;for(const m of pieceMeshes)if(segDist(b,m.userData.bs)<margin)b.cand.push(m);for(const o2 of harvs)if(o2.alive&& segDist(b,o2.mesh.userData.bs)<margin)b.cand.push(o2.mesh);for(const dm of doorMeshes)if(segDist(b,dm.userData.bs)<margin)b.cand.push(dm);
   if(c===player&& +SET.aa>=3){let best=null,ba=12*Math.PI/180;for(const t of chars){if(t===c||!t.alive||t.state==='ship'||(MODE.teams&& t.team===c.team))continue;const v=new V3(t.pos.x,t.pos.y+1.2,t.pos.z).sub(o);const d=v.length();if(d>W.range)continue;const a=v.divideScalar(d).angleTo(dir);if(a<ba){ba=a;best=t;}}
     if(best&&(best===AA.target||canSee(c,best)))b.home=best;}
   b.tracer.m.position.copy(o);bullets.push(b);}
+function spawnChainChildren(owner,point,incoming,W,it,tier){const axis=Math.abs(incoming.y)<.9?new V3(0,1,0):new V3(1,0,0),right=new V3().crossVectors(incoming,axis).normalize(),up=new V3().crossVectors(right,incoming).normalize();
+  for(const side of [right,right.clone().negate(),up,up.clone().negate()]){const dir=incoming.clone().multiplyScalar(.38).addScaledVector(side,.925).normalize(),childW={...W,speed:100,range:18,dmg:3,spread:0};
+    spawnBullet(owner,point.clone().addScaledVector(dir,.12),dir,childW,it,tier);}}
 const _bl=[];
 function updateBullets(dt){
   for(let i=bullets.length-1;i>=0;i--){const b=bullets[i];
@@ -2204,9 +2214,11 @@ function updateBullets(dt){
     const h=castRay(p0,dir,len,b.owner,0,_bl);shatterAlong(p0,dir,h.ud?h.dist:len);
     if(h.ud){let dmg=b.dmg;const W=b.W;const tr=b.travel+h.dist;
       if(W.id==='ar'&& tr>60)dmg*=lerp(1,.75,clamp((tr-60)/180,0,1));else if((W.id==='smg'||W.id==='pistol')&& tr>30)dmg*=lerp(1,.6,clamp((tr-30)/100,0,1));
-      const hc=new Map();applyHit(b.owner,h,dmg,W,hc,dir);for(const [t,v] of hc)damageChar(t,v.d,b.owner,W.name,v.head,v.pt,false,dir);
+      if(W.exotic==='chainShotgun'&&b.chainTier>0)spawnChainChildren(b.owner,h.point,dir,W,b.it,b.chainTier-1);
+      else if(W.exotic==='boomSniper')explode(h.point,b.owner,250,'Boom Sniper');
+      else{const hc=new Map();applyHit(b.owner,h,dmg,W,hc,dir);for(const [t,v] of hc)damageChar(t,v.d,b.owner,W.name,v.head,v.pt,false,dir);}
       const hu=h.ud;const soft=(hu.piece&& (hu.piece.mat==='wood'||hu.piece.mat==='shingle'))||hu.door||(hu.harv&& hu.harv.kind==='furn');
-      if(soft&& b.pen>0&& !hu.piece&& !hu.door){b.pen--;b.dmg*=.55;b.pos.copy(h.point).addScaledVector(dir,.45);b.travel+=h.dist+.45;continue;}
+      if(W.exotic!=='chainShotgun'&&W.exotic!=='boomSniper'&&soft&& b.pen>0&& !hu.piece&& !hu.door){b.pen--;b.dmg*=.55;b.pos.copy(h.point).addScaledVector(dir,.45);b.travel+=h.dist+.45;continue;}
       bullets.splice(i,1);freeTracer(b.tracer);continue;}
     b.pos.addScaledVector(dir,len);b.travel+=len;
     if(b.owner!==player&& player.alive){const d=b.pos.distanceTo(player.eye());if(d<4&&!b.cracked){b.cracked=true;sfx('crack',1-d/4);}}
@@ -2248,9 +2260,46 @@ function swingPickaxe(c,origin,dir,near){
   if(h.ud.piece){const p=h.ud.piece;damagePiece(p,p.anchored?(c.perks&& c.perks.blade?110:80):50,c,h.point);const give=MATS[p.mat].gives||p.mat;if(p.anchored){c.mats[give]=Math.min(999,c.mats[give]+14);if(c===player){stats.mats+=14;floatMat(give,14);}}
     sfxAt(p.mat==='metal'?'clang':p.mat==='wood'?'chop':'pickhit',h.point.x,h.point.y,h.point.z);impactFX(h.point,p.mat==='metal'?'metal':p.mat==='wood'?'wood':'brick');}
 }
+const markerOutlineChars=new Set();
+const MARKER_OUTLINE_VS=`
+#include <common>
+#include <skinning_pars_vertex>
+varying vec3 vOutlineNormal;
+varying vec3 vOutlineView;
+void main(){
+  #include <beginnormal_vertex>
+  #include <skinbase_vertex>
+  #include <skinnormal_vertex>
+  #include <begin_vertex>
+  #include <skinning_vertex>
+  vec4 mvPosition=modelViewMatrix*vec4(transformed,1.0);
+  vOutlineNormal=normalize(normalMatrix*objectNormal);
+  vOutlineView=normalize(-mvPosition.xyz);
+  gl_Position=projectionMatrix*mvPosition;
+}`;
+const MARKER_OUTLINE_FS=`
+uniform vec3 outlineColor;
+varying vec3 vOutlineNormal;
+varying vec3 vOutlineView;
+void main(){
+  if(abs(dot(normalize(vOutlineNormal),normalize(vOutlineView)))>.32)discard;
+  gl_FragColor=vec4(outlineColor,1.0);
+}`;
+const MARKER_OUTLINE_MATS={};
+function markerOutlineMaterial(skinned){const key=skinned?'skinned':'plain';return MARKER_OUTLINE_MATS[key]||(MARKER_OUTLINE_MATS[key]=new THREE.ShaderMaterial({
+  uniforms:{outlineColor:{value:C('#ff2929')}},vertexShader:MARKER_OUTLINE_VS,fragmentShader:MARKER_OUTLINE_FS,
+  side:THREE.BackSide,depthTest:false,depthWrite:false,skinning:skinned,toneMapped:false}));}
+function createMarkerOutline(c){if(c.markerOutline)return;c.markerOutline=[];const sources=[];
+  if(c.rig&& c.rig.holder)c.rig.holder.traverse(o=>{if(o.isMesh&&o.visible)sources.push(o);});
+  else for(const o of c.m.bodyMeshes)if(o.visible)sources.push(o);
+  for(const source of sources){const shell=source.clone(false);shell.material=markerOutlineMaterial(!!source.isSkinnedMesh);shell.scale.copy(source.scale).multiplyScalar(1.045);shell.renderOrder=20;shell.frustumCulled=false;source.parent.add(shell);c.markerOutline.push({source,shell});}
+  markerOutlineChars.add(c);}
+function updateMarkerOutlines(){for(const c of markerOutlineChars){if(!c.alive||c.markerPistolUntil<=gameTime){for(const {shell} of c.markerOutline)shell.parent?.remove(shell);c.markerOutline=null;markerOutlineChars.delete(c);continue;}
+    for(const {source,shell} of c.markerOutline)shell.visible=c.m.root.visible&&source.visible;}}
 function damageChar(t,dmg,att,weapon,head,point,ignoreShield,dir){
   if(!t.alive||dmg<=0)return;if(MODE.teams&& att&& att!==t&& att.team===t.team)return;if(t.spawnProtT>gameTime&& att)return;// explosions (rockets, grenades, red barrels, exploding cars) may one-shot anyone; every other hit on the player is softened and capped
-  const boom=/Rocket|Grenade|barrel|explosion/i.test(weapon||'');if(att&&att!==t&&spriteVariant(att.sprite)==='gem')dmg*=1.5;if(att&& att.perks&& att.perks.dmg&& weapon!=='Storm Blade'&& weapon!=='Fall'&& weapon!=='Storm')dmg*=1.15;
+  const boom=/Rocket|Grenade|barrel|explosion|Boom Sniper/i.test(weapon||'');if(att&&att!==t&&spriteVariant(att.sprite)==='gem')dmg*=1.5;if(att&& att.perks&& att.perks.dmg&& weapon!=='Storm Blade'&& weapon!=='Fall'&& weapon!=='Storm')dmg*=1.15;
+  if(weapon==='Marker Pistol'){t.spottedT=Math.max(t.spottedT||0,gameTime+10);t.markerPistolUntil=Math.max(t.markerPistolUntil||0,gameTime+10);createMarkerOutline(t);}
   if(spriteElement(t.sprite)==='metal')dmg*=.85;
   if(t===player&& att&& att!==player&& !boom){const cap=SET.skill<1.2?65:80;dmg*=SET.skill<.8?.4:SET.skill<1.2?.6:1;
     // burst window: one attacker can't deal more than one capped hit's worth within 0.6 s (stops SMG/shotgun bursts feeling like one-shots)
@@ -2370,10 +2419,12 @@ function buildTarget(c,type,fx,fz,pitch){
   return liftOutOfHill({type,ix:tx,iy:lvl,iz:tz,a:type==='ramp'?dirA:0});}
 function liftOutOfHill(tg){for(let n=0;n<4;n++){const b=pieceBox(tg.type,tg.ix,tg.iy,tg.iz,tg.a);let th=-1e9;for(const [u,v] of [[.5,.5],[.15,.15],[.85,.85],[.15,.85],[.85,.15]])th=Math.max(th,terrainH(lerp(b.minx,b.maxx,u),lerp(b.minz,b.maxz,v)));
   const buried=tg.type==='floor'?b.maxy<th-.05:tg.type==='ramp'?b.miny<th-1.2:b.miny<th-1;if(!buried)break;tg.iy++;}return tg;}
+function infiniteMaterials(){return MODE.id==='custom'&&CM?.meta.infiniteMats===true;}
 function tryBuild(c,tg){if(!tg||!MODE.build)return null;
-  if(c.mats[c.mat]<10){const alt=MAT_ORDER.find(m=>c.mats[m]>=10);if(c===player||!alt)return null;c.mat=alt;}
+  const unlimited=c===player&&infiniteMaterials();
+  if(!unlimited&&c.mats[c.mat]<10){const alt=MAT_ORDER.find(m=>c.mats[m]>=10);if(c===player||!alt)return null;c.mat=alt;}
   if(pieces.has(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a)))return null;const p=addPiece(tg.type,tg.ix,tg.iy,tg.iz,tg.a,c.mat,false);if(!p)return null;
-  p.owner=c;c.mats[c.mat]-=10;sfxAt('build',(p.box.minx+p.box.maxx)/2,p.box.miny+1,(p.box.minz+p.box.maxz)/2);if(c===player)stats.built++;return p;}
+  p.owner=c;if(!unlimited)c.mats[c.mat]-=10;sfxAt('build',(p.box.minx+p.box.maxx)/2,p.box.miny+1,(p.box.minz+p.box.maxz)/2);if(c===player)stats.built++;return p;}
 const ghostMat=new THREE.MeshBasicMaterial({color:new THREE.Color(.25,.7,1.6),transparent:true,opacity:.28,depthWrite:false});
 const ghostBad=new THREE.MeshBasicMaterial({color:new THREE.Color(1.6,.2,.25),transparent:true,opacity:.25,depthWrite:false});
 let ghost,ghostEdges;const EDGE_CACHE=new Map();
@@ -2741,7 +2792,7 @@ function updateExtrasHUD(){const p=player;if(!p)return;const v=p.vehicle;$('veh'
   $('hud').classList.toggle('spectating',!!spec);const sb=$('spec');if(spec){sb.classList.remove('hidden');if(gameTime-(sb.lastT||0)>.25){sb.lastT=gameTime;const alive=chars.filter(c=>c.alive&& c!==player).sort((a,b)=>b.kills-a.kills);
       sb.innerHTML=`<small>Spectating</small><b>${spec.name}</b><span>${Math.ceil(spec.hp+spec.shield)} HP · ${spec.kills} eliminations · ${spec.vehicle?'driving':spec.state}</span><em>◀ A / ← / right-click · D / → / Space / click ▶ · Esc results</em>
       <div class="speclist">${alive.map(c=>`<button data-spec="${c.id}" class="${c===spec?'on':''}">${c.name} <i>${c.kills}</i></button>`).join('')}</div>`;}}else sb.classList.add('hidden');
-  const hd=((-yaw*180/Math.PI)%360+360)%360;compassMark($('cmPing'),ping.on?ping.pos:null,hd);const dr=drops.find(d=>!d.ch||!d.ch.opened);compassMark($('cmDrop'),dr?new V3(dr.x,0,dr.z):null,hd);const crown=crownDrops.filter(d=>d.alive).sort((a,b)=>Math.hypot(a.x-p.pos.x,a.z-p.pos.z)-Math.hypot(b.x-p.pos.x,b.z-p.pos.z))[0];compassMark($('cmCrown'),crown?new V3(crown.x,0,crown.z):null,hd);}
+  const hd=((-yaw*180/Math.PI)%360+360)%360;compassMark($('cmPing'),ping.on?ping.pos:null,hd);const dr=drops.find(d=>!d.ch||!d.ch.opened);compassMark($('cmDrop'),dr?new V3(dr.x,0,dr.z):null,hd);const crown=crownDrops.filter(d=>d.alive).sort((a,b)=>Math.hypot(a.x-p.pos.x,a.z-p.pos.z)-Math.hypot(b.x-p.pos.x,b.z-p.pos.z))[0];compassMark($('cmCrown'),crown?new V3(crown.x,0,crown.z):null,hd);const marked=chars.filter(c=>c!==p&&c.alive&&c.spottedT>gameTime).sort((a,b)=>Math.hypot(a.pos.x-p.pos.x,a.pos.z-p.pos.z)-Math.hypot(b.pos.x-p.pos.x,b.pos.z-p.pos.z))[0];compassMark($('cmMarked'),marked?marked.pos:null,hd);}
 
 // ---------- setup + per-frame ----------
 function initExtras(){
@@ -3509,13 +3560,13 @@ function renderHotbar(){const p=player;const key=p.sel+'|'+(buildMode?1:0)+'|'+p
   for(let i=0;i<NSLOT;i++){const s=p.slots[i];let inner='',st='';if(s){st=`--rar:${s.type==='sprite'?SPRITE_DEF[s.id].col:RAR_COL[s.r||0]}`;inner=itemSVG(s)+(s.type==='gun'?`<span class="n">${s.mag}</span><span class="a">${GUNS[s.id].short}</span>`:s.count?`<span class="n">×${s.count}</span>`:'');}
     h+=`<div class="slot${s?' full':''}${p.sel===i+1&&!buildMode?' sel':''}" style="${st}"><span class="k">${i+1}</span>${inner}</div>`;}
   $('hotbar').innerHTML=h;}
-let matKey='';function renderMats(){const p=player;const k=p.mats.wood+','+p.mats.brick+','+p.mats.metal+p.mat+buildMode+buildType;if(k===matKey)return;matKey=k;
-  $('mats').innerHTML=MAT_ORDER.map(m=>`<div class="mat${buildMode&& p.mat===m?' sel':''}" data-m="${m}"><i style="background:${MATS[m].col}"></i><b>${p.mats[m]}</b></div>`).join('');
+let matKey='';function renderMats(){const p=player,unlimited=infiniteMaterials();const k=p.mats.wood+','+p.mats.brick+','+p.mats.metal+p.mat+buildMode+buildType+unlimited;if(k===matKey)return;matKey=k;
+  $('mats').innerHTML=MAT_ORDER.map(m=>`<div class="mat${buildMode&& p.mat===m?' sel':''}" data-m="${m}"><i style="background:${MATS[m].col}"></i><b>${unlimited?'∞':p.mats[m]}</b></div>`).join('');
  $('buildbar').innerHTML=BUILD_TYPES.map((t,i)=>`<div class="bp${buildType===t?' sel':''}">${ICONS[t]}<span>${'ZXCV'[i]}</span></div>`).join('');$('buildbar').classList.toggle('hidden',!buildMode);}
 function buildCompass(){const s=$('compassStrip');let h='';for(let rep=0;rep<3;rep++)for(let d=0;d<360;d+=15){const lab={0:'N',45:'NE',90:'E',135:'SE',180:'S',225:'SW',270:'W',315:'NW'}[d];h+=`<span class="${lab?'c':''}">${lab||(d%30===0?d:'·')}</span>`;}s.innerHTML=h;}
 let lastHp=-1,lastSh=-1;
 const HUDX={};const NTAG=new Map();
-function updateRocketLock(dt){const p=player,el=$('lockMark');const it=p&& p.item;const on=p&& p.alive&& it&& it.type==='gun'&& it.id==='rocket'&& it.r>=6&& p.ads&& p.state==='ground';
+function updateRocketLock(dt){const p=player,el=$('lockMark');const it=p&& p.item;const on=p&& p.alive&& it&& it.type==='gun'&& it.exotic==='homingRocketLauncher'&& p.ads&& p.state==='ground';
   if(!on){ROCK.target=null;ROCK.t=0;ROCK.locked=false;el.style.display='none';return;}
   const {f}=camVectors(),o=camera.position;let best=null,ba=8*Math.PI/180;for(const c of chars){if(c===p||!c.alive||c.state==='ship'||(MODE.teams&& c.team===p.team))continue;const v=new V3(c.pos.x,c.pos.y+1,c.pos.z).sub(o);const d=v.length();if(d>260||d<3)continue;const a=v.divideScalar(d).angleTo(f);if(a<ba){ba=a;best=c;}}
   if(best!==ROCK.target){ROCK.target=best;ROCK.t=0;ROCK.locked=false;ROCK.checkT=0;}
@@ -3536,6 +3587,7 @@ function updateNameTags(){const box=$('ntags');const seen=new Set();const p=play
     const sc=clamp(1.15-d/120,.62,1.1);el.style.opacity=clamp(1.4-d/(mate?220:85),.25,1);el.style.display='block';el.style.transform=`translate(${(_proj.x*.5+.5)*W}px,${(-_proj.y*.5+.5)*Hh}px) translate(-50%,-100%) scale(${sc})`;}
   for(const [c,el] of NTAG)if(!seen.has(c)){el.style.display='none';if(!c.alive){el.remove();NTAG.delete(c);}}}
 function updateHUD(dt){
+  updateMarkerOutlines();
   const p=player;
   $('crownBadge').classList.toggle('hidden',!carryingCrown);
   if(p.hp!==lastHp){lastHp=p.hp;$('hpFill').style.width=p.hp+'%';$('hpTxt').textContent=Math.ceil(p.hp);}
@@ -3544,7 +3596,7 @@ function updateHUD(dt){
   const it=p.item;const am=$('ammo');
   {const cur=it&& it.type==='gun'?GUNS[it.id].ammo:'';const k=MODE.id==='tdm'?'tdm':cur+'|'+Object.keys(AMMO).map(a=>p.ammo[a]||0).join(',');if(HUDX.ammoK!==k){HUDX.ammoK=k;
     $('ammoAll').innerHTML=MODE.id==='tdm'?'':Object.keys(AMMO).map(a=>`<div class="${a===cur?'on':''}" style="--ac:${AMMO[a].col}" title="${AMMO[a].name}"><i></i><small>${{light:'LIGHT',medium:'MED',heavy:'HEAVY',shells:'SHELLS',rockets:'ROCKETS'}[a]}</small>${p.ammo[a]||0}</div>`).join('');}}
-  if(!buildMode&& it&& it.type==='gun'){const W=GUNS[it.id];am.innerHTML=`<b class="${it.mag===0?'empty':''}">${it.mag}</b><small>/ ${MODE.id==='tdm'?'∞':p.ammo[W.ammo]}</small><span>${RAR[it.r]} ${W.name}${it.id==='rocket'&& it.r>=6?' · aim to lock on':''}</span>`;}else if(!buildMode&& it)am.innerHTML=`<span>${itemName(it)}</span>`;else am.innerHTML='';
+  if(!buildMode&& it&& it.type==='gun'){const W=GUNS[it.id];am.innerHTML=`<b class="${it.mag===0?'empty':''}">${it.mag}</b><small>/ ${MODE.id==='tdm'?'∞':p.ammo[W.ammo]}</small><span>${itemName(it)}${it.exotic==='homingRocketLauncher'?' · aim to lock on':''}</span>`;}else if(!buildMode&& it)am.innerHTML=`<span>${itemName(it)}</span>`;else am.innerHTML='';
   $('alive').textContent=aliveCount;$('goldTxt').textContent=p.gold;
   const sky=p.alive&&(p.state==='freefall'||p.state==='glide');$('alt').classList.toggle('hidden',!sky);if(sky){const hh=Math.max(0,p.pos.y-terrainH(p.pos.x,p.pos.z));$('altTxt').textContent=Math.round(hh)+'m';$('altMark').style.top=(100-clamp(hh/180,0,1)*100)+'%';}
   $('speedFx').style.opacity=p.alive&& p.state==='freefall'?(p.dive?.9:.45):(p.vehicle&& p.vehicle.boosting?.5:p.sprint&& Math.hypot(p.vel.x,p.vel.z)>8?.12:0);
@@ -3696,7 +3748,7 @@ function updatePlayer(dt){
   aimAssist(dt);
   const {f}=camVectors();
   if(!buildMode&&mouseLPressed&&it&&it.type==='sprite'){if(!swapSpriteSlot(p,p.sel-1))centerMsg('SPRITE SWAP COOLING DOWN','Ready in '+Math.ceil(Math.max(0,p.spriteSwapAt-gameTime))+'s');mouseLPressed=false;updateHeld(p);}
-  if(buildMode){const tg=buildTarget(p,buildType,fx,fz,pitch),hasMats=p.mats[p.mat]>=10;const ok=!pieces.has(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a))&& hasMats;showGhost(tg,ok);
+  if(buildMode){const tg=buildTarget(p,buildType,fx,fz,pitch),hasMats=infiniteMaterials()||p.mats[p.mat]>=10;const ok=!pieces.has(pieceKey(tg.type,tg.ix,tg.iy,tg.iz,tg.a))&& hasMats;showGhost(tg,ok);
     if(mouseL&& PROFILE.set.turboBuild!=='0'&&!hasMats){mouseL=false;centerMsg('OUT OF MATERIALS','Collect materials or select another material, then press build again');}
     else if(mouseL&& ok&& !uiOpen&&(PROFILE.set.turboBuild!=='0'||mouseLPressed)){const np=tryBuild(p,tg);if(np&& mouseLPressed&& PROFILE.set.turboBuild==='0'&& PROFILE.set.editAfterBuild!=='0'&& PIECE_EDIT_GRID[np.type]&& !uiOpen){mouseLPressed=false;hideGhost();openPieceEdit(np,null);}}updateArc(false);}
   else{hideGhost();
@@ -3808,7 +3860,7 @@ function step(dt){
   updatePlayer(dt);updateVehicles(dt);updateDrops(dt);
   for(const c of chars)if(c!==player&& c.alive)updateBot(c,dt);
   separateChars();
-  for(const c of chars){if(c.alive){if(c.state!=='ship'){if(c!==player)c.m.root.visible=c.pos.distanceToSquared(camera.position)<Q.dist*Q.dist;animChar(c,dt);}else{c.m.root.visible=!!ship.mesh&& c.pos.distanceToSquared(camera.position)<60*60;if(c.m.root.visible)animChar(c,dt);}c.lastHurt+=dt;}else if(c.m.root.parent)animChar(c,dt);}
+  for(const c of chars){if(c.alive){if(c.state!=='ship'){if(c!==player)c.m.root.visible=c.pos.distanceToSquared(camera.position)<Q.dist*Q.dist||c.markerPistolUntil>gameTime;animChar(c,dt);}else{c.m.root.visible=!!ship.mesh&& c.pos.distanceToSquared(camera.position)<60*60;if(c.m.root.visible)animChar(c,dt);}c.lastHurt+=dt;}else if(c.m.root.parent)animChar(c,dt);}
   if(Math.random()<dt/22&& aliveCount>3){const b=pick(chars.filter(c=>c!==player&& c.alive&& c.state!=='ship'));const line=b&& contextLine(b);if(line)feed(`<b>${b.name}</b>: ${line}`,false,'chat');}
   updateMode(dt);updateSidekick(dt);updateSprites(dt);updateHazards(dt);updateArena(dt);updateEvent(dt);
   updateBullets(dt);updateRockets(dt);updateGrenades(dt);updateStorm(dt);updatePieces(dt);updatePickups(dt);updateVacuum(dt);updateChunks(dt);updateTrees(dt);autoQuality(dt);
@@ -3827,7 +3879,7 @@ function startGame(){clearSpriteLoadoutOutsideBR();BOT_N=0;matKey='';for(const d
   $('menu').classList.add('hidden');$('hud').classList.remove('hidden');
   buildShip();player=new Char('You',true);chars.push(player);player.m.root.visible=false;
   const used=new Set();for(let i=0;i<MODE.players-1;i++){let n;do n=makeBotName();while(used.has(n));used.add(n);const b=new Char(n,false);initBot(b);b.m.root.visible=false;chars.push(b);}
-  const crownCandidates=chars.filter(c=>c!==player&&c.alive),crownCarrierCount=randi(1,Math.min(3,crownCandidates.length));
+  const crownCandidates=chars.filter(c=>c!==player&&c.alive),crownCarrierCount=crownCandidates.length?randi(1,Math.min(3,crownCandidates.length)):0;
   for(let i=0;i<crownCarrierCount;i++){const index=randi(0,crownCandidates.length-1);crownCandidates.splice(index,1)[0].carriesCrown=true;}
   aliveCount=chars.length;gameState='play';initSidekick();initSprites();renderSpriteChip();evSetup();$('mats').style.display=MODE.build?'':'none';stats.start=gameTime;buildCompass();requestLock();
   try{const de=document.documentElement;if(de.requestFullscreen&&!document.fullscreenElement)de.requestFullscreen({navigationUI:'hide'}).then(()=>{if(navigator.keyboard&& navigator.keyboard.lock)navigator.keyboard.lock(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyF','KeyG','KeyP','KeyT','Tab','Space']).catch(()=>{});}).catch(()=>{});}catch(err){}
@@ -4396,12 +4448,18 @@ const UPDATE_NOTES=[
   ['Monthly events','Every month now has a 3-day event, like Halloween Night in October with jack-o’-lanterns, a night sky and trick-or-treat pumpkins. Day 1 warms up, day 2 is the main event with its own special, and day 3 is the encore. Play on day 2 to earn that event’s outfit. See the <b>Events</b> tab.'],
   ['Easter eggs and 100 sidekicks','There are now 100 sidekicks. Most can only be hatched from the golden eggs in the Easter Egg Hunt event, and every egg has a 50% chance to hatch one.'],
   ['Ranked queue','Tick <b>Ranked queue</b> under Game mode before playing Battle Royale or No Build. Climb eight tiers from Bronze to Unreal. Good placements and eliminations earn Rank Points (RP); finishing outside the top 20 costs some. Higher ranks bring tougher bots.'],
-  ['Victory Crowns','Win a Battle Royale or No Build match to earn a crown and carry it into your next match. Win again while wearing it for a Crown Victory. If you are eliminated the crown drops and anyone can claim it, and once you have earned one, some opponents will be wearing a crown too.'],
+  ['Victory Crowns','Win a Battle Royale or No Build match to earn a crown and carry it into your next match. Win again while wearing it for a Crown Victory. Dropped crowns appear on the map and compass; bots treat them as high-priority supplies. Each match gives one to three bots a crown.'],
   ['Rare and Legendary chests','Chests that glow <b style="color:#2f9bff">blue</b> or <b style="color:#ffae1a">gold</b> always hold Rare or Legendary loot. Look for the coloured gem on the lock.'],
   ['Hunger Games overhaul','No storm, and building is on. Escape forest fires, poison fog and tracker jackers, watch for hidden traps and rigged chests (look for the red tripwire), dodge Peacekeeper drones, and leave the dark nightlock berries alone. In the finale, mutts drive everyone to the Cornucopia.'],
   ['New Settings','Settings are grouped, with render scale, shadows, bloom and a separate sound-effects volume. Most of them are in the pause menu too, and Restore defaults resets everything.'],
   ['How to Play tab','This guide is now a tab in the lobby, so you can check controls and tips any time.'],
-  ['Editing','Walls, floors, stairs and ceilings can all be edited. The Open edit after building setting controls whether a placed piece opens its grid; you can also press your edit bind while looking at one of your builds. Click or drag to select squares (blue is solid, yellow gets cut out), then press Q or your edit bind to confirm. Esc cancels.']];
+  ['Editing','Walls, floors, stairs and ceilings can all be edited. The Open edit after building setting controls whether a placed piece opens its grid; you can also press your edit bind while looking at one of your builds. Click or drag to select squares (blue is solid, yellow gets cut out), then press Q or your edit bind to confirm. Esc cancels. Turbo Build places pieces while you hold build, uses materials for every piece, and stops when you run out. The Edit Tooltip setting hides the on-screen edit guide.'],
+  ['Sprites','Sprites can be found and used in Unranked Battle Royale and No Build only. The Sprites page appears in those modes and stays hidden elsewhere. Pickups show each sprite’s description and a yellow ! when it is new; swap sprites even with a full inventory, keeping their XP and level when dropped. Legendary portable extractors take 5 seconds to use, stack to 3, and have a 15-second cooldown. Sprites start at Level 1, level up to 5, and keep their MAX crown even if lost. About half of bots spawn with a random sprite and level.'],
+  ['Sprite Weekends','Every Saturday and Sunday, portable extractors are 3× as common and XP, Sprite XP, and Sprite Dust are doubled.'],
+  ['Locker customization','Customize cosmetics with colors, styles, patterns, materials, and visual effects. Randomize individual cosmetics or your full loadout, save up to eight named presets, and customize sidekicks too.'],
+  ['New harvesting tools and glider','The Pocket Knife and animated Butterfly Knife are available as harvesting tools. Win a match to unlock the Victory Umbrella glider.'],
+  ['My Maps settings','Choose zero to 29 bots, turn building on or off, and enable Infinite Materials for creative building. Zero-bot matches now start correctly.'],
+  ['Exotic weapons','Exotics are distinct weapons with unique powers: the Homing Rocket Launcher tracks targets; the Speedy AR fires faster during sustained fire; the Chain Shotgun splits into successive bursts; the Boom Sniper explodes for 250 damage; the Trouble SMG fires four low-damage shots; and the Marker Pistol marks enemies on the map and compass and outlines them in red through walls for 10 seconds. Exotics are 2× as common normally and 4× as common on Sprite Weekends.']];
 function howtoHTML(){const T=TOUCH.on;const rar=RAR.map((n,i)=>`<span style="background:${RAR_COL[i]}">${n}</span>`).join('');
   const keys=T?`<dl class="howKeys"><dt>Left stick</dt><dd>Move. Push all the way to sprint</dd><dt>Drag right side</dt><dd>Look and aim</dd><dt>FIRE · AIM</dt><dd>Shoot or swing · aim down sights or scope</dd><dt>JUMP</dt><dd>Jump, dive from the plane, open the glider</dd><dt>USE</dt><dd>Open chests, pick up, drive, doors. It glows when something is in reach</dd><dt>BUILD</dt><dd>Then WALL, FLOOR, RAMP or ROOF; aim up for a floor above you or down for one at your feet</dd><dt>Hotbar</dt><dd>Tap a slot to switch weapons</dd><dt>Top row</dt><dd>ITEMS, DROP, SHOP, MAP, CHAT and pause</dd></dl>`
     :`<dl class="howKeys"><dt>W A S D</dt><dd>Move · Shift sprint · Ctrl crouch or slide · Space jump</dd><dt>Mouse</dt><dd>Left fire · Right aim (snipers scope in) · Wheel switch slots · aim up for a floor above you or down for one at your feet</dd><dt>1 to 6 · F</dt><dd>Hotbar slots · Storm Blade (sword and harvest tool)</dd><dt>E · R · H</dt><dd>Interact · reload · drop the selected item</dd><dt>Q · Z X C V · G</dt><dd>Build mode · wall, floor, ramp, roof · edit your wall</dd><dt>Space</dt><dd>Dive from the plane · open the glider (W dives faster)</dd><dt>M · Tab · U</dt><dd>Map · inventory · in-match shop</dd><dt>Enter · Esc</dt><dd>Chat · pause</dd></dl>`;
@@ -4855,7 +4913,7 @@ function renderEdOpts(){const t=ED.tool;let h='';const rng=(k,l,min,max,st,v)=>`
   if(t==='poi')h+=`<label>Name<input data-k="pn" maxlength="22" placeholder="e.g. Pleasant Park" value="${escHTML(ED.poiName)}"></label><p class="edp">Named places show on the map and bots drop there.</p>`;
 
   if(t==='erase')h+=`<p class="edp">Click anything you placed to remove it.</p>`;
-  h+=`<hr><b class="edh">Match settings</b>${rng('bots','Bots',0,29,1,CM.meta.bots??15)}<label>Building ${edSel('bld',[[1,'On'],[0,'Off (No Build)']],CM.meta.build===false?0:1)}</label>`;
+  h+=`<hr><b class="edh">Match settings</b>${rng('bots','Bots',0,29,1,CM.meta.bots??15)}<label>Building ${edSel('bld',[[1,'On'],[0,'Off (No Build)']],CM.meta.build===false?0:1)}</label><label><input type="checkbox" data-k="imat" ${CM.meta.infiniteMats===true?'checked':''}> Infinite materials</label>`;
   $('edOpts').innerHTML=h;}
 function edStatus(){$('edStat').textContent=`${CM.objs.length} objects${ED.dirty?' · unsaved changes':' · saved'}`;}
 function edSave(){CM.meta.name=($('edName').value.trim()||'My Map').slice(0,32);const enc=cmEncode();const all=loadMaps();const m=Object.assign(CM.meta,{hm:enc.hm,pm:enc.pm,objs:CM.objs,updated:Date.now(),thumb:cmThumb()});
@@ -5095,7 +5153,7 @@ function initEditorUI(){const cv=canvas;
   $('edTools').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;ED.tool=b.dataset.t;ED.rot=0;renderEdTools();renderEdOpts();edCursor();sfx('ui');};
   $('edOpts').oninput=e=>{const el=e.target,k=el.dataset.k;if(!k)return;const v=el.value;if(el.type==='range'&& el.previousElementSibling)el.previousElementSibling.textContent=v;
     if(k==='R')ED.R=+v;else if(k==='S')ED.S=+v;else if(k==='hw')ED.house.w=+v;else if(k==='hd')ED.house.d=+v;else if(k==='hs')ED.house.st=+v;else if(k==='hm')ED.house.m=v;else if(k==='ts')ED.towerSt=+v;
-    else if(k==='pm')ED.mat=v;else if(k==='tv')ED.treeV=+v;else if(k==='rs')ED.rockS=+v;else if(k==='cv')ED.carV=v;else if(k==='pn')ED.poiName=v;else if(k==='sp')ED.spriteT=v;else if(k==='bots'){CM.meta.bots=+v;ED.dirty=true;edStatus();}else if(k==='bld'){CM.meta.build=v==='1';ED.dirty=true;edStatus();}};
+    else if(k==='pm')ED.mat=v;else if(k==='tv')ED.treeV=+v;else if(k==='rs')ED.rockS=+v;else if(k==='cv')ED.carV=v;else if(k==='pn')ED.poiName=v;else if(k==='sp')ED.spriteT=v;else if(k==='bots'){CM.meta.bots=+v;ED.dirty=true;edStatus();}else if(k==='bld'){CM.meta.build=v==='1';ED.dirty=true;edStatus();}else if(k==='imat'){CM.meta.infiniteMats=el.checked;ED.dirty=true;edStatus();}};
   $('edSave').onclick=()=>{edSave();};$('edUndoB').onclick=()=>edUndo();$('edRot').onclick=()=>{ED.rot=(ED.rot+1)%4;sfx('click');toast('Rotation '+ED.rot*90+'°');};$('edPlay').onclick=()=>{if(edSave())edLeave(true);};
   $('edExit').onclick=()=>{const b=$('edExit');if(ED.dirty&& !b.dataset.armed){b.dataset.armed='1';b.textContent='Exit without saving?';ED.exitArm=3;return;}edLeave(false);};
   $('edName').oninput=()=>{ED.dirty=true;edStatus();};
@@ -5119,11 +5177,11 @@ function initEditorUI(){const cv=canvas;
   if(EDITING&& CM)enterEditor();}
 // ---------- My Maps tab ----------
 function renderMyMaps(){const all=loadMaps().sort((a,b)=>(b.updated||0)-(a.updated||0));const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'just now':s<3600?Math.round(s/60)+' min ago':s<86400?Math.round(s/3600)+' h ago':Math.round(s/86400)+' d ago';};
-  $('mapsList').innerHTML=all.length?all.map(m=>`<div class="mapc" data-id="${m.id}"><div class="mth">${m.thumb?`<img src="${m.thumb}" alt="">`:''}</div><div class="mi"><b>${escHTML(m.name)}</b><small>${(m.objs||[]).length} objects · ${m.bots??15} bots · ${m.build===false?'No Build':'Building on'} · edited ${ago(m.updated||m.created)}</small>
+  $('mapsList').innerHTML=all.length?all.map(m=>`<div class="mapc" data-id="${m.id}"><div class="mth">${m.thumb?`<img src="${m.thumb}" alt="">`:''}</div><div class="mi"><b>${escHTML(m.name)}</b><small>${(m.objs||[]).length} objects · ${m.bots??15} bots · ${m.build===false?'No Build':'Building on'} · ${m.infiniteMats?'Infinite materials · ':''}edited ${ago(m.updated||m.created)}</small>
     <div class="row"><button class="btn small" data-a="play">Play</button><button class="btn small blue" data-a="edit">Edit</button><button class="btn small ghost" data-a="del">Delete</button></div></div></div>`).join(''):'<p class="empty">No maps yet. Create one, sculpt it, fill it with houses, cars and loot, then play it.</p>';}
 function openMap(id,edit){try{sessionStorage.setItem('stormfall.mode','custom');sessionStorage.setItem('stormfall.map',id);if(edit)sessionStorage.setItem('stormfall.edit','1');else{sessionStorage.removeItem('stormfall.edit');sessionStorage.setItem('stormfall.modego','1');}}catch(e){}
   $('fade').style.opacity=1;setTimeout(()=>location.reload(),350);}
-function initMyMapsUI(){$('mapNew').onclick=()=>{const all=loadMaps();const m={id:'m'+Date.now().toString(36),name:'My Map '+(all.length+1),created:Date.now(),updated:Date.now(),bots:15,build:true,objs:[]};all.push(m);if(!saveMaps(all)){toast('Browser storage is full. Delete an old map first.');return;}openMap(m.id,true);};
+function initMyMapsUI(){$('mapNew').onclick=()=>{const all=loadMaps();const m={id:'m'+Date.now().toString(36),name:'My Map '+(all.length+1),created:Date.now(),updated:Date.now(),bots:15,build:true,infiniteMats:false,objs:[]};all.push(m);if(!saveMaps(all)){toast('Browser storage is full. Delete an old map first.');return;}openMap(m.id,true);};
   $('mapsList').onclick=e=>{const b=e.target.closest('button[data-a]');if(!b)return;const id=b.closest('.mapc').dataset.id;const a=b.dataset.a;
     if(a==='play')openMap(id,false);else if(a==='edit')openMap(id,true);else if(a==='del'){if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Click again to delete';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='Delete';}},3000);return;}
       saveMaps(loadMaps().filter(m=>m.id!==id));renderMyMaps();toast('Map deleted');}};}
