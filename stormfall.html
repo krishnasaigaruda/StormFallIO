@@ -2171,8 +2171,8 @@ function shortTracer(a,b){const t=getTracer();t.m.position.copy(b);_tv.copy(b).a
 function fireGun(c,origin,dir,near,ads){if(c===player)MUSIC.combat=gameTime;
   scareBirds(c.pos,100);const it=c.item;let W=GUNS[it.id];if(it.exotic)W={...W,exotic:it.exotic,r:it.r,name:EXOTIC_NAMES[it.exotic]};
   if(it.exotic==='speedyAR'){const elapsed=gameTime-(it.exoticLastShot??-10);it.exoticHeat=Math.max(0,(it.exoticHeat||0)-Math.max(0,elapsed-.45)*.55);it.exoticHeat=Math.min(1,it.exoticHeat+.12);it.exoticLastShot=gameTime;W={...W,rate:W.rate*(1+it.exoticHeat)};}
-  if(it.exotic==='troubleSMG')W={...W,dmg:3.5,pellets:4,spread:.12,ads:.09,range:42};
-  if(it.exotic==='chainShotgun')W={...W,dmg:3,pellets:1,speed:165,range:45,spread:.004};
+  if(it.exotic==='troubleSMG')W={...W,dmg:6,pellets:4,spread:.12,ads:.09,range:42};
+  if(it.exotic==='chainShotgun')W={...W,dmg:30,pellets:6,speed:165,range:45,spread:.000};
   it.mag--;c.fireCd=1/W.rate;c.healing=null;
   const mz=muzzleWorld(c);
   if(c===player){sfx(W.snd);recoilKick(W);}else sfxAt(W.snd,c.pos.x,c.pos.y,c.pos.z);
