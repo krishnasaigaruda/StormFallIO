@@ -4902,7 +4902,7 @@ function teleportCustomChar(c,channel,source=null){const portals=editorDevices.f
   const x=to.x+dx*1.6,z=to.z+dz*1.6;c.pos.set(x,groundAt(x,z,to.y+2,null)+.08,z);c.vel.set(0,0,0);c.onGround=false;c.teleportT=gameTime+1.5;sfx('whoosh');return true;}
 function dispenseCustomDropper(d){const item=customItemFromKey(d.itemKey);if(!item)return false;spawnPickup(item,d.x,terrainH(d.x,d.z)+.6,d.z,true);d.g.rotation.y+=Math.PI/8;sfx('pickup');return true;}
 function runRemoteCommand(d,c){if(MODE.id!=='custom'){if(c===player)toast('Remote items only work in custom maps');return;}
-  if(d.cooldownUntil>gameTime){if(c===player)toast('Remote is recharging');return;}d.cooldownUntil=gameTime+1;
+  if(d.cooldownUntil>gameTime){if(c===player)toast('Remote is recharging');return;}d.cooldownUntil=gameTime+0;
   switch(d.command){
   case 'drop':{const droppers=editorDevices.filter(x=>x.t==='dropper'&&x.channel===d.channel);let count=0;for(const dropper of droppers)if(dispenseCustomDropper(dropper))count++;if(!count)toast('No item droppers linked to channel '+d.channel);else centerMsg('REMOTE ACTIVATED',count+' linked dropper'+(count===1?'':'s')+' dispensed loot');break;}
   case 'teleport':if(!teleportCustomChar(c,d.channel))toast('No teleporter is linked to channel '+d.channel);break;
