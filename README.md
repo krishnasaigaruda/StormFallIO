@@ -37,7 +37,9 @@ In the **Locker**, select an owned cosmetic to equip and customize it. Outfits, 
 | **No Build Battle Royale** | The same without building. Shields recharge when you avoid damage. |
 | **Hunger Games** | 36 tributes on pedestals around the Cornucopia, with no storm and building allowed. Districts, the Careers, chests that take 2 seconds to open, sponsors, a feast and a chest refill. The Gamemakers force you to run with a forest fire, poison fog and tracker jacker swarms (water protects you from the fog and the swarm). The arena's force field closes in after a few minutes. The arena is also full of hidden traps (mines, spike pits and net snares), rigged chests (look for a red tripwire), Peacekeeper drones guarding Capitol caches of Epic loot, and berry bushes (red berries heal; the near-black ones are poisonous nightlock). In the finale, mutts hunt anyone outside a shrinking ring around the Cornucopia. |
 | **Team Deathmatch** | 12 vs 12 in the City. Respawns, infinite ammo, first team to 30 eliminations. |
-| **My Maps** | Build your own island in the map editor and play a Battle Royale on it. |
+| **My Maps** | Build your own island in the map editor and play a Battle Royale on it. Choose 0–29 bots, toggle building, and enable infinite materials for creative building. |
+
+Exotic weapons are distinct items with unique abilities: the **Homing Rocket Launcher** tracks targets, the **Speedy AR** fires faster during sustained fire, the **Chain Shotgun** splits into successive bursts, the **Boom Sniper** deals 250 explosive damage, the **Trouble SMG** fires four low-damage shots at once, and the **Marker Pistol** marks enemies on the map and compass and outlines them in red through walls for 10 seconds. Exotics are twice as common normally and four times as common on Sprite Weekends.
 
 ## Monthly events
 
