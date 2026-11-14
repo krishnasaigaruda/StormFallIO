@@ -156,9 +156,10 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .edg button{font:600 12.5px var(--body);color:#e6ecf2;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:5px;padding:5px 8px;cursor:pointer}
 .edg button:hover{background:rgba(255,255,255,.14)}.edg button.on{background:var(--accent);color:#1a1200;border-color:var(--accent)}
 .edg button.sw{border-left:10px solid var(--sw)}
-.edRight{position:absolute;right:12px;top:70px;width:230px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:#d7dee5}
+.edRight{position:absolute;right:12px;top:70px;width:230px;max-height:calc(100% - 130px);overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:#d7dee5}
 .edRight label{display:flex;flex-direction:column;gap:3px;font-weight:600}.edRight select,.edRight input:not([type=range]){font:600 13px var(--body);background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--line);border-radius:5px;padding:5px 7px}
 .edRight select option{background:#11161b}.edRight output{color:var(--accent)}.edRight hr{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}.edh{font:800 13px var(--display);letter-spacing:.1em;text-transform:uppercase}.edp{margin:0;color:var(--muted);font-size:12px}
+.edRight label.edchk{flex-direction:row;align-items:center;gap:6px;font-weight:500}.edRight details{display:flex;flex-direction:column;gap:6px}.edRight details summary{cursor:pointer;font-weight:700;margin-bottom:4px}.edRight .edrm{display:flex;flex-direction:column;gap:6px;padding:6px 0 8px;border-bottom:1px solid var(--line)}
 .edHint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);padding:7px 14px;font-size:12px;color:#c8d2da;white-space:nowrap}.edHint b{color:#fff}
 .mapsList{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .mapc{display:flex;gap:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:10px}
@@ -204,7 +205,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .chip small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
 .chip svg{width:16px;height:16px;fill:#fff}
 .chip.gold{color:var(--gold)}
-.coin{display:inline-block;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c2,#ffd24a 40%,#c88a12 75%,#7a4e05);box-shadow:inset 0 0 0 2px rgba(120,70,0,.5),0 0 6px rgba(255,200,60,.6)}
+.coin{display:inline-block;flex:none;vertical-align:-.18em;margin-right:.28em;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c2,#ffd24a 40%,#c88a12 75%,#7a4e05);box-shadow:inset 0 0 0 2px rgba(120,70,0,.5),0 0 6px rgba(255,200,60,.6)}
 #stormInfo{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--storm);padding:6px 10px;border-radius:6px;font-size:13px;font-weight:500;text-align:right;min-width:210px;backdrop-filter:blur(4px)}
 #stormInfo b{font-family:var(--display);font-size:19px;color:#dcc6ff;margin-left:4px}
 #stormInfo .warn{color:#ffb4b4;font-size:12px}
@@ -301,7 +302,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .topbar{display:flex;align-items:center;gap:clamp(10px,1.4vw,22px);padding:12px 22px;background:linear-gradient(180deg,rgba(6,16,40,.9),rgba(6,16,40,.55));border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
 .brand{font:900 italic 30px var(--display);letter-spacing:.04em;background:linear-gradient(180deg,#fff,#ffd65a);-webkit-background-clip:text;background-clip:text;color:transparent}
 #tabs{display:flex;gap:2px;flex-wrap:wrap}
-@media (min-width:900px){.topbar{flex-wrap:nowrap}#tabs{flex-wrap:nowrap;flex:1;min-width:0}.brand,.wallet{flex:none}}
+@media (min-width:900px){.topbar{flex-wrap:nowrap}#tabs{flex-wrap:nowrap;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}#tabs::-webkit-scrollbar{display:none}.brand,.wallet{flex:none}}
 #tabs button{font:800 clamp(14px,1.15vw,18px) var(--display);letter-spacing:.07em;text-transform:uppercase;background:none;border:0;color:#b9c6d6;padding:8px clamp(7px,.75vw,14px);white-space:nowrap;border-radius:4px;cursor:pointer;position:relative}
 #tabs button:hover{color:#fff;background:rgba(255,255,255,.06)}
 #tabs button.on{color:#fff}
@@ -362,17 +363,26 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .cats button{font:800 15px var(--display);letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#cfe0ff;border-radius:6px;padding:6px 12px;cursor:pointer}
 .cats button.on{background:var(--gold);color:#2a1800;border-color:transparent}
 .cosCustomizer,.cosPresets{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:rgba(5,12,24,.7)}
-.cosPresets{display:grid;grid-template-columns:minmax(120px,1fr) minmax(140px,1fr) auto auto auto;align-items:end;gap:8px}
+.cosPresets{display:flex;flex-direction:column;gap:12px}
+.cosPresets .cpHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.cosPresets .cpRow{display:flex;align-items:end;gap:8px}.cosPresets .cpRow label{flex:1}.cosPresets .cpRow .btn{min-width:110px}
+.cosPresets .cpNote,.cosCustomizer .cpNote{margin:0;color:var(--muted);font-size:12px}
+.custGrid .card.custSel{box-shadow:0 0 0 3px var(--gold)}
+.cosCustomizer .custBar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.cosCustomizer .custCost{font:800 15px var(--display);letter-spacing:.06em;color:#ffe27a}.cosCustomizer .custCost small{display:block;color:var(--muted);font:600 12px var(--body);letter-spacing:0}
+.cosCustomizer .custBtns{display:flex;gap:8px;flex-wrap:wrap}
+.cosCustomizer .lookName{display:grid;gap:5px;margin-top:12px;color:#c8d2da;font-size:12px;font-weight:700}.cosCustomizer .lookName input{padding:8px;background:#111923;color:#fff;border:1px solid var(--line);border-radius:5px}.cosCustomizer .cpNote .btn{margin-left:8px;padding:3px 10px}
+.cpNote .coin,.custCost small .coin{width:.95em;height:.95em;vertical-align:-.12em;margin:0 .2em 0 .1em;box-shadow:inset 0 0 0 1.5px rgba(120,70,0,.5)}.custCost .coin{margin-left:.15em}.cpNote b{white-space:nowrap;font-weight:600;color:#d7dee5}
 .cosPresets label{display:grid;gap:5px;color:#c8d2da;font-size:12px;font-weight:700}
 .cosPresets input,.cosPresets select{min-width:0;padding:8px;background:#111923;color:#fff;border:1px solid var(--line);border-radius:5px}
-.cosPresets h4{grid-column:1/-1;margin:0;font:900 15px var(--display);letter-spacing:.08em;text-transform:uppercase}
+.cosPresets h4{margin:0;font:900 17px var(--display);letter-spacing:.08em;text-transform:uppercase}
 .cosCustomizer h4{margin:0 0 10px;font:900 17px var(--display);letter-spacing:.08em;text-transform:uppercase}
 .cosCustomizer .cosControls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
 .cosCustomizer label{display:grid;gap:5px;color:#c8d2da;font-size:12px;font-weight:700}
 .cosCustomizer input[type=color]{width:52px;height:34px;padding:2px;border:1px solid var(--line);border-radius:5px;background:#111923;cursor:pointer}
 .cosCustomizer select{min-width:145px;padding:8px;background:#111923;color:#fff;border:1px solid var(--line);border-radius:5px}
 .cosCustomizer .cosNote{margin:10px 0 0;color:var(--muted);font-size:11px}
-@media(max-width:620px){.cosPresets{grid-template-columns:1fr 1fr}.cosPresets h4{grid-column:1/-1}.cosPresets button{min-width:0}}
+@media(max-width:620px){.cosPresets .cpRow{flex-wrap:wrap}.cosPresets .cpRow label{flex-basis:100%}.cosPresets .cpRow .btn{flex:1;min-width:0}}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
 .card{--rar:#a9adb3;position:relative;border-radius:8px;overflow:hidden;cursor:pointer;background:linear-gradient(180deg,color-mix(in srgb,var(--rar) 55%,#0a1630),color-mix(in srgb,var(--rar) 20%,#060c1c));border:2px solid color-mix(in srgb,var(--rar) 70%,transparent);min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .1s,box-shadow .1s}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.4)}
@@ -383,6 +393,8 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .card:hover .sw img{transform:scale(1.06)}
 .card{min-height:190px}
 .card .nm{padding:6px 8px 2px;font:900 italic 17px var(--display);text-transform:uppercase;line-height:1;text-shadow:0 1px 3px #000}
+.card .perks{display:flex;flex-wrap:wrap;gap:3px;padding:3px 8px 2px}.card .perks span{font:800 9.5px var(--display);letter-spacing:.05em;padding:1px 4px;border-radius:3px;background:rgba(0,0,0,.45);color:#d7dee5;white-space:nowrap}.card .perks .up{color:#8dffa9}.card .perks .dn{color:#ff9a8a}
+.card:has(.perks){min-height:228px}.card:has(.perks) .sw{bottom:96px}
 .card .rr{padding:0 8px 6px;font:700 11px var(--display);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75)}
 .card .pr{position:absolute;right:6px;top:6px;display:flex;gap:4px;align-items:center;background:rgba(0,0,0,.55);border-radius:999px;padding:2px 8px;font:800 14px var(--display);color:var(--gold)}
 .card .own{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.55);border-radius:999px;padding:2px 8px;font:800 11px var(--display);letter-spacing:.1em;color:#9fe39a}
@@ -577,6 +589,22 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
 .welcomeBody{overflow:auto;padding:16px 24px;border-top:1px solid rgba(255,255,255,.1);-webkit-overflow-scrolling:touch}
 .welcomeFoot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 24px;border-top:1px solid rgba(255,255,255,.1)}
 .welcomeFoot small{color:var(--muted);font-size:12px}
+.s2hero{position:relative;height:230px;border-radius:12px;overflow:hidden;margin-bottom:16px;isolation:isolate;border:1px solid rgba(255,214,90,.35);box-shadow:0 10px 30px rgba(0,0,0,.45);
+  background:linear-gradient(180deg,#1b1240 0%,#4b2a86 38%,#d9874f 58%,#2c4a2e 59%,#0d1a12 100%)}
+.s2img{position:absolute;inset:-14px;background-size:cover;background-position:center 42%;opacity:0;filter:contrast(1.28) saturate(1.3) brightness(.82);transition:opacity .8s;animation:s2pan 22s ease-in-out infinite alternate}
+.s2img.on{opacity:1}
+@keyframes s2pan{from{transform:scale(1.06) translateX(-1.5%)}to{transform:scale(1.14) translateX(1.5%)}}
+.s2grade{position:absolute;inset:0;background:radial-gradient(120% 90% at 78% 8%,rgba(255,196,120,.45),transparent 45%),linear-gradient(180deg,rgba(76,36,140,.55) 0%,rgba(20,10,50,.1) 45%,rgba(4,6,16,.9) 100%),radial-gradient(140% 120% at 50% 40%,transparent 50%,rgba(0,0,0,.75) 100%);mix-blend-mode:normal}
+.s2rays{position:absolute;inset:-40%;background:conic-gradient(from 200deg at 78% 12%,transparent 0deg,rgba(255,230,170,.16) 8deg,transparent 16deg,rgba(255,230,170,.1) 26deg,transparent 34deg,rgba(255,230,170,.14) 46deg,transparent 56deg);mix-blend-mode:screen;animation:s2rays 14s ease-in-out infinite alternate}
+@keyframes s2rays{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+.s2flash{position:absolute;inset:0;background:radial-gradient(80% 60% at 20% 10%,rgba(200,210,255,.85),transparent 60%);opacity:0;mix-blend-mode:screen;animation:s2flash 7s infinite}
+@keyframes s2flash{0%,86%,100%{opacity:0}87%{opacity:.75}88%{opacity:.1}90%{opacity:.55}93%{opacity:0}}
+.s2txt{position:absolute;left:22px;bottom:18px;right:22px;display:flex;flex-direction:column;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+.s2txt small{font:800 13px var(--display);letter-spacing:.35em;text-transform:uppercase;color:#d7dee5}
+.s2txt b{font:900 italic clamp(44px,8vw,72px)/.9 var(--display);text-transform:uppercase;background:linear-gradient(180deg,#fff6c2,#ffd24a 55%,#e08a12);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(60,30,0,.6))}
+.s2txt span{align-self:flex-start;margin-top:6px;padding:3px 12px;border-radius:4px;background:#ffd24a;color:#2a1800;font:900 15px var(--display);letter-spacing:.2em;text-transform:uppercase;text-shadow:none}
+.s2txt p{margin:8px 0 0;max-width:420px;color:#e3e9ef;font-size:13px}
+@media (prefers-reduced-motion:reduce){.s2img,.s2rays,.s2flash{animation:none}}
 .newList{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .newList li{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:11px 14px}
 .newList .tag{grid-row:span 2;align-self:center;font:900 11px var(--display);letter-spacing:.14em;color:#2a1800;background:var(--gold);border-radius:4px;padding:3px 7px}
@@ -685,6 +713,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
       <button data-tab="events">Events</button>
       <button data-tab="howto">How to Play</button>
       <button data-tab="locker">Locker</button>
+      <button data-tab="custom" title="Customize Avatar">C.A.</button>
       <button data-tab="shop">Item Shop</button>
       <button data-tab="maps">My Maps</button>
       <button data-tab="sprites">Sprites</button>
@@ -718,9 +747,9 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
     </div>
   </section>
 
-  <section id="tab-locker" class="tab"><div class="pane" style="max-width:640px;width:100%;align-self:flex-start"><h3>Locker <small>Everything you own. Buy more in the Item Shop</small></h3><div class="cosPresets" id="cosPresets"></div><div class="cats" id="lockCats"></div><div class="grid" id="lockGrid"></div><div id="cosCustomizer"></div>
-    <div class="importav"><b>Import a realistic avatar</b><small>Create a free avatar at readyplayer.me, copy its .glb link (looks like https://models.readyplayer.me/xxxx.glb) and paste it here. It becomes a skin, and some enemies will look like it too.</small>
-      <div class="row"><input id="avUrl" placeholder="https://models.readyplayer.me/....glb" autocomplete="off"><button class="btn small" id="avAdd">Import</button></div></div></div></section>
+  <section id="tab-locker" class="tab"><div class="pane" style="max-width:640px;width:100%;align-self:flex-start"><h3>Locker <small>Everything you own. Customize it in Customize Avatar</small></h3><div class="cats" id="lockCats"></div><div class="grid" id="lockGrid"></div></div></section>
+  <section id="tab-custom" class="tab"><div class="pane" style="max-width:720px;width:100%;align-self:flex-start"><h3>Customize Avatar <small>Recolor and restyle your cosmetics with Storm Bucks</small></h3>
+    <div class="cats" id="custCats"></div><div class="grid custGrid" id="custGrid"></div><div id="cosCustomizer"></div><div class="cosPresets" id="cosPresets"></div></div></section>
   <section id="tab-shop" class="tab"><div class="pane" style="max-width:720px;width:100%;align-self:flex-start"><h3>Item Shop <small id="shopReset"></small></h3><div class="cats" id="itemShopCats"></div><div class="grid" id="itemShopGrid"></div></div></section>
   <section id="tab-pass" class="tab"><div class="pane" style="max-width:900px;width:100%;align-self:flex-start"><h3>Battle Pass <small>Season 1 · Earn XP in matches</small></h3><div id="bpInfo"></div><div class="bp-track" id="bpTrack"></div></div></section>
   <section id="tab-career" class="tab"><div class="pane" style="max-width:820px;width:100%;align-self:flex-start"><h3>Career <small>Lifetime stats</small></h3><div class="statgrid" id="careerGrid"></div></div></section>
@@ -731,7 +760,7 @@ body.touch #tabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}body.touc
     <button class="btn" id="mapNew">Create new map</button><div id="mapsList" class="mapsList"></div></div></section>
   <section id="tab-events" class="tab"><div class="pane" style="max-width:1040px;width:100%;align-self:flex-start"><h3>Events <small>A new 3-day event every month. Day 2 is the main event</small></h3><div id="eventsBody"></div></div></section>
   <section id="tab-howto" class="tab"><div class="pane" style="max-width:980px;width:100%;align-self:flex-start"><h3>How to Play <small>everything you need to win</small></h3><div id="howtoBody"></div>
-    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.7</button></div></div></section>
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn small ghost" id="howtoNews">What's new in 1.9</button></div></div></section>
   <section id="tab-credits" class="tab"><div class="pane" style="max-width:820px;width:100%;align-self:flex-start"><h3>Credits <small>Thank you to these creators</small></h3><div id="creditsList" class="credits"></div></div></section>
   <section id="tab-settings" class="tab"><div class="pane settingsPane" style="width:100%;align-self:flex-start">
     <h3>Settings <small>Customize your Stormfall experience</small></h3>
@@ -1063,7 +1092,11 @@ function renderFrame(){
   compMat.uniforms.tScene.value=post.rt.texture;compMat.uniforms.tB1.value=post.a1.texture;compMat.uniforms.tB2.value=post.b2.texture;
   compMat.uniforms.uTime.value=U.time.value%10;
   pass(compMat,null);
+  /* Season 2 hero banner: grab this frame right after drawing it (works without preserveDrawingBuffer) */
+  if(HERO.want){HERO.want=false;try{HERO.url=canvas.toDataURL('image/jpeg',.88);applyHeroImg();}catch(e){}}
 }
+const HERO={want:false,url:null};
+function applyHeroImg(){const el=document.getElementById('s2img');if(el&&HERO.url){el.style.backgroundImage=`url(${HERO.url})`;el.classList.add('on');}}
 
 // ============================================================ SKY + ENVIRONMENT
 const NOISE_GLSL=`float hsh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -1554,7 +1587,7 @@ function randomHeal(minRarity=0){if(minRarity>0){const ids=Object.keys(HEALS).fi
 function grenadeItem(){const q=Math.random();const id=q<.65?'grenade':q<.88?'shock':'pad';return {type:'throw',id,r:THROWS[id].rar,count:THROWS[id].give};}
 function ammoFor(gid){const a=GUNS[gid].ammo;return {type:'ammo',id:a,count:AMMO[a].give};}
 function randomLoot(){if(spritesAllowed()&&Math.random()<.003*(isSpriteWeekend()?3:1))return {type:'throw',id:'extractor',r:4,count:THROWS.extractor.give};const r=Math.random();if(r<.28)return randomGun();if(r<.52)return randomHeal();if(r<.58)return grenadeItem();if(r<.72){const id=Math.random()<.5?'pizza':'meat';return {type:'food',id,r:FOOD[id].rar,count:1};}if(r<.76)return {type:'gas',r:1,count:1};if(r<.92)return {type:'ammo',id:pick(['light','medium','medium','heavy','shells','shells','rockets']),count:0};return {type:'mat',id:pick(MAT_ORDER),count:30};}
-function itemName(it){if(it.type==='sprite')return SPRITE_DEF[it.id].name;if(it.type==='gold')return it.count+' Gold';if(it.type==='gas')return 'Gas Can';if(it.type==='food')return FOOD[it.id].name;if(it.type==='gun')return it.exotic?EXOTIC_NAMES[it.exotic]:RAR[it.r]+' '+GUNS[it.id].name;if(it.type==='heal')return HEALS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='throw')return THROWS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='remote')return `Remote · ${REMOTE_COMMANDS.find(([id])=>id===it.command)?.[1]||'Unprogrammed'} · Channel ${it.channel}`;if(it.type==='ammo')return AMMO[it.id].name+' ×'+it.count;return MATS[it.id].name+' ×'+it.count;}
+function itemName(it){if(it.type==='sprite')return SPRITE_DEF[it.id].name;if(it.type==='gold')return it.count+' Gold';if(it.type==='gas')return 'Gas Can';if(it.type==='food')return FOOD[it.id].name;if(it.type==='gun')return it.exotic?EXOTIC_NAMES[it.exotic]:RAR[it.r]+' '+GUNS[it.id].name;if(it.type==='heal')return HEALS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='throw')return THROWS[it.id].name+(it.count>1?' ×'+it.count:'');if(it.type==='remote')return remoteLabel(it)+(it.uses>0?` (${it.usesLeft??it.uses}/${it.uses})`:'');if(it.type==='ammo')return AMMO[it.id].name+' ×'+it.count;return MATS[it.id].name+' ×'+it.count;}
 const GUN_GEO={};
 function gunGeo(id,r){const k=id+r;if(GUN_GEO[k])return GUN_GEO[k];
   const M='#2a2d31',P='#1b1c1e',W='#6a4426',A=RAR_COL[r],S='#3c4046';const B=(w,h,d,c,x,y,z,rx=0)=>({g:new THREE.BoxGeometry(w,h,d),c,p:[x,y,z],r:[rx,0,0]});const Cy=(r0,l,c,x,y,z,seg=10)=>({g:new THREE.CylinderGeometry(r0,r0,l,seg),c,p:[x,y,z],r:[Math.PI/2,0,0]});
@@ -1775,6 +1808,7 @@ function buildWorld(){
     addVending(p.x+9,p.z+3,-Math.PI/2);addGasStation(p.x-12,p.z+(Math.random()<.5?-1:1)*40);}
     addChest(p.x+rand(-4,2),p.lvl*H,p.z+rand(-4,4),0);
     for(let i=0;i<3;i++)spawnPickup(randomLoot(),p.x+rand(-14,10),p.lvl*H,p.z+rand(-30,30),false);}
+  if(WORLD==='island')addWorldDevicesIsland();
   for(const s of SOLO){buildHouse(Math.floor(s.x/T)-1,Math.floor(s.z/T)-1,2,2,s.lvl,randi(1,2),Math.random()<.5?'brick':'wood');}
   let nl=WORLD==='island'?0:4;for(let i=0;i<400&& nl<4;i++){const a=rand(0,6.28),r=rand(80,330),x=Math.cos(a)*r,z=Math.sin(a)*r;if(terrainH(x,z)<2||terrainNormal(x,z).y<.9)continue;if(FLATS.some(f=>Math.hypot(f.x-x,f.z-z)<f.r+5))continue;addLlama(x,terrainH(x,z),z);nl++;}
   if(WORLD==='island')for(const p of POIS){const a=rand(0,6.28),x=p.x+Math.cos(a)*42,z=p.z+Math.sin(a)*42;if(terrainH(x,z)>1)placePad(x,terrainH(x,z),z);}
@@ -1924,11 +1958,11 @@ class Char{
     this.onGround=false;this.groundPiece=null;this.kills=0;this.walk=0;this.lastHurt=99;this.lastAttacker=null;this.ffT=0;this.crouch=false;this.h=STAND_H;
     this.coyote=0;this.jumpBuf=0;this.stam=100;this.tired=false;this.stamUse=0;this.breath=4;this.breathOut=false;this.shotIdx=0;this.lastShot=-9;this.sprint=false;this.ads=false;this.hitDir=new V3();this.stepPh=0;
     let sk=opts&& opts.skin?(SKIN_BY[opts.skin]||SKIN_LIST[0]):usePro?(SKIN_BY[PROFILE.eq.skin]||SKIN_LIST[0]):makeBotSkin(this.id);if(usePro)sk=customizedSkin(sk);this.skin=sk.id;this.skinDef=sk;this.gold=0;this.perks={};this.swingN=0;this.emote=null;this.landT=0;this.glideT=0;this.m=makeCharModel(sk.fallback||pick(OUTFITS),pick(SKINS));scene.add(this.m.root);
-    const gl=usePro?(GLIDER_BY[PROFILE.eq.glider]||GLIDERS[0]):pick(GLIDERS);this.m.root.remove(this.m.glider);this.m.glider=makeGlider(gl,usePro?cosmeticConfig('glider',gl.id):null);this.m.root.add(this.m.glider);
+    const gl=usePro?(GLIDER_BY[PROFILE.eq.glider]||GLIDERS[0]):pick(GLIDERS);this.gliderId=gl.id;this.m.root.remove(this.m.glider);this.m.glider=makeGlider(gl,usePro?cosmeticConfig('glider',gl.id):null);this.m.root.add(this.m.glider);
     this.pose={};for(const k of POSE_KEYS)this.pose[k]=0;this.pose.hy=.98;
     this.hbB=new THREE.Mesh(HB_BODY,HB_MAT);this.hbB.userData={char:this,head:false};this.hbH=new THREE.Mesh(HB_HEAD,HB_MAT);this.hbH.userData={char:this,head:true};
     this.hbL=new THREE.Mesh(HB_LEGS,HB_MAT);this.hbL.userData={char:this,head:false,leg:true};this.m.root.add(this.hbB,this.hbH,this.hbL);hittables.push(this.hbB,this.hbH,this.hbL);charHB.push(this.hbB,this.hbH,this.hbL);
-    this.heldKey='';this.held=null;this.pickaxe=makeSword(usePro?PROFILE.eq.tool:pick(TOOLS).id,usePro?cosmeticConfig('tool',PROFILE.eq.tool):null);attachRig(this,sk);if(usePro)applyCosmeticEffect(this.m.root,cosmeticConfig('skin',sk.id),sk.accCol||sk.top||sk.surf);}
+    this.heldKey='';this.held=null;this.toolId=usePro?PROFILE.eq.tool:pick(TOOLS).id;this.pickaxe=makeSword(this.toolId,usePro?cosmeticConfig('tool',PROFILE.eq.tool):null);attachRig(this,sk);if(usePro)applyCosmeticEffect(this.m.root,cosmeticConfig('skin',sk.id),sk.accCol||sk.top||sk.surf);}
   get item(){return this.sel>0?this.slots[this.sel-1]:null;}
   get hand(){return this.rig?this.rig.handR:this.m.R.hand;}
   eye(){return new V3(this.pos.x,this.pos.y+(this.crouch?1.15:1.62),this.pos.z);}
@@ -1938,7 +1972,8 @@ const charHB=[];
 const SWORD_HILT={},SWORD_BLADE={};
 function makeSword(id,custom){const t=TOOL_BY[id]||TOOLS[0],primary=custom&&custom.primary||t.blade,accent=custom&&custom.accent||t.glow,tertiary=custom&&custom.tertiary||'#c9a24a',style=custom&&custom.style||'classic',pattern=custom&&custom.pattern||'solid';
   if(!SWORD_BLADE[t.shape]){const sh=new THREE.Shape();const knife=t.shape==='knife',butterfly=t.shape==='butterfly',w=t.shape==='broad'?.07:t.shape==='katana'?.032:knife?.04:butterfly?.045:.05,L=t.shape==='katana'?1.0:knife?.44:butterfly?.58:.86;
-    if(t.shape==='katana'){sh.moveTo(-w,0);sh.quadraticCurveTo(-w*1.2,L*.6,-w*.2+.05,L);sh.lineTo(w*.4+.03,L*.92);sh.quadraticCurveTo(w*.9,L*.5,w,0);}
+    if(butterfly){sh.moveTo(-w,0);sh.lineTo(-w,L*.6);sh.lineTo(-w*.45,L*.79);sh.quadraticCurveTo(-w*.25,L*.92,0,L);sh.quadraticCurveTo(w*1.15,L*.82,w*1.1,L*.45);sh.lineTo(w,L*.08);sh.quadraticCurveTo(w*.55,L*.03,w*.5,0);}
+    else if(t.shape==='katana'){sh.moveTo(-w,0);sh.quadraticCurveTo(-w*1.2,L*.6,-w*.2+.05,L);sh.lineTo(w*.4+.03,L*.92);sh.quadraticCurveTo(w*.9,L*.5,w,0);}
     else{sh.moveTo(-w,0);sh.lineTo(-w*.85,L*.82);sh.lineTo(0,L);sh.lineTo(w*.85,L*.82);sh.lineTo(w,0);}sh.lineTo(-w,0);
     const g=new THREE.ExtrudeGeometry(sh,{depth:.014,bevelEnabled:true,bevelThickness:.006,bevelSize:.008,bevelSegments:1,steps:1});g.translate(0,.2,-.007);g.computeVertexNormals();SWORD_BLADE[t.shape]=g;
     SWORD_HILT[t.shape]=butterfly?new THREE.BufferGeometry():mergeParts([{g:new THREE.CylinderGeometry(.022,.024,knife?.16:.19,10),c:knife?'#252a31':'#2a1c14',p:[0,knife?.055:.07,0]},{g:new THREE.TorusGeometry(.024,.006,6,10),c:'#c9a24a',p:[0,.02,0],r:[Math.PI/2,0,0]},{g:new THREE.TorusGeometry(.024,.006,6,10),c:'#c9a24a',p:[0,knife?.09:.12,0],r:[Math.PI/2,0,0]},
@@ -1946,10 +1981,27 @@ function makeSword(id,custom){const t=TOOL_BY[id]||TOOLS[0],primary=custom&&cust
   const grp=new THREE.Group();const hiltMat=VC_METAL.clone();hiltMat.color=C(tertiary);const hilt=new THREE.Mesh(SWORD_HILT[t.shape],hiltMat);hilt.castShadow=true;grp.add(hilt);
   const blade=new THREE.Mesh(SWORD_BLADE[t.shape],new THREE.MeshStandardMaterial({color:pattern==='solid'?C(primary):C('#ffffff'),map:cosmeticPatternTexture(pattern,primary,accent),metalness:style==='metallic' ? 1 : .95,roughness:style==='metallic' ? .08 : .18,emissive:C(accent),emissiveIntensity:style==='glow'||custom&&custom.effect==='glow'?Math.max(.8,t.gi||.35):t.gi||.35,envMapIntensity:1.6}));blade.castShadow=true;grp.add(blade);
   const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.022,0),new THREE.MeshBasicMaterial({color:C(accent).multiplyScalar(3)}));gem.position.set(0,.185,-.035);grp.add(gem);
-  if(t.shape==='butterfly'){for(const side of [-1,1]){const pivot=new THREE.Group();pivot.name=side<0?'butterflyHandleLeft':'butterflyHandleRight';pivot.position.set(side*.025,.2,0);const grip=new THREE.Mesh(new THREE.BoxGeometry(.045,.5,.055),new THREE.MeshStandardMaterial({color:C(side<0?'#202a35':'#303d4a'),metalness:.55,roughness:.32}));grip.position.y=-.25;grip.castShadow=true;pivot.add(grip);
-      const liner=new THREE.Mesh(new THREE.BoxGeometry(.012,.43,.06),new THREE.MeshStandardMaterial({color:C(accent),metalness:.75,roughness:.24,emissive:C(accent),emissiveIntensity:.12}));liner.position.set(side<0?-.024:.024,-.25,0);pivot.add(liner);
-      const pin=new THREE.Mesh(new THREE.CylinderGeometry(.033,.033,.075,10),new THREE.MeshStandardMaterial({color:C('#c9a24a'),metalness:.8,roughness:.2}));pin.rotation.x=Math.PI/2;pin.position.set(-side*.012,.005,0);pivot.add(pin);grp.add(pivot);}}
+  if(t.shape==='butterfly'){const G=butterflyGeos(),plateMat=new THREE.MeshStandardMaterial({color:C(tertiary==='#c9a24a'?'#2b333d':tertiary),metalness:.85,roughness:.28,envMapIntensity:1.4}),
+      linerMat=new THREE.MeshStandardMaterial({color:C(accent),metalness:.6,roughness:.3,emissive:C(accent),emissiveIntensity:.55}),pinMat=new THREE.MeshStandardMaterial({color:C('#d9dde2'),metalness:1,roughness:.15}),goldMat=new THREE.MeshStandardMaterial({color:C('#c9a24a'),metalness:.9,roughness:.2});
+    /* ricasso + kicker where the blade meets the pivot */
+    const tang=new THREE.Mesh(G.tang,blade.material);tang.position.y=.2;grp.add(tang);
+    for(const side of [-1,1]){const pivot=new THREE.Group();pivot.name=side<0?'butterflyHandleLeft':'butterflyHandleRight';pivot.position.set(side*.03,.2,0);
+      for(const z of [-.028,.02]){const plate=new THREE.Mesh(G.plate,plateMat);plate.position.z=z;plate.castShadow=true;pivot.add(plate);}
+      const spine=new THREE.Mesh(G.spine,plateMat);spine.position.set(side*.024,-.24,-.004);pivot.add(spine);
+      const liner=new THREE.Mesh(G.liner,linerMat);liner.position.set(0,-.25,-.004);pivot.add(liner);
+      for(const y of [0,-.47]){const pin=new THREE.Mesh(G.pin,pinMat);pin.rotation.x=Math.PI/2;pin.position.set(0,y,-.004);pivot.add(pin);for(const z of [-.033,.025]){const head=new THREE.Mesh(G.screw,goldMat);head.rotation.x=Math.PI/2;head.position.set(0,y,z);pivot.add(head);}}
+      if(side>0){const latch=new THREE.Mesh(G.latch,goldMat);latch.position.set(-.006,-.53,-.004);pivot.add(latch);}
+      grp.add(pivot);}}
   grp.scale.setScalar(.82);grp.userData={tip:new V3(0,t.shape==='katana'?1.2:t.shape==='butterfly'?.86:t.shape==='knife'?.68:1.06,0),base:new V3(0,.28,0),butterflyDraw:t.shape==='butterfly'};applyCosmeticEffect(grp,custom,accent);if(t.shape==='butterfly')animateButterflyDraw(grp,0);return grp;}
+let BUTTERFLY_GEO=null;
+function butterflyGeos(){if(BUTTERFLY_GEO)return BUTTERFLY_GEO;const W=.024,L=.5;
+  /* handle side plate: rounded bar with three slots cut out (skeletonized) */
+  const sh=new THREE.Shape();sh.moveTo(-W,0);sh.absarc(0,0,W,Math.PI,0,true);sh.lineTo(W,-L);sh.absarc(0,-L,W,0,Math.PI,true);sh.lineTo(-W,0);
+  for(const [y0,y1] of [[-.06,-.17],[-.2,-.31],[-.34,-.43]]){const h=new THREE.Path(),r=.0095;h.moveTo(-r,y0);h.absarc(0,y0,r,Math.PI,0,true);h.lineTo(r,y1);h.absarc(0,y1,r,0,Math.PI,true);h.lineTo(-r,y0);sh.holes.push(h);}
+  const plate=new THREE.ExtrudeGeometry(sh,{depth:.008,bevelEnabled:true,bevelThickness:.002,bevelSize:.002,bevelSegments:1,curveSegments:10});plate.computeVertexNormals();
+  const tangSh=new THREE.Shape();tangSh.moveTo(-.05,0);tangSh.lineTo(.05,0);tangSh.lineTo(.05,.012);tangSh.quadraticCurveTo(.065,.02,.058,.032);tangSh.lineTo(-.05,.032);tangSh.lineTo(-.05,0);
+  const tang=new THREE.ExtrudeGeometry(tangSh,{depth:.014,bevelEnabled:false});tang.translate(0,-.032,-.007);
+  BUTTERFLY_GEO={plate,tang,spine:new THREE.BoxGeometry(.006,.5,.052),liner:new THREE.BoxGeometry(.02,.42,.036),pin:new THREE.CylinderGeometry(.009,.009,.06,10),screw:new THREE.CylinderGeometry(.013,.013,.004,12),latch:new THREE.BoxGeometry(.03,.05,.018)};return BUTTERFLY_GEO;}
 function animateButterflyDraw(tool,progress){const left=tool.getObjectByName('butterflyHandleLeft'),right=tool.getObjectByName('butterflyHandleRight');if(!left||!right)return;
   const open=clamp(progress/0.55,0,1),ease=open*open*(3-2*open),flip=Math.sin(progress*Math.PI*5)*(1-open);
   left.rotation.z=lerp(Math.PI,0,ease)+flip*.72;right.rotation.z=lerp(-Math.PI,0,ease)-flip*.72;
@@ -1959,7 +2011,7 @@ function updateHeld(c){updateBack(c);
   const it=c.item;const key=c.emote||c.state==='swim'?'hide':c.sel===0?'pick':it?it.type+it.id+it.r:'none';if(key===c.heldKey)return;const wasPickaxe=c.heldKey==='pick';c.heldKey=key;
   if(c.held&& c.held.parent)c.held.parent.remove(c.held);c.held=null;if(c.pickaxe.parent)c.pickaxe.parent.remove(c.pickaxe);
   if(c.emote||c.state==='swim')return;
-  if(c.sel===0){c.hand.add(c.pickaxe);c.pickaxe.rotation.set(-Math.PI/2,0,0);c.pickaxe.position.set(0,-.08,-.02);if(!wasPickaxe&&PROFILE.eq.tool==='butterfly_knife')c.pickaxeDrawT=.85;return;}
+  if(c.sel===0){c.hand.add(c.pickaxe);c.pickaxe.rotation.set(-Math.PI/2,0,0);c.pickaxe.position.set(0,-.08,-.02);if(!wasPickaxe&&(TOOL_BY[c.toolId]||{}).shape==='butterfly')c.pickaxeDrawT=.85;return;}
   if(!it||it.type==='sprite')return;const m=itemMesh(it);c.held=m;
   if(it.type==='gun'){c.m.gunMount.add(m);m.position.set(0,0,0);}else if(it.type==='throw'){c.hand.add(m);m.position.set(0,-.08,0);}else{c.hand.add(m);m.position.set(0,-.08,-.05);}
 }
@@ -2104,7 +2156,7 @@ function stepChar(c,dt,wx,wz,speed,jump){
     const hs=c.dive?24:15;c.vel.x=lerp(c.vel.x,wx*hs,1-Math.exp(-1.4*dt));c.vel.z=lerp(c.vel.z,wz*hs,1-Math.exp(-1.4*dt));
   }else if(st==='glide'){
     const p=c.isPlayer?pitch:-.2;const dive=clamp(-p,-.2,1);
-    const tsp=13+Math.max(0,dive)*14,tdes=4.5+Math.max(0,dive)*12-Math.min(0,dive)*-2;
+    const gsp=gliderStat(c,'speed'),gsk=gliderStat(c,'sink'),tsp=(13+Math.max(0,dive)*14)*gsp,tdes=(4.5+Math.max(0,dive)*12-Math.min(0,dive)*-2)*gsk;
     c.vel.y=lerp(c.vel.y,-tdes,1-Math.exp(-2*dt));c.vel.x=lerp(c.vel.x,wx*tsp,1-Math.exp(-1.2*dt));c.vel.z=lerp(c.vel.z,wz*tsp,1-Math.exp(-1.2*dt));
   }else if(st==='swim'){
     const target=WATER_Y-1.05;c.vel.y=lerp(c.vel.y,(target-c.pos.y)*3,1-Math.exp(-4*dt));
@@ -2239,7 +2291,7 @@ function applyHit(c,h,dmg,W,hitChars,dir){
   if(ud.terrain)impactFX(h.point,'terrain');
 }
 function swingPickaxe(c,origin,dir,near){
-  c.swing=.45;c.swingCd=gameTime+.7;c.healing=null;c.emote=null;c.swingN=((c.swingN||0)+1)%3;
+  const tsp=toolStat(c,'speed');c.swing=Math.min(.45,.62*tsp);c.swingCd=gameTime+.7*tsp;c.healing=null;c.emote=null;c.swingN=((c.swingN||0)+1)%3;
   if(c===player){sfx('swing');swordTrailReset();}
   {let near=false;for(const o of chars)if(o!==c&& o.alive&& o.pos.distanceToSquared(c.pos)<2.6)near=true;if(c.onGround&& c.state==='ground'&& !near){c.vel.x+=dir.x*2.4;c.vel.z+=dir.z*2.4;}}
   const h=castRay(origin,dir,near+2.6,c,near);shatterAlong(origin,dir,h.ud?h.dist+.3:near+2.6);
@@ -2250,16 +2302,16 @@ function swingPickaxe(c,origin,dir,near){
   let tgt=h.ud&& h.ud.char?h.ud.char:null;
   if(!tgt){const fl=Math.hypot(dir.x,dir.z)||1;let bd=2.8;for(const o of chars){if(o===c||!o.alive||o.state==='ship'||o.vehicle)continue;const dx=o.pos.x-c.pos.x,dz=o.pos.z-c.pos.z,d=Math.hypot(dx,dz)||.01;if(d>bd||Math.abs(o.pos.y-c.pos.y)>1.7)continue;if((dx*dir.x+dz*dir.z)/(d*fl)<.5)continue;bd=d;tgt=o;}}
   if(tgt&& !(h.ud&& h.ud.char===tgt)){const tp=tgt.eye().clone();tp.y-=.3;const dv=tp.clone().sub(origin);const dl=dv.length();dv.divideScalar(dl);const los=castRay(origin,dv,dl+.2,c,near);if(!(los.ud&& los.ud.char===tgt))tgt=null;}
-  if(tgt){const pt=tgt.eye().clone();pt.y-=.45;damageChar(tgt,26*(c.perks&& c.perks.blade?1.4:1),c,'Storm Blade',false,pt,false,dir);sfxAt('slash',pt.x,pt.y,pt.z);impactFX(pt,'char');for(let i=0;i<8;i++)glow.spawn(pt.x,pt.y,pt.z,rand(-3,3),rand(0,3),rand(-3,3),rand(.15,.3),.06,.02,4,3,2,1,6,1);return;}
+  if(tgt){const pt=tgt.eye().clone();pt.y-=.45;damageChar(tgt,26*(c.perks&& c.perks.blade?1.4:1)*toolStat(c,'dmg'),c,'Storm Blade',false,pt,false,dir);sfxAt('slash',pt.x,pt.y,pt.z);impactFX(pt,'char');for(let i=0;i<8;i++)glow.spawn(pt.x,pt.y,pt.z,rand(-3,3),rand(0,3),rand(-3,3),rand(.15,.3),.06,.02,4,3,2,1,6,1);return;}
   if(!h.ud||h.ud.terrain){if(h.ud)impactFX(h.point,'terrain');return;}
   if(h.ud.door){damageDoor(h.ud.door,50);sfxAt('chop',h.point.x,h.point.y,h.point.z);impactFX(h.point,'wood');return;}
   if(h.ud.harv){const o=h.ud.harv;let dmg=50;
     if(c===player){if(weak.target===o&& weak.pos.distanceTo(h.point)<.6){dmg=100;sfx('weak');}
       weak.target=o;const side=new V3(-dir.z,0,dir.x).normalize();const base=o.y;weak.pos.copy(h.point).addScaledVector(side,rand(-.6,.6));weak.pos.y=clamp(h.point.y+rand(-.5,.5),base+.4,base+2.2);weak.pos.addScaledVector(dir,-.12);}
-    if(c.perks&& c.perks.harvest)dmg*=1.5;const got=damageHarv(o,dmg,c,true,dir);if(c===player&& got){dmgNum(h.point,dmg,'st');floatMat(o.mat,got);}
+    if(c.perks&& c.perks.harvest)dmg*=1.5;dmg=Math.round(dmg*toolStat(c,'harvest'));const got=damageHarv(o,dmg,c,true,dir);if(c===player&& got){dmgNum(h.point,dmg,'st');floatMat(o.mat,got);}
     sfxAt(o.kind==='tree'?'chop':o.kind==='car'?'clang':'pickhit',h.point.x,h.point.y,h.point.z);impactFX(h.point,o.kind==='car'?'metal':o.kind==='tree'?'wood':'rock');
     if(o.kind==='tree'){for(let i=0;i<3;i++)smoke.spawn(o.x+rand(-1.5,1.5),terrainH(o.x,o.z)+rand(4,7),o.z+rand(-1.5,1.5),rand(-.5,.5),-1,rand(-.5,.5),rand(1,2),.12,.12,.2,.35,.1,.9,1.5,.5);}return;}
-  if(h.ud.piece){const p=h.ud.piece;damagePiece(p,p.anchored?(c.perks&& c.perks.blade?110:80):50,c,h.point);const give=MATS[p.mat].gives||p.mat;if(p.anchored){c.mats[give]=Math.min(999,c.mats[give]+14);if(c===player){stats.mats+=14;floatMat(give,14);}}
+  if(h.ud.piece){const p=h.ud.piece;damagePiece(p,Math.round((p.anchored?(c.perks&& c.perks.blade?110:80):50)*toolStat(c,'harvest')),c,h.point);const give=MATS[p.mat].gives||p.mat;if(p.anchored){c.mats[give]=Math.min(999,c.mats[give]+14);if(c===player){stats.mats+=14;floatMat(give,14);}}
     sfxAt(p.mat==='metal'?'clang':p.mat==='wood'?'chop':'pickhit',h.point.x,h.point.y,h.point.z);impactFX(h.point,p.mat==='metal'?'metal':p.mat==='wood'?'wood':'brick');}
 }
 const markerOutlineChars=new Set();
@@ -3558,9 +3610,9 @@ function itemSVG(s){if(s.type==='sprite'){const col=SPRITE_DEF[s.id].col;return 
   return `<svg viewBox="0 0 32 32"><circle cx="16" cy="19" r="${s.id==='mini'?7:9}"/><rect x="13" y="5" width="6" height="6"/><path d="M11 19h10" stroke="#54c6ff" stroke-width="2.5"/></svg>`;}
 const PICK_SVG='<svg viewBox="0 0 32 32"><path d="M24 3l5 0 0 5-13 13-5-5z"/><path d="M9 15l8 8-2 2-3-1-4 4-3-3 4-4-1-3z"/></svg>';
 let hotKey='';
-function renderHotbar(){const p=player;const key=p.sel+'|'+(buildMode?1:0)+'|'+p.slots.map(s=>s?s.id+s.r+(s.count||0)+'-'+(s.mag??'')+(s.type==='gun'?'/'+p.ammo[GUNS[s.id].ammo]:'')+(s.type==='remote'?'/'+s.command+'/'+s.channel:''):'_').join(',');if(key===hotKey)return;hotKey=key;
+function renderHotbar(){const p=player;const key=p.sel+'|'+(buildMode?1:0)+'|'+p.slots.map(s=>s?s.id+s.r+(s.count||0)+'-'+(s.mag??'')+(s.type==='gun'?'/'+p.ammo[GUNS[s.id].ammo]:'')+(s.type==='remote'?'/'+s.command+'/'+s.channel+'/'+(s.usesLeft??''):''):'_').join(',');if(key===hotKey)return;hotKey=key;
   let h=`<div class="slot full${p.sel===0&&!buildMode?' sel':''}" style="--rar:#6a7a96"><span class="k">F</span>${PICK_SVG}</div>`;
-  for(let i=0;i<NSLOT;i++){const s=p.slots[i];let inner='',st='';if(s){st=`--rar:${s.type==='sprite'?SPRITE_DEF[s.id].col:RAR_COL[s.r||0]}`;inner=itemSVG(s)+(s.type==='gun'?`<span class="n">${s.mag}</span><span class="a">${GUNS[s.id].short}</span>`:s.count?`<span class="n">×${s.count}</span>`:'');}
+  for(let i=0;i<NSLOT;i++){const s=p.slots[i];let inner='',st='';if(s){st=`--rar:${s.type==='sprite'?SPRITE_DEF[s.id].col:RAR_COL[s.r||0]}`;inner=itemSVG(s)+(s.type==='gun'?`<span class="n">${s.mag}</span><span class="a">${GUNS[s.id].short}</span>`:s.count?`<span class="n">×${s.count}</span>`:s.type==='remote'&&s.uses>0?`<span class="n">${s.usesLeft??s.uses}</span>`:'');}
     h+=`<div class="slot${s?' full':''}${p.sel===i+1&&!buildMode?' sel':''}" style="${st}"><span class="k">${i+1}</span>${inner}</div>`;}
   $('hotbar').innerHTML=h;}
 let matKey='';function renderMats(){const p=player,unlimited=infiniteMaterials();const k=p.mats.wood+','+p.mats.brick+','+p.mats.metal+p.mat+buildMode+buildType+unlimited;if(k===matKey)return;matKey=k;
@@ -3698,13 +3750,13 @@ let promptTarget=null;
 function findInteract(){const p=player;const {f}=camVectors();const fl=Math.hypot(f.x,f.z)||1;let best=null,bs=1e9;
   const consider=(obj,x,y,z,rad,bias)=>{const dx=x-p.pos.x,dz=z-p.pos.z,dy=y-(p.pos.y+.9);const d=Math.hypot(dx,dz,dy);if(d>rad)return;const hd=Math.hypot(dx,dz)||.01;const cos=hd<.35?1:(dx*f.x+dz*f.z)/(hd*fl);const score=d*.55+(1-cos)*2.4+bias;if(score<bs){bs=score;best=obj;}};
   for(const ch of chests)if(!ch.opened)consider({ch},ch.x,ch.y+.4,ch.z,2.8,0);
-  if(!carryingCrown)for(const drop of crownDrops)if(drop.alive)consider({crown:drop},drop.x,drop.y+.3,drop.z,2.8,-.4);
+  for(const drop of crownDrops)if(drop.alive)consider({crown:drop},drop.x,drop.y+.3,drop.z,2.8,-.4);
   for(const s of spritesW)if(s.alive&&canTakeSprite(p,s.type))consider({sprite:s},s.x,s.y,s.z,2.8,-.35);
   for(const pk of pickups){if(!pk.alive||pk.t<1)continue;const ty=pk.item.type;if(ty==='ammo'||ty==='mat'||ty==='gold')continue;consider({pk},pk.x,pk.y+.3,pk.z,2.8,-.3);}
   for(const dd of doors){if(!dd.alive||Math.abs(dd.y-p.pos.y)>1.5)continue;consider({door:dd},dd.cx,dd.y+1,dd.cz,2.3,.55);}
   for(const v of vehicles){if(v.dead||v.driver||Math.abs(v.pos.y-p.pos.y)>2)continue;consider({veh:v},v.pos.x,v.pos.y+.8,v.pos.z,v.T.colS+2,.25);}
   for(const v of vendings)if(Math.abs(v.y-p.pos.y)<2)consider({vend:v},v.x,v.y+1,v.z,2.5,.15);
-  if(MODE.id==='custom')for(const d of editorDevices)if(['dropper','remote','medstation'].includes(d.t))consider({device:d},d.x,d.y+1,d.z,2.8,-.1);
+  for(const d of editorDevices)if(['dropper','remote','medstation'].includes(d.t)&&d.g.visible)consider({device:d},d.x,d.y+1,d.z,2.8,-.1);
   if(MODE.id==='hg')for(const b of HZ.bushes)if(!b.picked)consider({bush:b},b.x,b.y+.6,b.z,2.6,.1);
   return best;}
 function interact(){const t=promptTarget,p=player;if(p&& p.vehicle){exitVehicle(p);return;}if(!t||!p.alive||p.state!=='ground')return;if(t.device){useCustomDevice(t.device,p);return;}if(t.crown){claimVictoryCrown(t.crown);return;}if(t.sprite){if(!acquireSprite(p,t.sprite.type,t.sprite.xp||0))return;t.sprite.alive=false;t.sprite.g.visible=false;petPoof(t.sprite.x,t.sprite.y-.2,t.sprite.z,[2.4,2.6,3]);return;}if(t.veh){enterVehicle(p,t.veh);return;}if(t.door){toggleDoor(t.door,p);return;}if(t.vend){openShop();return;}if(t.bush){hzForage(t.bush,p);return;}
@@ -3736,7 +3788,7 @@ function updatePlayer(dt){
   p.crouch=bindDown('crouch')&& p.state==='ground';
   p.ads=mouseR&&!buildMode&& it&& it.type==='gun'&& p.state==='ground';scoped=p.ads&& GUNS[it.id].scope;
   p.sprint=bindDown('sprint')&& mz<0&&!p.ads&&!p.healing&&!p.crouch&& p.state==='ground'&& p.fireCd<=0.05&& !p.tired;
-  let speed=p.sprint?8.6:p.crouch?3.1:p.ads?4.2:6.1;if(p.healing)speed=3;if(mx!==0&& mz===0)speed*=.95;if(mz>0)speed*=.85;
+  let speed=p.sprint?8.6:p.crouch?3.1:p.ads?4.2:6.1;if(p.healing)speed=3;if(p.speedBoostT>gameTime)speed*=1.5;if(mx!==0&& mz===0)speed*=.95;if(mz>0)speed*=.85;
   if(p.state==='swim')speed=bindDown('sprint')?7.6:5.4;if(spriteElement(p.sprite)==='storm'&&p.sprint)speed*=1.1;if(spriteElement(p.sprite)==='shadow'&&p.crouch)speed*=1.2;if(p.slowT>gameTime)speed*=.65;if(p.perks.speed)speed*=1.1;
   if(p.emote&&(l>0||mouseL||bindDown('jump')||buildMode||p.state!=='ground'||p.vehicle))p.emote=null;$('emoteTag').classList.toggle('hidden',!p.emote);
   if(p.state==='freefall'){p.ffT+=dt;p.dive=bindDown('moveForward')&& pitch<-.35;if(p.pos.y-terrainH(p.pos.x,p.pos.z)<55){p.state='glide';p.vel.y*=.4;sfx('whoosh',.6);}}
@@ -3775,7 +3827,7 @@ function updatePlayer(dt){
   for(let i=pickups.length-1;i>=0;i--){const pk=pickups[i];if(!pk.alive||pk.t<1)continue;const ty=pk.item.type;if((ty==='ammo'||ty==='mat'||ty==='gold'||ty==='gas')&& Math.hypot(pk.x-p.pos.x,pk.y-p.pos.y-.2,pk.z-p.pos.z)<(ty==='gold'?2.4:1.6)){giveItem(p,pk.item);removePickup(pk,p);if(ty!=='gold')sfx('pickup');}}
   promptTarget=findInteract();const pe=$('prompt');
   if(promptTarget){const pk=promptTarget.pk;const full=!p.slots.some(s=>!s);const stack=pk&&(pk.item.type==='heal'||pk.item.type==='throw')&& p.slots.some(s=>s&& s.id===pk.item.id),spr=promptTarget.sprite,spriteDesc=spr&&SPRITE_DEF[spr.type].desc,spriteInfo=spr&&spriteLevelInfo(spr.xp||0);
-    const txt=promptTarget.device?customDevicePrompt(promptTarget.device):promptTarget.crown?'Claim Victory Crown':spr?`${p.sprite&&full?'Swap for ':'Pick up '}${SPRITE_DEF[spr.type].name}`:promptTarget.bush?'Pick berries':promptTarget.vend?'Use vending machine':promptTarget.door?(Math.abs(promptTarget.door.target)>.1?'Close door':'Open door'):promptTarget.veh?'Drive '+VTYPES[promptTarget.veh.type].name:promptTarget.ch?(promptTarget.ch.llama?'Break Loot Llama':promptTarget.ch.supply?'Open supply drop':promptTarget.ch.rarity===4?'Open Legendary Chest':promptTarget.ch.rarity===2?'Open Rare Chest':'Open chest'):((full&&!stack)?'Swap for ':'Pick up ')+itemName(pk.item);const col=promptTarget.device?'#57d6ff':promptTarget.crown?'#ffd65a':spr?SPRITE_DEF[spr.type].col:pk?RAR_COL[pk.item.r||0]:'#ffc04a';
+    const txt=promptTarget.device?customDevicePrompt(promptTarget.device):promptTarget.crown?(carryingCrown?'Collect extra crown (+100 Gold)':'Claim Victory Crown'):spr?`${p.sprite&&full?'Swap for ':'Pick up '}${SPRITE_DEF[spr.type].name}`:promptTarget.bush?'Pick berries':promptTarget.vend?'Use vending machine':promptTarget.door?(Math.abs(promptTarget.door.target)>.1?'Close door':'Open door'):promptTarget.veh?'Drive '+VTYPES[promptTarget.veh.type].name:promptTarget.ch?(promptTarget.ch.llama?'Break Loot Llama':promptTarget.ch.supply?'Open supply drop':promptTarget.ch.rarity===4?'Open Legendary Chest':promptTarget.ch.rarity===2?'Open Rare Chest':'Open chest'):((full&&!stack)?'Swap for ':'Pick up ')+itemName(pk.item);const col=promptTarget.device?'#57d6ff':promptTarget.crown?'#ffd65a':spr?SPRITE_DEF[spr.type].col:pk?RAR_COL[pk.item.r||0]:'#ffc04a';
     pe.innerHTML=`<kbd>${keyLabel(bindCode('interact'))}</kbd><span style="color:${col}">${txt}${spr?spriteNewMarker(spr.type):''}${spr?`<small class="spritePromptDesc">${escHTML(spriteDesc)} · Level ${spriteInfo.level}${spriteInfo.max?' · MAX':` · ${spr.xp||0} XP`}</small>`:''}</span>`;pe.classList.remove('hidden');}else pe.classList.add('hidden');
 }
 let camOverride=null;
@@ -3952,19 +4004,30 @@ const SKIN_LIST=[
   {id:'ev_halloween',name:'Pumpkin King',rar:4,price:0,ev:'halloween',base:'rpm',top:'#1a1410',bottom:'#2a1d12',shoes:'#ff7a1a',acc:['pumpkin','cape'],accCol:'#1a1410',emis:'#ff7a1a'},
   {id:'ev_feast',name:'Pilgrim',rar:3,price:0,ev:'feast',base:'soldier',tint:'#6a5442',acc:['pilgrim']},
   {id:'ev_winter',name:'Jolly Rider',rar:4,price:0,ev:'winter',base:'rpm',top:'#c8202f',bottom:'#c8202f',shoes:'#1a1a1a',acc:['santa']}];
-const TOOLS=[{id:'storm',name:'Storm Blade',rar:1,price:0,shape:'straight',blade:'#cfd8e2',glow:'#4fb7ff',gi:.35},
-  {id:'pocket_knife',name:'Pocket Knife',rar:2,price:800,shape:'knife',blade:'#cfd8e2',glow:'#a9c7d8',gi:.2},
-  {id:'butterfly_knife',name:'Butterfly Knife',rar:3,price:1200,shape:'butterfly',blade:'#d8e6f2',glow:'#8ce7ff',gi:.35},
-  {id:'katana',name:'Oni Katana',rar:3,price:800,shape:'katana',blade:'#e8eaee',glow:'#ff3040',gi:.5},
-  {id:'sunfire',name:'Sunfire Broadsword',rar:3,price:900,shape:'broad',blade:'#d8c08a',glow:'#ff9a20',gi:.6,pass:10},
-  {id:'void',name:'Void Edge',rar:4,price:1200,shape:'straight',blade:'#2a2440',glow:'#b07cff',gi:1.2},
-  {id:'gilded',name:'Gilded Sabre',rar:4,price:1200,shape:'katana',blade:'#ffd65a',glow:'#ffe9a0',gi:.5}];
-const GLIDERS=[{id:'classic',name:'Classic Canopy',rar:0,price:0,cols:['#2f74d0','#f2f2f2','#ffd23f']},
-  {id:'victory_umbrella',name:'Victory Umbrella',rar:4,price:0,cols:['#ffd65a','#ffffff','#2478d4'],umbrella:true,reward:'win'},
-  {id:'sunset',name:'Sunset Wing',rar:2,price:600,cols:['#ff7a3c','#ff4f8b','#8a4fd6']},
-  {id:'camo',name:'Field Camo',rar:1,price:400,cols:['#4b5d32','#6b7a46','#2e3a22'],pass:3},
-  {id:'neonw',name:'Neon Glide',rar:3,price:900,cols:['#0b0f14','#00ffd0','#0b0f14','#ff3dbb'],glow:'#00ffd0'},
-  {id:'royal',name:'Royal Banner',rar:4,price:1200,cols:['#5a2bd6','#ffd65a','#5a2bd6','#ffffff'],pass:12}];
+/* harvesting tools: dmg = damage to players, harvest = damage to trees/rocks/builds, speed = time between swings (lower is faster) */
+const TOOLS=[{id:'storm',name:'Storm Blade',rar:1,price:0,shape:'straight',blade:'#cfd8e2',glow:'#4fb7ff',gi:.35,dmg:1,harvest:1,speed:1},
+  {id:'pocket_knife',name:'Pocket Knife',rar:2,price:500,shape:'knife',blade:'#cfd8e2',glow:'#a9c7d8',gi:.2,dmg:.9,harvest:1,speed:.75},
+  {id:'katana',name:'Oni Katana',rar:3,price:1000,shape:'katana',blade:'#e8eaee',glow:'#ff3040',gi:.5,dmg:1.25,harvest:.9,speed:.9},
+  {id:'sunfire',name:'Sunfire Broadsword',rar:3,price:1300,shape:'broad',blade:'#d8c08a',glow:'#ff9a20',gi:.6,pass:10,dmg:1.1,harvest:1.35,speed:1.05},
+  {id:'butterfly_knife',name:'Butterfly Knife',rar:3,price:1500,shape:'butterfly',blade:'#d8e6f2',glow:'#8ce7ff',gi:.35,dmg:1.15,harvest:1,speed:.7},
+  {id:'gilded',name:'Gilded Sabre',rar:4,price:1800,shape:'katana',blade:'#ffd65a',glow:'#ffe9a0',gi:.5,dmg:1.1,harvest:1.6,speed:.95},
+  {id:'void',name:'Void Edge',rar:4,price:2000,shape:'straight',blade:'#2a2440',glow:'#b07cff',gi:1.2,dmg:1.35,harvest:1.15,speed:.9}];
+/* gliders: speed = forward glide speed, sink = how fast you drop (lower floats longer) */
+const GLIDERS=[{id:'classic',name:'Classic Canopy',rar:0,price:0,cols:['#2f74d0','#f2f2f2','#ffd23f'],speed:1,sink:1},
+  {id:'victory_umbrella',name:'Victory Umbrella',rar:4,price:0,cols:['#ffd65a','#ffffff','#2478d4'],umbrella:true,reward:'win',speed:1.3,sink:.8},
+  {id:'camo',name:'Field Camo',rar:1,price:400,cols:['#4b5d32','#6b7a46','#2e3a22'],pass:3,speed:1.05,sink:.95},
+  {id:'sunset',name:'Sunset Wing',rar:2,price:600,cols:['#ff7a3c','#ff4f8b','#8a4fd6'],speed:1.15,sink:1},
+  {id:'neonw',name:'Neon Glide',rar:3,price:1000,cols:['#0b0f14','#00ffd0','#0b0f14','#ff3dbb'],glow:'#00ffd0',speed:1.25,sink:.95},
+  {id:'royal',name:'Royal Banner',rar:4,price:1400,cols:['#5a2bd6','#ffd65a','#5a2bd6','#ffffff'],pass:12,speed:1.15,sink:.8}];
+function toolStat(c,k){const t=TOOL_BY[c&&c.toolId]||TOOLS[0];return t[k]??1;}
+function gliderStat(c,k){const g=GLIDER_BY[c&&c.gliderId]||GLIDERS[0];return g[k]??1;}
+function cosPerkChips(kind,it){const chip=(label,v)=>{const n=Math.round(v);return n?`<span class="${n>0?'up':'dn'}">${label} ${n>0?'+':''}${n}%</span>`:'';};
+  const out=kind==='tool'?chip('DMG',((it.dmg??1)-1)*100)+chip('HARV',((it.harvest??1)-1)*100)+chip('SPD',(1/(it.speed??1)-1)*100):chip('SPEED',((it.speed??1)-1)*100)+chip('FLOAT',(1-(it.sink??1))*100);
+  return out||'<span>STANDARD</span>';}
+function cosPerkText(kind,it){const pct=(v,up,down)=>{const n=Math.round((v-1)*100);return n>0?`+${n}% ${up}`:n<0?`${n}% ${down}`:'';};
+  if(kind==='tool'){const sp=Math.round((1/(it.speed??1)-1)*100);return [pct(it.dmg??1,'damage','damage'),pct(it.harvest??1,'harvesting','harvesting'),sp>0?`+${sp}% swing speed`:sp<0?`${sp}% swing speed`:''].filter(Boolean).join(' · ')||'Standard stats';}
+  if(kind==='glider'){const fl=Math.round((1-(it.sink??1))*100);return [pct(it.speed??1,'glide speed','glide speed'),fl>0?`+${fl}% float time`:fl<0?`${-fl}% faster drop`:''].filter(Boolean).join(' · ')||'Standard stats';}
+  if(kind==='sidekick')return it.perk||'';return '';}
 const EMOTES=[{id:'dance',name:'Default Groove',rar:0,price:0},{id:'wave',name:'Hello There',rar:0,price:0},{id:'floss',name:'Floss',rar:2,price:500},{id:'robot',name:'Robot',rar:2,price:500,pass:8},{id:'hype',name:'Jumping Jacks',rar:1,price:300},{id:'cheer',name:'Victory Cheer',rar:3,price:800}];
 // open-licensed character models (CC0 / CC-BY 3.0) from poly.pizza; listed with authors on the Credits page
 const CHAR_MODELS=[{"id": "5EGWBMpuXq", "title": "Adventurer", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/5EGWBMpuXq", "skin": "Trailblazer", "rar": 2, "price": 1000}, {"id": "djXoqejw6w", "title": "Punk", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/djXoqejw6w", "skin": "Punk", "rar": 2, "price": 1100}, {"id": "gKLBoRsyKe", "title": "Hoodie Character", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/gKLBoRsyKe", "skin": "Hoodie", "rar": 1, "price": 800}, {"id": "JFrLIKqvCH", "title": "Business Man", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/JFrLIKqvCH", "skin": "Business Man", "rar": 2, "price": 1000}, {"id": "XqzeZGB7iU", "title": "Woman in Tank Top", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/XqzeZGB7iU", "skin": "Tank Top", "rar": 1, "price": 800}, {"id": "y9KWOVG21R", "title": "Hooded Adventurer", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/y9KWOVG21R", "skin": "Hooded Ranger", "rar": 3, "price": 1400}, {"id": "PpLF4rt4ah", "title": "Character Soldier", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/PpLF4rt4ah", "skin": "Trooper", "rar": 2, "price": 1100}, {"id": "mdGe4IN31v", "title": "Character Enemy", "author": "Quaternius", "license": "CC0 1.0", "url": "https://poly.pizza/m/mdGe4IN31v", "skin": "Mercenary", "rar": 2, "price": 1100}, {"id": "yiQDOLP4Ry", "title": "Rigged Character", "author": "Rafael", "license": "CC0 1.0", "url": "https://poly.pizza/m/yiQDOLP4Ry", "skin": "Casual", "rar": 1, "price": 700}, {"id": "4pUXv5V8kq", "title": "Sci Fi Character", "author": "Quaternius", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/4pUXv5V8kq", "skin": "Sci-Fi Pilot", "rar": 3, "price": 1500}, {"id": "oAArCNHjFB", "title": "Soldier", "author": "Quaternius", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/oAArCNHjFB", "skin": "Commando", "rar": 3, "price": 1400}, {"id": "QBEOV9ZUT8", "title": "Witch", "author": "Quaternius", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/QBEOV9ZUT8", "skin": "Witch", "rar": 3, "price": 1500}, {"id": "sOUciDsoVV", "title": "Suit", "author": "Quaternius", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/sOUciDsoVV", "skin": "Agent", "rar": 3, "price": 1500}, {"id": "22K0aSZkHV", "title": "Zombie", "author": "Quaternius", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/22K0aSZkHV", "skin": "Zombie", "rar": 4, "price": 2000}, {"id": "9wbCF0iWpu", "title": "Soldier", "author": "J-Toastie", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/9wbCF0iWpu", "skin": "Field Soldier", "rar": 2, "price": 1200}, {"id": "AZzoJo1FBm", "title": "Animated Character Base", "author": "J-Toastie", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/AZzoJo1FBm", "skin": "Runner", "rar": 1, "price": 800}, {"id": "0oBRDJ9Zl9", "title": "Rigged Astronaut", "author": "J-Toastie", "license": "CC-BY 3.0", "url": "https://poly.pizza/m/0oBRDJ9Zl9", "skin": "Astronaut", "rar": 4, "price": 2000}];
@@ -4016,9 +4079,10 @@ function cosmeticPatternTexture(pattern,primary,accent){
 }
 function applyCosmeticEffect(obj,custom,color){
   if(!obj||!custom)return;const effect=custom.effect||'none';if(effect==='none')return;
-  obj.traverse(o=>{if(!o.isMesh||!o.material)return;const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats){
+  obj.traverse(o=>{if(!o.isMesh||!o.material||o.userData.cosFxOwn)return;/* materials are shared (cars, buildings, other players), so effects must edit a private copy */
+    o.material=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();o.userData.cosFxOwn=true;const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats){
     if(effect==='glow'&&m.emissive){m.emissive=C(color||'#ffffff');m.emissiveIntensity=Math.max(m.emissiveIntensity||0,.7);}
-    else if(effect==='holo'&&m.isMeshStandardMaterial){m.metalness=Math.max(m.metalness||0,.7);m.roughness=Math.min(m.roughness||.5,.18);m.transparent=true;m.opacity=(m.opacity==null?1:m.opacity)*.88;m.depthWrite=false;}
+    else if(effect==='holo'&&m.isMeshStandardMaterial){m.metalness=Math.max(m.metalness||0,.75);m.roughness=Math.min(m.roughness||.5,.16);m.transparent=true;m.opacity=(m.opacity==null?1:m.opacity)*.9;m.depthWrite=true;m.side=THREE.FrontSide;if(m.emissive){m.emissive=C(color||'#9ff').multiplyScalar(.18);m.emissiveIntensity=Math.max(m.emissiveIntensity||0,1);}}
   }});
   if(effect==='sparkle'){const box=new THREE.Box3().setFromObject(obj);if(box.isEmpty())return;const size=box.getSize(new V3()),center=box.getCenter(new V3()),positions=[];
     obj.updateWorldMatrix(true,false);const point=new V3();for(let i=0;i<24;i++){point.set(center.x+(Math.random()-.5)*size.x*1.12,center.y+(Math.random()-.5)*size.y*1.12,center.z+(Math.random()-.5)*size.z*1.12);obj.worldToLocal(point);positions.push(point.x,point.y,point.z);}
@@ -4087,7 +4151,7 @@ function makeCrownMesh(){
   const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW_TEX,color:C('#ffd65a').multiplyScalar(2),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));
   glow.scale.set(1.5,1.5,1);glow.position.y=.25;g.add(glow);return g;}
 function dropVictoryCrown(x,y,z){y=terrainH(x,z);const g=makeCrownMesh();g.position.set(x,y+.25,z);scene.add(g);crownDrops.push({x,y,z,g,alive:true,spin:rand(0,6)});}
-function claimVictoryCrown(drop,carrier=player){if(!drop.alive)return false;if(carrier===player){if(carryingCrown)return false;carryingCrown=true;}else{if(carrier.carriesCrown||botCrownCount()>=3)return false;carrier.carriesCrown=true;}
+function claimVictoryCrown(drop,carrier=player){if(!drop.alive)return false;if(carrier===player){if(carryingCrown){drop.alive=false;scene.remove(drop.g);arrRemove(crownDrops,drop);player.gold=Math.min(99999,(player.gold||0)+100);floatGold(100);sfx('buy');centerMsg('EXTRA CROWN','You already carry a crown · +100 Gold');return true;}carryingCrown=true;}else{if(carrier.carriesCrown||botCrownCount()>=3)return false;carrier.carriesCrown=true;}
   drop.alive=false;scene.remove(drop.g);arrRemove(crownDrops,drop);sfx('buy');if(carrier===player)centerMsg('VICTORY CROWN CLAIMED',rankedMode()?'Carry it to the end of the match for a Crown Victory':'Carry it to the end of the match');return true;}
 function updateCrownDrops(dt){for(const drop of crownDrops){if(!drop.alive)continue;drop.spin+=dt*1.6;drop.g.rotation.y=drop.spin;drop.g.position.y=drop.y+.28+Math.sin(gameTime*3+drop.x)*.08;}}
 const XP_PER_LVL=1000,PASS_TIERS=20;
@@ -4111,7 +4175,7 @@ function loadModels(){return new Promise(res=>{if(!THREE.GLTFLoader||!THREE.Skel
   // avatars the player imported in the Locker
   for(const [i,url] of (PROFILE.avatars||[]).entries()){left++;const k='av'+i;new THREE.GLTFLoader().load(url,g=>{try{MODELS[k]=prepModel(g.scene);registerAvatar(k,i);}catch(e){console.warn(e);}done();},undefined,()=>done());}
   setTimeout(()=>{if(!modelsReady){modelsReady=true;res();}},20000);});}
-function registerAvatar(k,i){if(SKIN_BY[k])return;const sk={id:k,name:'My Avatar '+(i+1),rar:4,price:0,base:k,custom:true};sk.fallback=['#5a6a7a','#2b2f36','#2b2f36','#2a1d12','#1a1a1a'];SKIN_LIST.push(sk);SKIN_BY[k]=sk;CUSTOM_SKINS.push(sk);if(!PROFILE.owned.skin.includes(k))PROFILE.owned.skin.push(k);}
+function registerAvatar(k,i){if(SKIN_BY[k])return;const sk={id:k,name:'My Avatar '+(i+1),rar:4,price:0,base:k,custom:true};sk.fallback=['#5a6a7a','#2b2f36','#2b2f36','#2a1d12','#1a1a1a'];SKIN_LIST.push(sk);SKIN_BY[k]=sk;CUSTOM_SKINS.push(sk);if(!PROFILE.owned.skin.includes(k))PROFILE.owned.skin.push(k);if(Array.isArray(PROFILE.variants))PROFILE.variants.forEach(v=>{if(v.base===k)registerVariant(v);});}
 const boneKey=n=>n.replace(/^mixamorig:?/,'').replace(/[.:]/g,'');
 const BONE_ALIAS={Hips:['Hips','Pelvis','Root'],Spine:['Spine','Abdomen'],Spine1:['Spine1','Torso','Abdomen'],Spine2:['Spine2','Chest','Torso'],Neck:['Neck'],Head:['Head'],HeadTop_End:['HeadTop_End','Head_end','HeadEnd','Headend'],
   LeftShoulder:['LeftShoulder','ShoulderL'],LeftArm:['LeftArm','UpperArmL'],LeftForeArm:['LeftForeArm','LowerArmL'],LeftHand:['LeftHand','WristL','MiddleHandL','HandL','FistL'],
@@ -4213,7 +4277,10 @@ function buildLobby(){const g=new THREE.Group();g.position.copy(LOBBY.pos);
   const ring2=new THREE.Mesh(new THREE.TorusGeometry(1.9,.02,8,64),new THREE.MeshBasicMaterial({color:new THREE.Color(4,3,1)}));ring2.rotation.x=Math.PI/2;ring2.position.y=-.34;g.add(ring2);
   const glw=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW_TEX,color:C('#4f9bff').multiplyScalar(1.2),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));glw.scale.set(5,2.2,1);glw.position.y=-.3;g.add(glw);
   scene.add(g);LOBBY.grp=g;LOBBY.ring=ring;spawnLobbyChar();}
-function spawnLobbyChar(){spawnLobbyPet();if(LOBBY.char)removeCharModel(LOBBY.char);const c=new Char('lobby',false,{lobby:true});removeCharHB(c);c.pos.copy(LOBBY.pos);c.yaw=Math.PI;c.state='ground';c.onGround=true;c.sel=0;updateHeld(c);LOBBY.char=c;}
+function spawnLobbyChar(){withPreviewEq(spawnLobbyCharNow);}
+/* while in Customize Avatar, the lobby shows the item being customized even if it isn't equipped */
+function withPreviewEq(fn){const k=menuTab==='custom'?custCat:null,id=k&&custSel[k];if(!id||!['skin','tool','glider','sidekick'].includes(k))return fn();const old=PROFILE.eq[k];PROFILE.eq[k]=id;try{return fn();}finally{PROFILE.eq[k]=old;}}
+function spawnLobbyCharNow(){spawnLobbyPet();if(LOBBY.char)removeCharModel(LOBBY.char);const c=new Char('lobby',false,{lobby:true});removeCharHB(c);c.pos.copy(LOBBY.pos);c.yaw=Math.PI;c.state='ground';c.onGround=true;c.sel=0;updateHeld(c);LOBBY.char=c;}
 function removeCharHB(c){for(const h of [c.hbB,c.hbH,c.hbL]){arrRemove(hittables,h);arrRemove(charHB,h);}}
 function removeCharModel(c){removeCharHB(c);scene.remove(c.m.root);}
 function updateLobby(dt){if(LOBBY.pet)LOBBY.pet.mixer.update(dt);const c=LOBBY.char;if(!c)return;LOBBY.emoteT-=dt;
@@ -4235,7 +4302,8 @@ function cosSVG(kind,it){if(kind==='sidekick')return it.id==='none'?'<svg viewBo
 function cardHTML(kind,it,mode){const own=PROFILE.owned[kind].includes(it.id),eq=PROFILE.eq[kind]===it.id;
   const top=mode==='shop'?(own?'<span class="own">OWNED</span>':`<span class="pr">${coinHTML(it.price)}</span>`):(own?(eq?'<span class="own">EQUIPPED</span>':''):`<span class="lk">${it.pass?'TIER '+it.pass:it.egg?'EASTER EGG':it.ev?'EVENT':'SHOP'}</span>`);
   const th=thumbFor(kind,it.id);
-  return `<div class="card${eq&&mode!=='shop'?' eq':''}${!own&&mode!=='shop'?' locked':''}" data-kind="${kind}" data-id="${it.id}" style="--rar:${RAR_COL[it.rar]}"><div class="sw">${th?`<img src="${th}" alt="">`:cosSVG(kind,it)}</div>${top}<div class="nm">${it.name}</div><div class="rr">${RAR_NAME[it.rar]} ${COS[kind].label.replace(/s$/,'')}</div></div>`;}
+  const perk=kind==='tool'||kind==='glider'?`<div class="perks" title="${cosPerkText(kind,it)}">${cosPerkChips(kind,it)}</div>`:'';
+  return `<div class="card${eq&&mode!=='shop'?' eq':''}${!own&&mode!=='shop'?' locked':''}" data-kind="${kind}" data-id="${it.id}" style="--rar:${RAR_COL[it.rar]}"><div class="sw">${th?`<img src="${th}" alt="">`:cosSVG(kind,it)}</div>${top}<div class="nm">${it.name}</div>${perk}<div class="rr">${RAR_NAME[it.rar]} ${COS[kind].label.replace(/s$/,'')}</div></div>`;}
 
 // ---------- music: a procedural soundtrack (no audio files) that follows the match ----------
 // layers (pad, bass, arp, drums) fade in/out per mode: lobby, drop (plane/skydive), explore, fight; stings on victory/defeat
@@ -4293,30 +4361,68 @@ function makeThumb(kind,id){
   for(let y=0;y<Hh;y++)img.data.set(buf.subarray((Hh-1-y)*W*4,(Hh-y)*W*4),y*W*4);g1.putImageData(img,0,0);
   const c2=document.createElement('canvas');c2.width=192;c2.height=256;const g2=c2.getContext('2d');g2.imageSmoothingQuality='high';g2.drawImage(c1,0,0,192,256);return c2.toDataURL('image/png');}
 function renderWallet(){$('mSB').textContent=PROFILE.sb;$('mLvl').textContent=PROFILE.lvl;}
-function renderCosmeticPresets(){const host=$('cosPresets'),presets=PROFILE.customizationPresets||[];host.innerHTML=`<h4>Loadout presets</h4><label>Preset name<input data-preset-name maxlength="28" placeholder="e.g. Neon storm"></label><label>Saved presets<select data-preset-select>${presets.map((p,i)=>`<option value="${i}">${escHTML(p.name)}</option>`).join('')||'<option value="">No presets saved</option>'}</select></label><button class="btn small" type="button" data-preset-save>Save current</button><button class="btn small ghost" type="button" data-preset-apply ${presets.length?'':'disabled'}>Apply</button><button class="btn small ghost" type="button" data-preset-delete ${presets.length?'':'disabled'}>Delete</button><button class="btn small ghost" type="button" data-randomize-loadout>Randomize loadout</button>`;}
-function refreshCosmeticPreview(){saveProfile();renderLocker();delete THUMB.cache[`${lockCat}|${lockSelection[lockCat]}`];if(lockCat==='sidekick')spawnLobbyPet();else if(lockCat!=='emote')spawnLobbyChar();}
+function renderCosmeticPresets(){const host=$('cosPresets'),presets=PROFILE.customizationPresets||[];host.innerHTML=`<div class="cpHead"><h4>Loadout presets</h4><button class="btn small ghost" type="button" data-randomize-loadout>Randomize loadout · ${coinHTML(CUST_PRICE.loadout)}</button></div>
+  <div class="cpRow"><label>Preset name<input data-preset-name maxlength="28" placeholder="e.g. Neon storm"></label><button class="btn small" type="button" data-preset-save>Save current</button></div>
+  <div class="cpRow"><label>Saved presets (${presets.length}/8)<select data-preset-select>${presets.map((p,i)=>`<option value="${i}">${escHTML(p.name)}</option>`).join('')||'<option value="">No presets saved</option>'}</select></label><button class="btn small ghost" type="button" data-preset-apply ${presets.length?'':'disabled'}>Apply</button><button class="btn small ghost" type="button" data-preset-delete ${presets.length?'':'disabled'}>Delete</button></div>
+  <p class="cpNote">A preset saves your equipped items and their customizations. Saving and applying presets is free.</p>`;}
+const CUST_PRICE={color:25,style:50,pattern:75,effect:100,loadout:300};let custCat='skin';const custSel={};let CUSTX={};
+function custClone(o){return JSON.parse(JSON.stringify(o||{}));}
+function custSetConfig(kind,id,config){const all=PROFILE.customizations||(PROFILE.customizations={}),byKind=all[kind]||(all[kind]={});if(config&&Object.keys(config).length)byKind[id]=config;else{delete byKind[id];if(!Object.keys(byKind).length)delete all[kind];}}
+function custBegin(kind,id){if(CUSTX.kind===kind&&CUSTX.id===id)return;custDiscard();CUSTX={kind,id,base:custClone(cosmeticConfig(kind,id))};}
+function custChanges(){if(!CUSTX.kind)return [];const item=COS[CUSTX.kind].by[CUSTX.id],cur=cosmeticConfig(CUSTX.kind,CUSTX.id),base=CUSTX.base;if(!Object.keys(cur).length)return [];/* resetting to default is free */
+  const d=cosmeticDefaults(CUSTX.kind,item),out=[];for(const slot of Object.keys(d))if((cur[slot]||d[slot])!==(base[slot]||d[slot]))out.push(['color',slot]);
+  if((cur.style||'classic')!==(base.style||'classic'))out.push(['style']);if((cur.pattern||'solid')!==(base.pattern||'solid'))out.push(['pattern']);if((cur.effect||'none')!==(base.effect||'none'))out.push(['effect']);return out;}
+function custCost(){return custChanges().reduce((n,[k])=>n+CUST_PRICE[k],0);}
+function custDirty(){return !!CUSTX.kind&&JSON.stringify(cosmeticConfig(CUSTX.kind,CUSTX.id))!==JSON.stringify(CUSTX.base);}
+function custDiscard(){if(!CUSTX.kind)return;const {kind,id,base}=CUSTX;if(custDirty()){custSetConfig(kind,id,custClone(base));delete THUMB.cache[`${kind}|${id}`];}CUSTX={};}
+function custCommit(){const cost=custCost(),{kind,id}=CUSTX,item=COS[kind]&&COS[kind].by[id];if(!custDirty()||!item)return;
+  const asNew=VARIANT_KINDS.includes(kind)&&!item.variantOf&&Object.keys(cosmeticConfig(kind,id)).length>0;
+  if(asNew&&PROFILE.variants.length>=VARIANT_MAX){toast(`You can keep up to ${VARIANT_MAX} saved looks. Delete one first`);sfx('deny');return;}
+  const nameIn=$('cosCustomizer').querySelector('[data-look-name]'),n=PROFILE.variants.filter(v=>v.base===id).length+1,name=((nameIn&&nameIn.value.trim())||`${item.name} · Look ${n}`).slice(0,28);
+  const done=()=>{if(asNew){const config=custClone(cosmeticConfig(kind,id)),vid=id+'~'+Date.now().toString(36),v={kind,id:vid,base:id,name};
+      custSetConfig(kind,id,custClone(CUSTX.base));delete THUMB.cache[`${kind}|${id}`];PROFILE.variants.push(v);registerVariant(v);custSetConfig(kind,vid,config);
+      PROFILE.eq[kind]=vid;custSel[kind]=vid;CUSTX={kind,id:vid,base:custClone(config)};}
+    else CUSTX.base=custClone(cosmeticConfig(kind,id));
+    saveProfile();renderWallet();renderCustomize();custLobbyPreview();sfx('buy');toast(asNew?`Saved as a new look: ${name} (equipped)`:cost?`Customization saved · ${cost} Storm Bucks`:'Customization saved');};
+  if(!cost){done();return;}if(PROFILE.sb<cost){toast(`You need ${cost} Storm Bucks for these changes`);sfx('deny');return;}
+  confirmBuy(asNew?`a new look "${name}"`:'these customizations',cost+' Storm Bucks',()=>{if(PROFILE.sb<cost)return;PROFILE.sb-=cost;done();});}
+function deleteVariant(kind,id){const C0=COS[kind],it=C0&&C0.by[id];if(!it||!it.variantOf)return;const i=C0.list.indexOf(it);if(i>=0)C0.list.splice(i,1);delete C0.by[id];
+  PROFILE.owned[kind]=PROFILE.owned[kind].filter(x=>x!==id);PROFILE.variants=PROFILE.variants.filter(v=>v.id!==id);custSetConfig(kind,id,null);if(PROFILE.eq[kind]===id)PROFILE.eq[kind]=it.variantOf;
+  if(kind==='skin'){const j=CUSTOM_SKINS.indexOf(it);if(j>=0)CUSTOM_SKINS.splice(j,1);}CUSTX={};custSel[kind]=it.variantOf;saveProfile();renderCustomize();custLobbyPreview();toast(`${it.name} deleted`);}
+function refreshCosmeticPreview(){const kind=custCat,id=custSel[kind];delete THUMB.cache[`${kind}|${id}`];renderCustomize();custLobbyPreview();}
+function custLobbyPreview(){if(menuTab!=='custom')return;const kind=custCat,id=custSel[kind];if(kind==='sidekick'){spawnLobbyPet();return;}spawnLobbyChar();const c=LOBBY.char;if(!c)return;if(kind==='glider')c.showGlider=1e6;if(kind==='emote'&&id){LOBBY.preview=id;c.emote={id,t:0};LOBBY.emoteT=5;}}
+function custItems(kind){return COS[kind].list.filter(it=>PROFILE.owned[kind].includes(it.id)&&it.id!=='none');}
+function renderCustomize(){$('custCats').innerHTML=Object.keys(COS).map(k=>`<button data-c="${k}" class="${k===custCat?'on':''}">${COS[k].label} <small>${custItems(k).length}</small></button>`).join('');
+  const l=custItems(custCat);$('custGrid').innerHTML=l.length?l.map(it=>cardHTML(custCat,it,'locker').replace('class="card','class="card'+(custSel[custCat]===it.id?' custSel':''))).join(''):'<p class="empty" style="grid-column:1/-1">You don\'t own anything to customize here yet.</p>';
+  renderCosmeticCustomizer(l);renderCosmeticPresets();}
 function randomCosmeticColor(){return '#'+new THREE.Color().setHSL(Math.random(),.72,.55).getHexString();}
 function randomizeCosmetic(kind,id){const item=COS[kind]?.by[id];if(!item)return;const customizations=PROFILE.customizations||(PROFILE.customizations={}),byKind=customizations[kind]||(customizations[kind]={}),config=byKind[id]||(byKind[id]={}),styles={skin:['classic','glow','metallic'],tool:['classic','glow','metallic'],glider:['classic','glow','metallic'],sidekick:['classic','ghost'],emote:['classic','hype','slow']};
   config.style=pick(styles[kind]||['classic']);if(kind!=='emote'){const colors=cosmeticDefaults(kind,item);for(const slot of Object.keys(colors))config[slot]=randomCosmeticColor();config.pattern=pick(COSMETIC_PATTERNS.map(x=>x[0]));config.effect=pick(COSMETIC_EFFECTS.map(x=>x[0]));}}
-function randomizeCosmeticLoadout(){for(const kind of Object.keys(COS)){const owned=COS[kind].list.filter(item=>PROFILE.owned[kind].includes(item.id));if(!owned.length)continue;const item=pick(owned);PROFILE.eq[kind]=item.id;randomizeCosmetic(kind,item.id);}saveProfile();Object.keys(COS).forEach(kind=>delete THUMB.cache[`${kind}|${PROFILE.eq[kind]}`]);renderLocker();spawnLobbyChar();spawnLobbyPet();toast('Randomized your equipped cosmetics');}
-function saveCosmeticPreset(name){name=name.trim().slice(0,28);if(!name){toast('Enter a name for this preset');return false;}const presets=PROFILE.customizationPresets||(PROFILE.customizationPresets=[]),snapshot={name,eq:JSON.parse(JSON.stringify(PROFILE.eq)),customizations:JSON.parse(JSON.stringify(PROFILE.customizations||{}))},existing=presets.findIndex(p=>p.name.toLowerCase()===name.toLowerCase());if(existing>=0)presets[existing]=snapshot;else if(presets.length<8)presets.push(snapshot);else{toast('Delete a preset before saving another (8 maximum)');return false;}saveProfile();renderCosmeticPresets();toast(existing>=0?'Preset updated':'Preset saved');return true;}
-function applyCosmeticPreset(index){const preset=PROFILE.customizationPresets&&PROFILE.customizationPresets[index];if(!preset)return false;
+function randomizeCosmeticLoadout(){const cost=CUST_PRICE.loadout;if(PROFILE.sb<cost){toast(`Randomizing your loadout costs ${cost} Storm Bucks`);sfx('deny');return;}confirmBuy('a randomized loadout',cost+' Storm Bucks',()=>{if(PROFILE.sb<cost)return;custDiscard();PROFILE.sb-=cost;renderWallet();randomizeCosmeticLoadoutNow();renderCustomize();});}
+function randomizeCosmeticLoadoutNow(){for(const kind of Object.keys(COS)){const owned=COS[kind].list.filter(item=>PROFILE.owned[kind].includes(item.id));if(!owned.length)continue;const item=pick(owned);PROFILE.eq[kind]=item.id;randomizeCosmetic(kind,item.id);}saveProfile();Object.keys(COS).forEach(kind=>delete THUMB.cache[`${kind}|${PROFILE.eq[kind]}`]);renderLocker();spawnLobbyChar();spawnLobbyPet();sfx('buy');toast('Randomized your equipped cosmetics');}
+function saveCosmeticPreset(name){if(custDirty()){toast('Buy or discard your changes before saving a preset');return false;}name=name.trim().slice(0,28);if(!name){toast('Enter a name for this preset');return false;}const presets=PROFILE.customizationPresets||(PROFILE.customizationPresets=[]),snapshot={name,eq:JSON.parse(JSON.stringify(PROFILE.eq)),customizations:JSON.parse(JSON.stringify(PROFILE.customizations||{}))},existing=presets.findIndex(p=>p.name.toLowerCase()===name.toLowerCase());if(existing>=0)presets[existing]=snapshot;else if(presets.length<8)presets.push(snapshot);else{toast('Delete a preset before saving another (8 maximum)');return false;}saveProfile();renderCosmeticPresets();toast(existing>=0?'Preset updated':'Preset saved');return true;}
+function applyCosmeticPreset(index){const preset=PROFILE.customizationPresets&&PROFILE.customizationPresets[index];if(!preset)return false;custDiscard();
   for(const kind of Object.keys(COS)){const id=preset.eq[kind];if(kind==='sidekick'&&id==='none'){PROFILE.eq[kind]='none';continue;}if(COS[kind].by[id]&&PROFILE.owned[kind].includes(id))PROFILE.eq[kind]=id;}
   PROFILE.customizations={};  for(const kind of Object.keys(COS)){const source=preset.customizations[kind]&&typeof preset.customizations[kind]==='object'?preset.customizations[kind]:{};for(const item of COS[kind].list){const value=source[item.id];if(!value||typeof value!=='object')continue;const allowedStyles={skin:['classic','glow','metallic'],tool:['classic','glow','metallic'],glider:['classic','glow','metallic'],sidekick:['classic','ghost'],emote:['classic','hype','slow']}[kind],config={};
       const defaults=cosmeticDefaults(kind,item);for(const slot of Object.keys(defaults))if(value[slot])config[slot]=safeCosmeticColor(value[slot],defaults[slot]);
       if(allowedStyles.includes(value.style))config.style=value.style;if(COSMETIC_PATTERNS.some(([pattern])=>pattern===value.pattern))config.pattern=value.pattern;if(COSMETIC_EFFECTS.some(([effect])=>effect===value.effect))config.effect=value.effect;
       if(Object.keys(config).length)(PROFILE.customizations[kind]||(PROFILE.customizations[kind]={}))[item.id]=config;}}
-  saveProfile();renderLocker();spawnLobbyChar();spawnLobbyPet();toast(`Applied ${preset.name}`);return true;}
-function renderCosmeticCustomizer(items){const host=$('cosCustomizer'),kind=lockCat;const it=items.find(item=>item.id===lockSelection[kind])||items.find(item=>item.id===PROFILE.eq[kind])||items[0];
-  if(!it){host.innerHTML='';return;}lockSelection[kind]=it.id;const styles={skin:[['classic','Original'],['glow','Glow'],['metallic','Metallic']],tool:[['classic','Classic'],['glow','Glow'],['metallic','Metallic']],
+  saveProfile();CUSTX={};Object.keys(COS).forEach(kind=>delete THUMB.cache[`${kind}|${PROFILE.eq[kind]}`]);if(menuTab==='custom')renderCustomize();spawnLobbyChar();spawnLobbyPet();toast(`Applied ${preset.name}`);return true;}
+function renderCosmeticCustomizer(items){const host=$('cosCustomizer'),kind=custCat;const it=items.find(item=>item.id===custSel[kind])||items.find(item=>item.id===PROFILE.eq[kind])||items[0];
+  if(!it){host.innerHTML='';return;}if(custSel[kind]!==it.id){custSel[kind]=it.id;$('custGrid').querySelectorAll('.card').forEach(c=>c.classList.toggle('custSel',c.dataset.id===it.id));}custBegin(kind,it.id);const styles={skin:[['classic','Original'],['glow','Glow'],['metallic','Metallic']],tool:[['classic','Classic'],['glow','Glow'],['metallic','Metallic']],
     glider:[['classic','Classic'],['glow','Glow'],['metallic','Metallic']],sidekick:[['classic','Natural'],['ghost','Ghost']],emote:[['classic','Classic'],['hype','Hype'],['slow','Slow motion']]};
   const colors=cosmeticDefaults(kind,it),config=cosmeticConfig(kind,it.id),colorLabels={primary:'Primary',accent:'Accent',tertiary:kind==='skin'?'Footwear / trim':kind==='tool'?'Handle / trim':'Third panel'},fields=Object.keys(colors).map(slot=>`<label>${colorLabels[slot]||slot} color<input type="color" data-color="${slot}" value="${safeCosmeticColor(config[slot],colors[slot])}"></label>`).join('');
   const options=styles[kind]||styles.skin,style=config.style||'classic',patterned=kind!=='emote',patterns=patterned?`<label>Pattern<select data-pattern>${COSMETIC_PATTERNS.map(([value,label])=>`<option value="${value}"${(config.pattern||'solid')===value?' selected':''}>${label}</option>`).join('')}</select></label><label>Effect<select data-effect>${COSMETIC_EFFECTS.map(([value,label])=>`<option value="${value}"${(config.effect||'none')===value?' selected':''}>${label}</option>`).join('')}</select></label>`:'';
-  host.innerHTML=`<section class="cosCustomizer" data-kind="${kind}" data-id="${it.id}"><h4>Customize ${it.name}</h4><div class="cosControls">${fields}<label>Style<select data-style>${options.map(([value,label])=>`<option value="${value}"${style===value?' selected':''}>${label}</option>`).join('')}</select></label>${patterns}<button class="btn small" type="button" data-custom-randomize>Randomize item</button><button class="btn small ghost" type="button" data-custom-reset>Reset</button></div><p class="cosNote">Color parts separately, layer a pattern and visual effect, or randomize this item. Presets save your whole equipped loadout and every cosmetic setting.</p></section>`;}
+  host.innerHTML=`<section class="cosCustomizer" data-kind="${kind}" data-id="${it.id}"><h4>Customize ${it.name}</h4><div class="cosControls">${fields}<label>Style<select data-style>${options.map(([value,label])=>`<option value="${value}"${style===value?' selected':''}>${label}</option>`).join('')}</select></label>${patterns}<button class="btn small ghost" type="button" data-custom-randomize>Randomize item</button><button class="btn small ghost" type="button" data-custom-reset>Reset to default (free)</button></div>
+  <p class="cpNote">Preview changes for free, then pay to keep them: <b>${coinHTML(CUST_PRICE.color)} per color</b> · <b>${coinHTML(CUST_PRICE.style)} style</b> · <b>${coinHTML(CUST_PRICE.pattern)} pattern</b> · <b>${coinHTML(CUST_PRICE.effect)} effect</b></p>
+  ${(()=>{const ch=custChanges(),cost=custCost(),dirty=custDirty();const what=ch.map(([k,slot])=>k==='color'?(colorLabels[slot]||slot).toLowerCase()+' color':k).join(', ');
+    const asNew=VARIANT_KINDS.includes(kind)&&!it.variantOf;
+    const look=asNew?`<label class="lookName">Name your new look<input data-look-name maxlength="28" value="${escHTML(CUSTX.lookName||'')}" placeholder="${escHTML(it.name)} · Look ${PROFILE.variants.filter(v=>v.base===it.id).length+1}"></label><p class="cpNote">Buying saves your changes as a <b>new item</b> in your Locker. ${escHTML(it.name)} stays as it is.</p>`:it.variantOf?`<p class="cpNote">This is your saved look based on ${escHTML(COS[kind].by[it.variantOf]?.name||'another item')}. Buying updates it. <button class="btn small ghost" type="button" data-look-delete>Delete look</button></p>`:'';
+    return `${look}<div class="custBar"><div class="custCost">${dirty?(cost?`Cost ${coinHTML(cost)}`:'Free'):'No changes'}<small>${dirty?(what?'Changed: '+what:'Back to default look'):'Pick colors, a style, a pattern or an effect above'} · You have ${coinHTML(PROFILE.sb)}</small></div><div class="custBtns"><button class="btn small ghost" type="button" data-custom-discard ${dirty?'':'disabled'}>Discard</button><button class="btn small" type="button" data-custom-apply ${dirty?'':'disabled'}>${asNew&&dirty?(cost?'Buy new look':'Save new look'):dirty&&cost?'Buy changes':'Save'}</button></div></div>`;})()}</section>`;}
 function safeCosmeticColor(value,fallback){return typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value)?value:fallback;}
 function renderLocker(){const own=k=>COS[k].list.filter(it=>PROFILE.owned[k].includes(it.id));
-  renderCosmeticPresets();$('lockCats').innerHTML=Object.keys(COS).map(k=>`<button data-c="${k}" class="${k===lockCat?'on':''}">${COS[k].label} <small>${own(k).length}${k==='sidekick'?'/'+COS[k].list.length:''}</small></button>`).join('');
-  const l=own(lockCat);$('lockGrid').innerHTML=l.length?l.map(it=>cardHTML(lockCat,it,'locker')).join(''):`<p class="empty" style="grid-column:1/-1">Nothing here yet. ${lockCat==='sidekick'?'Buy one in the Item Shop, or hatch one from a golden egg in the Easter Egg Hunt event.':'Get some in the Item Shop.'}</p>`;renderCosmeticCustomizer(l);}
+  $('lockCats').innerHTML=Object.keys(COS).map(k=>`<button data-c="${k}" class="${k===lockCat?'on':''}">${COS[k].label} <small>${own(k).length}${k==='sidekick'?'/'+COS[k].list.length:''}</small></button>`).join('');
+  const l=own(lockCat);$('lockGrid').innerHTML=l.length?l.map(it=>cardHTML(lockCat,it,'locker')).join(''):`<p class="empty" style="grid-column:1/-1">Nothing here yet. ${lockCat==='sidekick'?'Buy one in the Item Shop, or hatch one from a golden egg in the Easter Egg Hunt event.':'Get some in the Item Shop.'}</p>`;}
 function shopRotation(){const d=new Date();const seed=d.getFullYear()*1000+d.getMonth()*40+d.getDate();let h=seed;const rnd=()=>{h=Math.imul(h^(h>>>15),2246822507)+0x6d2b79f5|0;return ((h>>>0)%10000)/10000;};
   const pool=[];for(const k in COS)for(const it of COS[k].list)if(it.price>0&& !it.pass)pool.push([k,it]);for(let i=pool.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}return pool.slice(0,8);}
 function renderItemShop(){const d=new Date(),mid=new Date(d);mid.setHours(24,0,0,0);const ms=mid-d;$('shopReset').textContent='Resets in '+Math.floor(ms/3.6e6)+'h '+Math.floor(ms/6e4)%60+'m';
@@ -4331,17 +4437,16 @@ function renderPass(){const pct=PROFILE.xp/XP_PER_LVL*100;$('bpInfo').innerHTML=
 function renderCareer(){const s=PROFILE.stats;const kd=(s.kills/Math.max(1,s.matches-s.wins)).toFixed(2),rank=rankFor(PROFILE.ranked.points);
   $('careerGrid').innerHTML=[[s.matches,'Matches'],[s.wins,'Victory Royales'],[s.kills,'Eliminations'],[kd,'K/D'],[s.top10,'Top 10'],[Math.round(s.dmg),'Damage dealt'],[s.best<99?'#'+s.best:'—','Best placement'],[Math.round(s.time/60)+'m','Time played'],[PROFILE.lvl,'Account level']].map(([v,l])=>`<div><b>${v}</b><small>${l}</small></div>`).join('')+`<div class="rankStat">${rankIcon(rank)}<span><b>${rank.name} · ${PROFILE.ranked.points}</b><small>Ranked rating</small></span></div>`+[[PROFILE.ranked.matches,'Ranked matches'],[PROFILE.ranked.crowns,'Victory crowns'],[PROFILE.ranked.crownWins,'Crown victories']].map(([v,l])=>`<div><b>${v}</b><small>${l}</small></div>`).join('');}
 function renderCredits(){const row=(w,a,l,u)=>`<div><b>${w}</b><span>${a}</span><em>${l}</em>${u?`<a href="${u}" target="_blank" rel="noopener">source</a>`:''}</div>`;
-  $('creditsList').innerHTML='<h4>Game</h4>'+row('Main updated version','krishnasaigaruda','Lead developer','https://github.com/krishnasaigaruda')+row('Sample version','crasebot1234','Original sample · <a href="sample/sample.html" target="_blank" rel="noopener" class="sampleLink">Play here</a>','https://github.com/crasebot1234')
+  $('creditsList').innerHTML='<h4>Game</h4>'+row('Main updated version','krishnasaigaruda','Lead developer','https://github.com/krishnasaigaruda')+row('Sample version','crasebot1234','Original sample · <a href="sample/sample.html" target="_blank" rel="noopener" class="sampleLink">Play here</a>','https://github.com/crasebot1234')+row('Sample version edited from','web-leb.com','Original code','https://www.web-leb.com/en/code/5116')
     +'<h4>Character models</h4>'+CHAR_MODELS.map(c=>row(c.title+' (skin: '+c.skin+')',c.author,c.license,c.url)).join('')
     +row('Soldier, Michelle, X Bot','Mixamo / three.js examples','Mixamo licence (free use)','https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf')+row('Ready Player Me sample avatar','Ready Player Me / three.js examples','three.js examples','https://github.com/mrdoob/three.js/tree/dev/examples/models/gltf')
     +'<h4>Sidekick models</h4>'+[['Shiba Inu','y4wdQpg767'],['Husky','wcWiuEqwzq'],['Wolf','P1gU3Qkr9r'],['Fox','Bc97C66HKi'],['Cat','qKICY6xla2'],['Birb','gZ2ExU9OAB'],['Dragon','VBvzjFIYws']].map(([n,i])=>row(n,'Quaternius','CC0 1.0','https://poly.pizza/m/'+i)).join('')
     +'<h4>Music</h4>'+['Exhilarate','Volatile Reaction','Sneaky Adventure','Hitman'].map(t=>row(t,'Kevin MacLeod (incompetech.com)','CC BY 4.0','https://incompetech.com')).join('')
-    +'<h4>Code and fonts</h4>'+row('three.js','three.js authors','MIT','https://threejs.org')+row('Barlow / Barlow Condensed','Jeremy Tribby','SIL Open Font License','https://fonts.google.com/specimen/Barlow')
-    +'<h4>Game</h4>'+row('Stormfall','Built with Claude','Everything else is procedural (generated in code)','');}
+    +'<h4>Code and fonts</h4>'+row('three.js','three.js authors','MIT','https://threejs.org')+row('Barlow / Barlow Condensed','Jeremy Tribby','SIL Open Font License','https://fonts.google.com/specimen/Barlow');}
 function spritePageAvailable(){return (MODE.id==='br'||MODE.id==='nobuild')&&!$('rankedToggle').checked;}
 function syncSpritePageVisibility(){const available=spritePageAvailable(),button=document.querySelector('#tabs button[data-tab="sprites"]'),section=$('tab-sprites');button.classList.toggle('hidden',!available);section.classList.toggle('hidden',!available);if(!available&&menuTab==='sprites')showTab('play');}
-function showTab(t){if(t==='sprites'&&!spritePageAvailable())return;if(t==='credits')renderCredits();if(t==='events')renderEvents();if(t==='howto')renderHowto();menuTab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));document.querySelectorAll('#menu .tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
-  if(t==='maps')renderMyMaps();if(t==='sprites')renderSprites();if(t==='locker')renderLocker();if(t==='shop')renderItemShop();if(t==='pass')renderPass();if(t==='career')renderCareer();renderWallet();sfx('ui');}
+function showTab(t){if(t==='sprites'&&!spritePageAvailable())return;const leftCustom=menuTab==='custom'&&t!=='custom';if(leftCustom&&custDirty()){custDiscard();toast('Unsaved customization discarded');}if(t==='credits')renderCredits();if(t==='events')renderEvents();if(t==='howto')renderHowto();menuTab=t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));document.querySelectorAll('#menu .tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
+  if(t==='maps')renderMyMaps();if(t==='sprites')renderSprites();if(t==='locker')renderLocker();if(t==='custom'){renderCustomize();custLobbyPreview();}if(leftCustom){spawnLobbyChar();spawnLobbyPet();}if(t==='shop')renderItemShop();if(t==='pass')renderPass();if(t==='career')renderCareer();renderWallet();sfx('ui');}
 function saveSnapshotObj(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&& k.startsWith('stormfall.'))o[k]=localStorage.getItem(k);}return o;}
 function initSaveUI(){$('saveStatus').textContent='Your progress (level, Storm Bucks, skins, settings, sprites and maps) is saved in this browser. To move it to another browser or computer, download your save file here and load it there.';
   $('saveDl').onclick=()=>{const blob=new Blob([JSON.stringify(saveSnapshotObj(),null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='stormfall-save.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast('Save file downloaded');};
@@ -4361,10 +4466,21 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
     else if(e.target.matches('[data-effect]')){if(!COSMETIC_EFFECTS.some(([effect])=>effect===e.target.value))return;config.effect=e.target.value;}
     else return;
     refreshCosmeticPreview();};
+  /* live preview while dragging a color picker; the panel itself re-renders on 'change' so the open picker isn't destroyed */
+  let custLiveT=0,custLiveTimer=null;
+  $('cosCustomizer').oninput=e=>{if(e.target.matches('[data-look-name]')){CUSTX.lookName=e.target.value;return;}if(!e.target.matches('[data-color]'))return;const panel=e.target.closest('.cosCustomizer');if(!panel)return;const {kind,id}=panel.dataset;if(!COS[kind]||!PROFILE.owned[kind].includes(id))return;
+    const item=COS[kind].by[id],slot=e.target.dataset.color,defaults=cosmeticDefaults(kind,item);if(!Object.prototype.hasOwnProperty.call(defaults,slot))return;
+    const all=PROFILE.customizations||(PROFILE.customizations={}),byKind=all[kind]||(all[kind]={}),config=byKind[id]||(byKind[id]={});config[slot]=safeCosmeticColor(e.target.value,defaults[slot]);
+    const run=()=>{custLiveT=performance.now();custLiveTimer=null;custLobbyPreview();};clearTimeout(custLiveTimer);if(performance.now()-custLiveT>120)run();else custLiveTimer=setTimeout(run,120);};
   $('cosCustomizer').onclick=e=>{const panel=e.target.closest('.cosCustomizer');if(!panel)return;const {kind,id}=panel.dataset;if(!COS[kind]||!PROFILE.owned[kind].includes(id))return;
-    if(e.target.closest('[data-custom-randomize]')){randomizeCosmetic(kind,id);refreshCosmeticPreview();toast(`${COS[kind].by[id].name} randomized`);return;}
-    if(!e.target.closest('[data-custom-reset]'))return;PROFILE.customizations[kind]=PROFILE.customizations[kind]||{};delete PROFILE.customizations[kind][id];if(!Object.keys(PROFILE.customizations[kind]).length)delete PROFILE.customizations[kind];
-    refreshCosmeticPreview();toast('Customization reset');};
+    if(e.target.closest('[data-custom-randomize]')){randomizeCosmetic(kind,id);refreshCosmeticPreview();toast(`${COS[kind].by[id].name} randomized · buy to keep it`);return;}
+    if(e.target.closest('[data-custom-apply]')){custCommit();return;}
+    if(e.target.closest('[data-look-delete]')){const b=e.target.closest('[data-look-delete]');if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Click again to delete';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='Delete look';}},3000);return;}deleteVariant(kind,id);return;}
+    if(e.target.closest('[data-custom-discard]')){custDiscard();refreshCosmeticPreview();toast('Changes discarded');return;}
+    if(!e.target.closest('[data-custom-reset]'))return;custSetConfig(kind,id,null);refreshCosmeticPreview();toast('Back to the default look · press Save to keep it');};
+  $('custCats').onclick=e=>{const b=e.target.closest('button[data-c]');if(!b)return;custDiscard();custCat=b.dataset.c;renderCustomize();custLobbyPreview();sfx('ui');};
+  $('custGrid').onclick=e=>{const c=e.target.closest('.card');if(!c)return;initAudio();if(custSel[custCat]!==c.dataset.id)custDiscard();custSel[custCat]=c.dataset.id;renderCustomize();custLobbyPreview();sfx('ui');};
+  addEventListener('pagehide',()=>{if(custDirty()){custDiscard();saveProfile();}});
   $('cosPresets').onclick=e=>{const host=e.currentTarget,select=host.querySelector('[data-preset-select]'),index=select&&select.value!==''?Number(select.value):-1;
     if(e.target.closest('[data-preset-save]')){saveCosmeticPreset(host.querySelector('[data-preset-name]').value);return;}
     if(e.target.closest('[data-preset-apply]')){if(!applyCosmeticPreset(index))toast('Choose a saved preset first');return;}
@@ -4378,9 +4494,6 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
     if(k==='sidekick'&& PROFILE.eq.sidekick===id){PROFILE.eq.sidekick='none';saveProfile();renderLocker();spawnLobbyPet();sfx('ui');toast(it.name+' unequipped');return;}
     PROFILE.eq[k]=id;saveProfile();renderLocker();sfx('ui');toast(it.name+' equipped');
     if(k==='skin'||k==='tool')spawnLobbyChar();if(k==='sidekick')spawnLobbyPet();if(k==='glider'){spawnLobbyChar();LOBBY.char.showGlider=3;}};
-  $('avAdd').onclick=()=>{const url=$('avUrl').value.trim();if(!/^https:\/\/.+\.glb(\?.*)?$/i.test(url)){toast('Paste a link ending in .glb');return;}
-    toast('Loading avatar…');new THREE.GLTFLoader().load(url,g=>{try{const avs=PROFILE.avatars||(PROFILE.avatars=[]);const i=avs.length;const k='av'+i;MODELS[k]=prepModel(g.scene);avs.push(url);registerAvatar(k,i);PROFILE.eq.skin=k;saveProfile();$('avUrl').value='';lockCat='skin';renderLocker();spawnLobbyChar();toast('Avatar imported and equipped');}
-      catch(err){console.warn(err);toast('That model has no compatible skeleton (needs a Ready Player Me / Mixamo rig)');}},undefined,()=>toast('Could not load that link'));};
   $('itemShopCats').onclick=e=>{const b=e.target.closest('button[data-c]');if(!b)return;SHOPX.cat=b.dataset.c;renderItemShop();sfx('ui');};
   $('itemShopGrid').onclick=e=>{const c=e.target.closest('.card');if(!c)return;const k=c.dataset.kind,id=c.dataset.id,it=COS[k].by[id];initAudio();
     if(PROFILE.owned[k].includes(id)){toast('Already owned — equip it in the Locker');return;}
@@ -4457,24 +4570,27 @@ function initMenuUI(){loadPets();initSaveUI();initWallEditUI();
 
 
 // ---------- How to Play guide and the welcome / update notes window (opens once each time the game is opened) ----------
-const SF_VERSION='1.8';
+const SF_VERSION='1.9';
 const UPDATE_NOTES=[
-  ['Monthly events','Every month now has a 3-day event, like Halloween Night in October with jack-o’-lanterns, a night sky and trick-or-treat pumpkins. Day 1 warms up, day 2 is the main event with its own special, and day 3 is the encore. Play on day 2 to earn that event’s outfit. See the <b>Events</b> tab.'],
-  ['Easter eggs and 100 sidekicks','There are now 100 sidekicks. Most can only be hatched from the golden eggs in the Easter Egg Hunt event, and every egg has a 50% chance to hatch one.'],
-  ['Ranked queue','Tick <b>Ranked queue</b> under Game mode before playing Battle Royale or No Build. Climb eight tiers from Bronze to Unreal. Good placements and eliminations earn Rank Points (RP); finishing outside the top 20 costs some. Higher ranks bring tougher bots.'],
-  ['Victory Crowns','Win a Battle Royale or No Build match to earn a crown and carry it into your next match. Win again while wearing it for a Crown Victory. Dropped crowns appear on the map and compass; bots treat them as high-priority supplies. Each match gives one to three bots a crown.'],
-  ['Rare and Legendary chests','Chests that glow <b style="color:#2f9bff">blue</b> or <b style="color:#ffae1a">gold</b> always hold Rare or Legendary loot. Look for the coloured gem on the lock.'],
-  ['Hunger Games overhaul','No storm, and building is on. Escape forest fires, poison fog and tracker jackers, watch for hidden traps and rigged chests (look for the red tripwire), dodge Peacekeeper drones, and leave the dark nightlock berries alone. In the finale, mutts drive everyone to the Cornucopia.'],
-  ['New Settings','Settings are grouped, with render scale, shadows, bloom and a separate sound-effects volume. Most of them are in the pause menu too, and Restore defaults resets everything.'],
-  ['How to Play tab','This guide is now a tab in the lobby, so you can check controls and tips any time.'],
-  ['Editing','Walls, floors, stairs and ceilings can all be edited. The Open edit after building setting controls whether a placed piece opens its grid; you can also press your edit bind while looking at one of your builds. Click or drag to select squares (blue is solid, yellow gets cut out), then press Q or your edit bind to confirm. Esc cancels. Turbo Build places pieces while you hold build, uses materials for every piece, and stops when you run out. The Edit Tooltip setting hides the on-screen edit guide.'],
-  ['Sprites','Sprites can be found and used in Unranked Battle Royale and No Build only. The Sprites page appears in those modes and stays hidden elsewhere. Pickups show each sprite’s description and a yellow ! when it is new; swap sprites even with a full inventory, keeping their XP and level when dropped. Legendary portable extractors take 5 seconds to use, stack to 3, and have a 15-second cooldown. Sprites start at Level 1, level up to 5, and keep their MAX crown even if lost. About half of bots spawn with a random sprite and level.'],
-  ['Sprite Weekends','Every Saturday and Sunday, portable extractors are 3× as common and XP, Sprite XP, and Sprite Dust are doubled.'],
-  ['Locker customization','Customize cosmetics with colors, styles, patterns, materials, and visual effects. Randomize individual cosmetics or your full loadout, save up to eight named presets, and customize sidekicks too.'],
-  ['New harvesting tools and glider','The Pocket Knife and animated Butterfly Knife are available as harvesting tools. Win a match to unlock the Victory Umbrella glider.'],
-  ['My Maps creative tools','Configure remotes as inventory items in starting loadouts or item droppers. Choose a program and channel, then use the selected remote to dispense linked droppers, teleport, restore health or shield, or launch upward. Droppers dispense only when interacted with or activated by a matching remote. Add bounce pads, healing stations, teleporters and spawn points, plus starting loadouts, No Damage, Infinite Materials and plane-drop settings.'],
-  ['Chain Shotgun fragments','Chain Shotgun fragments spread less and turn back toward the character hit by their parent bullet sooner.'],
-  ['Exotic weapons','Exotics are distinct weapons with unique powers: the Homing Rocket Launcher tracks targets; the Speedy AR fires faster during sustained fire; the Chain Shotgun splits into successive bursts; the Boom Sniper explodes for 250 damage; the Trouble SMG fires four low-damage shots; and the Marker Pistol marks enemies on the map and compass and outlines them in red through walls for 10 seconds. Exotics are 2× as common normally and 4× as common on Sprite Weekends.']];
+  ['Teleporters in Battle Royale and the City','Teleporters now link towns in Battle Royale and No Build, and the corners of the City in Team Deathmatch. <b style="color:#3fe36b">Green</b> teleporters are two-way. A <b style="color:#ffd23f">yellow</b> teleporter is a one-way entrance that sends you to its <b style="color:#ff4a3d">red</b> exit, and the red exit can\'t send you back.'],
+  ['Healing stations in normal maps','Rare healing stations now appear in some towns and around the City. Use one for +50 health and +25 shield. It turns grey and recharges for 10 seconds after each use.'],
+  ['My Maps: item droppers','Item droppers can hold up to 4 items and give a random one, each in order, or all at once. Set the amount per use, total uses (or infinite), a cooldown, auto-refill when empty, whether it starts on or off, whether it hides when empty, and whether it works by interact, by remote, or both.'],
+  ['My Maps: custom remotes','Build up to 4 custom remotes under Match settings. Tick any mix of programs and one click runs them all: dispense, refill or turn droppers on/off, teleport, heal, shield, launch, refill ammo, give materials and speed boost. Each remote has its own name, channel, uses, cooldown and power. Give them out from droppers, starting inventory or the new Remote button.'],
+  ['My Maps: remote buttons','Place a Remote button anyone can press to run a remote\'s programs.'],
+  ['Customize Avatar (C.A.)','A new <b>C.A.</b> tab next to the Locker is where you customize outfits, harvesting tools, gliders, emotes and sidekicks. Change primary, accent and trim colors, pick a style (Original, Glow, Metallic and more), add a pattern (Stripes, Checker, Camo, Gradient) and an effect (Glow, Holographic, Sparkle).'],
+  ['Live avatar preview','While you customize, your character on the right wears the item you picked, even if it isn\'t equipped, and changes color live as you drag the color picker. Gliders open above you, emotes play and sidekicks appear beside you. Leaving the tab puts your equipped look back.'],
+  ['Pay with Storm Bucks','Previewing is free. To keep your changes, buy them: 25 per color, 50 for a style, 75 for a pattern and 100 for an effect. The panel shows what you changed and the total before you pay. Unbought changes are discarded when you leave. Resetting to the default look is free.'],
+  ['Loadout presets','Presets now live in the C.A. tab with a cleaner layout. Save up to 8 looks of your equipped items and their customizations, and apply them any time for free. Randomize loadout costs 300 Storm Bucks.'],
+  ['Saved looks','Buying a customization on a regular item saves it as a brand-new item in your Locker with its own name, and the original stays as it was. Customize a saved look again to update it, or delete it any time. Keep up to 24.'],
+  ['Harvesting tools with perks','Harvesting tools now have real stats shown in the Item Shop and Locker: damage, harvesting power and swing speed. The Pocket Knife swings fast, the Oni Katana hits hard, the Gilded Sabre harvests +60% and the Void Edge does +35% damage. Every knife now has its own price.'],
+  ['Gliders with perks','Gliders now change how you fly: faster glide speed and longer float time. Neon Glide is the fastest in the shop; the Victory Umbrella is the best of all.'],
+  ['New butterfly knife','The Butterfly Knife has a detailed new model with a clip-point blade, slotted handles with a glowing liner, pivot screws and a latch.'],
+  ['Better holographic effect','Holographic cosmetics are shiny and see-through without showing the inside of your character.'],
+  ['Removed avatar import','The Import a realistic avatar box is gone from the Locker. Avatars you already imported still work.'],
+  ['Texture fix','Holographic and glow cosmetic effects no longer turn car wheels, doors, walls and the plane cabin see-through or glowing.'],
+  ['Victory Crown fix','If you already carry a crown, extra dropped crowns no longer stay stuck on the ground. Collect them for +100 Gold.'],
+  ['My Maps: healing stations and teleporters','Choose how much health and shield a healing station gives and how long it recharges. Teleporters can be two-way (green), a one-way entrance (yellow) or a one-way exit (red).'],
+];
 function howtoHTML(){const T=TOUCH.on;const rar=RAR.map((n,i)=>`<span style="background:${RAR_COL[i]}">${n}</span>`).join('');
   const keys=T?`<dl class="howKeys"><dt>Left stick</dt><dd>Move. Push all the way to sprint</dd><dt>Drag right side</dt><dd>Look and aim</dd><dt>FIRE · AIM</dt><dd>Shoot or swing · aim down sights or scope</dd><dt>JUMP</dt><dd>Jump, dive from the plane, open the glider</dd><dt>USE</dt><dd>Open chests, pick up, drive, doors. It glows when something is in reach</dd><dt>BUILD</dt><dd>Then WALL, FLOOR, RAMP or ROOF; aim up for a floor above you or down for one at your feet</dd><dt>Hotbar</dt><dd>Tap a slot to switch weapons</dd><dt>Top row</dt><dd>ITEMS, DROP, SHOP, MAP, CHAT and pause</dd></dl>`
     :`<dl class="howKeys"><dt>W A S D</dt><dd>Move · Shift sprint · Ctrl crouch or slide · Space jump</dd><dt>Mouse</dt><dd>Left fire · Right aim (snipers scope in) · Wheel switch slots · aim up for a floor above you or down for one at your feet</dd><dt>1 to 6 · F</dt><dd>Hotbar slots · Storm Blade (sword and harvest tool)</dd><dt>E · R · H</dt><dd>Interact · reload · drop the selected item</dd><dt>Q · Z X C V · G</dt><dd>Build mode · wall, floor, ramp, roof · edit your wall</dd><dt>Space</dt><dd>Dive from the plane · open the glider (W dives faster)</dd><dt>M · Tab · U</dt><dd>Map · inventory · in-match shop</dd><dt>Enter · Esc</dt><dd>Chat · pause</dd></dl>`;
@@ -4491,7 +4607,9 @@ function howtoHTML(){const T=TOUCH.on;const rar=RAR.map((n,i)=>`<span style="bac
   <div class="howCard"><h4>Events</h4><p>Every month has a 3-day event that changes the island: night skies, snow, decorations and a special on the main day (day 2). Playing during an event gives extra XP, and a match on day 2 earns that event's outfit. The Events tab shows the whole year.</p></div>
   <div class="howCard"><h4>Tips</h4><ul><li>Pick a quiet landing spot in your first matches.</li><li>Reload behind cover, not in the open.</li><li>High ground wins fights: build a ramp.</li><li>Sprites are ultra rare. If you find one beside a tree, walk into it.</li></ul></div>
   </div>`;}
-function newsHTML(){return `<ul class="newList">${UPDATE_NOTES.map(([t,d])=>`<li><span class="tag">NEW</span><b>${t}</b><p>${d}</p></li>`).join('')}</ul>`;}
+function s2HeroHTML(){return `<div class="s2hero" role="img" aria-label="Season 2 is coming soon"><div class="s2img" id="s2img"></div><div class="s2grade"></div><div class="s2rays"></div><div class="s2flash"></div>
+  <div class="s2txt"><small>Stormfall</small><b>Season 2</b><span>Coming soon</span><p>Ultra-realistic graphics, a brand-new island and more. Get ready to drop in.</p></div></div>`;}
+function newsHTML(){return s2HeroHTML()+`<ul class="newList">${UPDATE_NOTES.map(([t,d])=>`<li><span class="tag">NEW</span><b>${t}</b><p>${d}</p></li>`).join('')}</ul>`;}
 function renderHowto(){$('howtoBody').innerHTML=howtoHTML();}
 // ---------- events tab and the lobby banner ----------
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -4516,7 +4634,7 @@ function renderEvBanner(){const b=$('evBanner');if(!b)return;const weekend=$('sp
   else{const u=upcomingEvents(new Date())[0];E=u.ev;const n=evDaysTo(u.dates[0]);html=`<small>Next event · ${evRange(u.dates)}</small><b>${E.name}</b><span>${n===1?'Starts tomorrow':'Starts in '+n+' days'}. Tap to see every event this year.</span>`;}
   b.style.setProperty('--ec',E.col);b.innerHTML=html;b.classList.remove('hidden');b.onclick=()=>{showTab('events');sfx('ui');};}
 
-function welcomeShow(which){$('welcomeBody').innerHTML=which==='howto'?howtoHTML():newsHTML();$('welcomeBody').scrollTop=0;
+function welcomeShow(which){$('welcomeBody').innerHTML=which==='howto'?howtoHTML():newsHTML();if(which!=='howto'){if(HERO.url)applyHeroImg();HERO.want=true;setTimeout(()=>{HERO.want=true;},1500);}$('welcomeBody').scrollTop=0;
   document.querySelectorAll('.welcomeTabs button').forEach(b=>b.classList.toggle('on',b.dataset.w===which));}
 function openWelcome(which){$('welcomeVer').textContent='Update '+SF_VERSION;welcomeShow(which||'news');$('welcome').classList.remove('hidden');}
 function closeWelcome(){$('welcome').classList.add('hidden');try{sessionStorage.setItem('stormfall.welcomed','1');}catch(e){}}
@@ -4628,6 +4746,12 @@ SIDEKICKS.push({id:'eggbert',name:'Eggbert',file:'birb',rar:4,price:0,egg:true,h
 for(const s of SIDEKICKS)SIDEKICK_BY[s.id]=s;
 COS.sidekick={list:SIDEKICKS,by:SIDEKICK_BY,label:'Sidekicks'};
 for(const k in COS)for(const it of COS[k].list)if(it.price>0)it.price*=2;
+/* saved looks: buying a customization on a normal item saves it as its own new item ("variant") that copies the base item */
+const VARIANT_KINDS=['skin','tool','glider','sidekick'],VARIANT_MAX=24;
+function registerVariant(v){const C0=COS[v.kind];if(!C0||C0.by[v.id])return C0&&C0.by[v.id];const base=C0.by[v.base];if(!base)return null;
+  const it=Object.assign({},base,{id:v.id,name:v.name,price:0,variantOf:v.base});delete it.pass;delete it.reward;delete it.egg;delete it.ev;
+  C0.list.push(it);C0.by[v.id]=it;if(v.kind==='skin'&&base.custom)CUSTOM_SKINS.push(it);if(!PROFILE.owned[v.kind].includes(v.id))PROFILE.owned[v.kind].push(v.id);return it;}
+if(!Array.isArray(PROFILE.variants))PROFILE.variants=[];PROFILE.variants=PROFILE.variants.filter(v=>v&&VARIANT_KINDS.includes(v.kind)&&typeof v.id==='string'&&typeof v.name==='string'&&typeof v.base==='string');PROFILE.variants.forEach(registerVariant);/* looks based on imported avatars register once those avatars load */
 const PETS={},PET_FACE=Math.PI;let petsLoading=false;
 // sidekick models load in the background; a failed download (slow or flaky connection) is retried instead of leaving that pet missing
 const PET_LOADING=new Set();
@@ -4650,7 +4774,8 @@ function makePet(id,custom){const d=SIDEKICK_BY[id];if(!d||!d.file)return null;c
   if(d.kind==='fly'&& acts.run)acts.idle=acts.walk=acts.run;
   return {def:d,wrap,root,mixer,acts,cur:null,pos:new V3(),yaw:0,atkCd:0,atkT:0,target:null,think:0,lootT:60,away:true,shots:[]};}
 function petPlay(pt,n){const a=pt.acts[n]||pt.acts.idle;if(!a||pt.cur===a)return;a.reset();a.setEffectiveTimeScale(n==='attack'?1.3:1);a.fadeIn(.18).play();if(pt.cur)pt.cur.fadeOut(.18);pt.cur=a;}
-function spawnLobbyPet(){if(LOBBY.pet){LOBBY.grp&& LOBBY.grp.parent&& scene.remove(LOBBY.pet.wrap);LOBBY.pet=null;}const pt=makePet(PROFILE.eq.sidekick,cosmeticConfig('sidekick',PROFILE.eq.sidekick));if(!pt)return;
+function spawnLobbyPet(){return withPreviewEq(spawnLobbyPetNow);}
+function spawnLobbyPetNow(){if(LOBBY.pet){LOBBY.grp&& LOBBY.grp.parent&& scene.remove(LOBBY.pet.wrap);LOBBY.pet=null;}const pt=makePet(PROFILE.eq.sidekick,cosmeticConfig('sidekick',PROFILE.eq.sidekick));if(!pt)return;
   pt.wrap.position.copy(LOBBY.pos).add(new V3(1.05,0,.55));pt.wrap.rotation.y=Math.PI*1.15;scene.add(pt.wrap);petPlay(pt,'idle');LOBBY.pet=pt;}
 const SK={pet:null,pets:[]};const PET_HP=[60,80,100,130,170];const _petBox=new THREE.BoxGeometry(1,1,1).translate(0,.5,0);
 function attachPet(pt,owner){pt.owner=owner;pt.maxHp=PET_HP[pt.def.rar]||80;pt.hp=pt.maxHp;pt.dead=false;pt.respawnAt=0;pt.engageT=0;pt.restT=0;pt.bites=0;
@@ -4873,53 +4998,102 @@ function customItemFromKey(key){if(typeof key!=='string')return null;
   if(key.startsWith('heal:')){const id=key.slice(5);return HEALS[id]?{type:'heal',id,r:HEALS[id].rar,count:HEALS[id].give}:null;}
   if(key.startsWith('throw:')){const id=key.slice(6);return THROWS[id]?{type:'throw',id,r:THROWS[id].rar,count:THROWS[id].give}:null;}
   if(key.startsWith('food:')){const id=key.slice(5);return FOOD[id]?{type:'food',id,r:FOOD[id].rar,count:1}:null;}
-  if(key.startsWith('remote:')){const [,command,channel]=key.split(':');return REMOTE_COMMANDS.some(([id])=>id===command)&&/^[1-4]$/.test(channel||'')?{type:'remote',command,channel:+channel,r:1}:null;}
+  if(key.startsWith('remote:')){const [,command,channel]=key.split(':');return REMOTE_COMMANDS.some(([id])=>id===command)&&/^[1-4]$/.test(channel||'')?makeRemote([command],+channel,0,0,''):null;}
+  if(key.startsWith('cremote:')){const pr=customRemotePresets()[+key.slice(8)];return pr?makeRemote(pr.cmds,pr.channel,pr.uses,pr.cd,pr.name,pr.power):null;}
   return null;}
-const REMOTE_COMMANDS=[['drop','Dispense linked droppers'],['teleport','Teleport to linked portal'],['heal','Restore health'],['shield','Restore shield'],['launch','Launch upward']];
-function customDevicePrompt(d){if(d.t==='dropper'){const item=customItemFromKey(d.itemKey);return item?'Dispense '+itemName(item):'Use item dropper';}
-  if(d.t==='remote')return 'Run remote · '+(REMOTE_COMMANDS.find(([id])=>id===d.command)?.[1]||'Program')+' · Channel '+d.channel;
-  return 'Use healing station';}
+function makeRemote(cmds,channel,uses,cd,name,power){cmds=(cmds||[]).filter(c=>REMOTE_COMMANDS.some(([id])=>id===c));if(!cmds.length)cmds=['drop'];uses=Math.max(0,Math.floor(+uses||0));
+  return {type:'remote',command:cmds[0],cmds,channel:clamp(+channel||1,1,4),uses,usesLeft:uses,cd:Math.max(0,+cd||0),name:(name||'').slice(0,24),power:clamp(+power||1,.5,3),r:uses?3:1};}
+function remoteLabel(it){if(it.name)return it.name;const cmds=it.cmds||[it.command];return 'Remote · '+(cmds.length>1?cmds.length+' programs':(REMOTE_COMMANDS.find(([id])=>id===cmds[0])?.[1]||'Unprogrammed'))+' · Channel '+it.channel;}
+function defaultRemotePreset(i){return {name:'Custom remote '+(i+1),cmds:['drop'],channel:clamp(i+1,1,4),uses:0,cd:0,power:1};}
+function customRemotePresets(){if(!CM||!CM.meta)return [];if(!Array.isArray(CM.meta.remotes))CM.meta.remotes=[];for(let i=0;i<4;i++)if(!CM.meta.remotes[i])CM.meta.remotes[i]=defaultRemotePreset(i);return CM.meta.remotes;}
+const REMOTE_COMMANDS=[['drop','Dispense linked droppers'],['teleport','Teleport to linked portal'],['heal','Restore health'],['shield','Restore shield'],['launch','Launch upward'],['refill','Refill linked droppers'],['toggle','Turn linked droppers on/off'],['ammo','Refill ammo'],['mats','Give materials'],['speed','Speed boost']];
+const QUICK_REMOTE_COMMANDS=['drop','teleport','heal','shield','launch'];
+function customDevicePrompt(d){if(d.t==='dropper'){const keys=dropperKeys(d);if(!keys.length)return 'Empty item dropper';
+    const what=d.order==='all'&&keys.length>1?keys.length+' items':keys.length>1?(d.order==='cycle'?'next item':'random item'):itemName(customItemFromKey(keys[0]));
+    const st=d.enabled===false?' · OFF':d.uses>0&&d.left<=0?' · EMPTY':d.readyAt>gameTime?' · '+Math.ceil(d.readyAt-gameTime)+'s':d.act==='remote'?' · remote only':'';
+    return 'Dispense '+((d.amount||1)>1?(d.amount)+'× ':'')+what+(d.uses>0?' ('+Math.max(0,d.left)+' left)':'')+st;}
+  if(d.t==='remote'){const r=deviceRemote(d);return 'Press button · '+remoteLabel(r)+(r.uses>0?' ('+r.usesLeft+' left)':'')+(r.cooldownUntil>gameTime?' · '+Math.ceil(r.cooldownUntil-gameTime)+'s':'');}
+  const hp=d.hp??50,sh=d.sh??25;return d.readyAt>gameTime?'Healing station recharging · '+Math.ceil(d.readyAt-gameTime)+'s':'Use healing station · '+[hp?'+'+hp+' health':'',sh?'+'+sh+' shield':''].filter(Boolean).join(' ');}
 const editorDevices=[];
 function createEditorDevice(o,y){const g=new THREE.Group(),mat=(color,emissive=color)=>new THREE.MeshStandardMaterial({color:C(color),emissive:C(emissive),emissiveIntensity:.75,roughness:.35,metalness:.2});
-  if(o.t==='teleporter'){const color=['#57d6ff','#ffbf48','#aa7cff','#5dff9d'][clamp((o.channel||1)-1,0,3)];const m=mat(color);const base=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.15,.22,20),mat('#303a48'));base.position.y=.12;g.add(base);
+  if(o.t==='teleporter'){const color=TELE_MODES[teleMode(o)][1],chCol=CHANNEL_COLORS[clamp((o.channel||1)-1,0,3)];const m=mat(color);const base=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.15,.22,20),mat('#303a48'));base.position.y=.12;g.add(base);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(1.08,.05,6,28),mat(chCol));rim.rotation.x=Math.PI/2;rim.position.y=.24;g.add(rim);
+    if(teleMode(o)!=='two'){const arrow=new THREE.Mesh(new THREE.ConeGeometry(.22,.45,10),m);arrow.position.y=2.55;if(teleMode(o)==='out')arrow.rotation.z=Math.PI;g.add(arrow);}
     const ring=new THREE.Mesh(new THREE.TorusGeometry(.92,.12,10,28),m);ring.position.y=1.35;g.add(ring);const core=new THREE.Mesh(new THREE.CircleGeometry(.75,24),new THREE.MeshBasicMaterial({color:C(color),transparent:true,opacity:.22,side:THREE.DoubleSide}));core.position.set(0,1.35,0);g.add(core);
   }else if(o.t==='dropper'){const m=mat('#ffc04a');const base=new THREE.Mesh(new THREE.CylinderGeometry(.6,.8,.25,12),mat('#343b45'));base.position.y=.13;g.add(base);
-    const stem=new THREE.Mesh(new THREE.CylinderGeometry(.12,.22,1.3,8),m);stem.position.y=.9;g.add(stem);const cap=new THREE.Mesh(new THREE.OctahedronGeometry(.42),m);cap.position.y=1.65;g.add(cap);
+    const stem=new THREE.Mesh(new THREE.CylinderGeometry(.12,.22,1.3,8),m);stem.position.y=.9;g.add(stem);const cap=new THREE.Mesh(new THREE.OctahedronGeometry(.42),m);cap.position.y=1.65;g.add(cap);g.userData.mat=m;
   }else if(o.t==='remote'){const m=mat('#ff5aa5');const base=new THREE.Mesh(new THREE.BoxGeometry(1.05,.28,.7),mat('#303a48'));base.position.y=.24;g.add(base);
     const face=new THREE.Mesh(new THREE.BoxGeometry(.52,.12,.08),m);face.position.set(0,.35,-.37);g.add(face);for(const x of [-.3,0,.3]){const btn=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.08,10),m);btn.position.set(x,.44,.12);g.add(btn);}
-  }else if(o.t==='medstation'){const m=mat('#64e39a');const base=new THREE.Mesh(new THREE.CylinderGeometry(.72,.85,.25,16),mat('#343b45'));base.position.y=.13;g.add(base);
+  }else if(o.t==='medstation'){const m=mat('#64e39a');g.userData.mat=m;const base=new THREE.Mesh(new THREE.CylinderGeometry(.72,.85,.25,16),mat('#343b45'));base.position.y=.13;g.add(base);
     const cross=new THREE.Mesh(new THREE.BoxGeometry(.18,1.25,.18),m);cross.position.y=.92;g.add(cross);const bar=new THREE.Mesh(new THREE.BoxGeometry(.8,.18,.18),m);bar.position.y=.92;g.add(bar);
   }else if(o.t==='bounce'){const base=new THREE.Mesh(new THREE.CylinderGeometry(.95,1.05,.25,18),mat('#343b45'));base.position.y=.13;g.add(base);
     const spring=new THREE.Mesh(new THREE.CylinderGeometry(.55,.65,.26,18),mat('#57d6ff'));spring.position.y=.37;g.add(spring);const arrow=new THREE.Mesh(new THREE.ConeGeometry(.38,.75,12),mat('#e4f8ff'));arrow.position.y=.85;g.add(arrow);
   }else{const base=new THREE.Mesh(new THREE.CylinderGeometry(.9,1,.2,16),mat('#374555'));base.position.y=.12;g.add(base);
     const mark=new THREE.Mesh(new THREE.BoxGeometry(1.25,.12,.22),mat('#60d9ff'));mark.position.y=.27;g.add(mark);const cross=mark.clone();cross.rotation.y=Math.PI/2;g.add(cross);}
-  g.position.set(o.x,y,o.z);g.rotation.y=(o.r||0);scene.add(g);const d={...o,y,g};editorDevices.push(d);return d;}
+  g.position.set(o.x,y,o.z);g.rotation.y=(o.r||0);scene.add(g);const d={...o,y,g};editorDevices.push(d);if(d.t==='dropper')resetDropper(d,true);return d;}
+const CHANNEL_COLORS=['#57d6ff','#ffbf48','#aa7cff','#5dff9d'];
+const TELE_MODES={two:['Two-way','#3fe36b'],in:['One-way entrance','#ffd23f'],out:['One-way exit','#ff4a3d']};
+function teleMode(d){return TELE_MODES[d.mode]?d.mode:'two';}
+function setMedLook(d){const m=d.g.userData.mat;if(!m)return;const ready=!(d.readyAt>gameTime);if(d.lookReady===ready)return;d.lookReady=ready;m.color.set(ready?'#64e39a':'#59616b');m.emissive.set(ready?'#64e39a':'#2a2f35');}
 function teleportCustomChar(c,channel,source=null){const portals=editorDevices.filter(d=>d.t==='teleporter'&&d.channel===channel);if(!portals.length)return false;
   const from=source||portals.slice().sort((a,b)=>Math.hypot(c.pos.x-a.x,c.pos.z-a.z)-Math.hypot(c.pos.x-b.x,c.pos.z-b.z))[0];
-  const destinations=portals.filter(d=>d!==from).sort((a,b)=>Math.hypot(a.x-from.x,a.z-from.z)-Math.hypot(b.x-from.x,b.z-from.z));
-  const to=destinations[0]||(!source?from:null);if(!to)return false;
+  if(source&&teleMode(source)==='out')return false;
+  const destinations=portals.filter(d=>d!==from&&teleMode(d)!=='in').sort((a,b)=>Math.hypot(a.x-from.x,a.z-from.z)-Math.hypot(b.x-from.x,b.z-from.z));
+  const to=destinations[0]||(!source&&teleMode(from)!=='in'?from:null);if(!to)return false;
   let dx=c.pos.x-from.x,dz=c.pos.z-from.z;if(Math.hypot(dx,dz)<.1){dx=Math.sin(c.yaw||0);dz=Math.cos(c.yaw||0);}const l=Math.hypot(dx,dz)||1;dx/=l;dz/=l;
   const x=to.x+dx*1.6,z=to.z+dz*1.6;c.pos.set(x,groundAt(x,z,to.y+2,null)+.08,z);c.vel.set(0,0,0);c.onGround=false;c.teleportT=gameTime+1.5;sfx('whoosh');return true;}
-function dispenseCustomDropper(d){const item=customItemFromKey(d.itemKey);if(!item)return false;spawnPickup(item,d.x,terrainH(d.x,d.z)+.6,d.z,true);d.g.rotation.y+=Math.PI/8;sfx('pickup');return true;}
+const DROP_FAIL={config:'This dropper has no valid item',off:'This dropper is turned off',remote:'This dropper only works with a remote',interact:'This dropper can only be used by hand',out:'This dropper is empty',cooldown:'Dropper is recharging'};
+function dropperKeys(d){return (Array.isArray(d.items)?d.items:[d.itemKey]).filter(k=>customItemFromKey(k));}
+function resetDropper(d,first){if(first){d.idx=0;d.enabled=d.on!==0;}d.uses=Math.max(0,+d.uses||0);d.left=d.uses;d.readyAt=0;d.refillAt=0;setDropperLook(d);}
+function setDropperLook(d){const m=d.g&&d.g.userData.mat;const live=d.enabled!==false&&!(d.uses>0&&d.left<=0);
+  if(m){m.color.set(live?'#ffc04a':'#59616b');m.emissive.set(live?'#ffc04a':'#2a2f35');}
+  d.g.visible=live||!d.hide||gameState==='edit'||!!EDITING;}
+function dispenseCustomDropper(d,src='interact'){const keys=dropperKeys(d);if(!keys.length)return 'config';
+  if(d.enabled===false)return 'off';if(src==='interact'&&d.act==='remote')return 'remote';if(src==='remote'&&d.act==='interact')return 'interact';
+  if(d.uses>0&&d.left<=0)return 'out';if(d.readyAt>gameTime)return 'cooldown';
+  let chosen;if(d.order==='all')chosen=keys;else if(d.order==='cycle'){chosen=[keys[(d.idx||0)%keys.length]];d.idx=(d.idx||0)+1;}else chosen=[keys[randi(0,keys.length-1)]];
+  const amount=clamp(Math.floor(+d.amount||1),1,10),spread=amount*chosen.length>1?.7:0;
+  for(let n=0;n<amount;n++)for(const k of chosen){const item=customItemFromKey(k);if(item)spawnPickup(item,d.x+rand(-spread,spread),terrainH(d.x,d.z)+.6,d.z+rand(-spread,spread),true);}
+  d.readyAt=gameTime+(+d.cd||0);if(d.uses>0){d.left--;if(d.left<=0&&d.refill>0)d.refillAt=gameTime+(+d.refill);}
+  setDropperLook(d);d.g.rotation.y+=Math.PI/8;sfx('pickup');return true;}
+function linkedDroppers(ch){return editorDevices.filter(x=>x.t==='dropper'&&x.channel===ch);}
+function deviceRemote(d){if(!d.remote)d.remote=(d.itemKey&&customItemFromKey(d.itemKey))||makeRemote([d.command],d.channel,0,0,'');return d.remote;}
 function runRemoteCommand(d,c){if(MODE.id!=='custom'){if(c===player)toast('Remote items only work in custom maps');return;}
-  if(d.cooldownUntil>gameTime){if(c===player)toast('Remote is recharging');return;}d.cooldownUntil=gameTime+0;
-  switch(d.command){
-  case 'drop':{const droppers=editorDevices.filter(x=>x.t==='dropper'&&x.channel===d.channel);let count=0;for(const dropper of droppers)if(dispenseCustomDropper(dropper))count++;if(!count)toast('No item droppers linked to channel '+d.channel);else centerMsg('REMOTE ACTIVATED',count+' linked dropper'+(count===1?'':'s')+' dispensed loot');break;}
-  case 'teleport':if(!teleportCustomChar(c,d.channel))toast('No teleporter is linked to channel '+d.channel);break;
-  case 'heal':{const before=c.hp;c.hp=Math.min(100,c.hp+50);if(c.hp>before){sfx('heal');if(c===player)centerMsg('REMOTE ACTIVATED','Health restored');}else if(c===player)toast('Health is already full');break;}
-  case 'shield':{const before=c.shield;c.shield=Math.min(100,c.shield+50);if(c.shield>before){sfx('heal');if(c===player)centerMsg('REMOTE ACTIVATED','Shield restored');}else if(c===player)toast('Shield is already full');break;}
-  case 'launch':c.vel.y=Math.max(c.vel.y,16);c.onGround=false;c.noFallT=gameTime+2;sfx('jump');if(c===player)centerMsg('REMOTE ACTIVATED','Launch!');break;
-  default:toast('This remote has no valid program');}}
-function useCustomDevice(d,c){if(d.t==='dropper'){if(!dispenseCustomDropper(d)&&c===player)toast('This dropper has no valid item');}
+  const r=d.t==='remote'?deviceRemote(d):d,me=c===player;
+  if(r.cooldownUntil>gameTime){if(me)toast('Remote is recharging · '+Math.ceil(r.cooldownUntil-gameTime)+'s');return;}
+  if(r.uses>0&&(r.usesLeft??r.uses)<=0){if(me)toast('This remote is used up');return;}
+  const msgs=[],power=r.power||1;let any=false;
+  for(const cmd of (r.cmds||[r.command])){switch(cmd){
+  case 'drop':{let count=0,why='';for(const dr of linkedDroppers(r.channel)){const res=dispenseCustomDropper(dr,'remote');if(res===true)count++;else why=why||res;}
+    if(count){any=true;msgs.push(count+' dropper'+(count===1?'':'s')+' dispensed');}else msgs.push(why?DROP_FAIL[why]:'No item droppers on channel '+r.channel);break;}
+  case 'refill':{const ds=linkedDroppers(r.channel);for(const dr of ds)resetDropper(dr);if(ds.length){any=true;msgs.push(ds.length+' dropper'+(ds.length===1?'':'s')+' refilled');}else msgs.push('No item droppers on channel '+r.channel);break;}
+  case 'toggle':{const ds=linkedDroppers(r.channel);for(const dr of ds){dr.enabled=dr.enabled===false;setDropperLook(dr);}if(ds.length){any=true;msgs.push('Droppers turned '+(ds[0].enabled?'ON':'OFF'));}else msgs.push('No item droppers on channel '+r.channel);break;}
+  case 'teleport':if(teleportCustomChar(c,r.channel)){any=true;msgs.push('Teleported');}else msgs.push('No teleporter on channel '+r.channel);break;
+  case 'heal':{const before=c.hp;c.hp=Math.min(100,c.hp+Math.round(50*power));if(c.hp>before){any=true;sfx('heal');msgs.push('Health restored');}else msgs.push('Health is already full');break;}
+  case 'shield':{const before=c.shield;c.shield=Math.min(100,c.shield+Math.round(50*power));if(c.shield>before){any=true;sfx('heal');msgs.push('Shield restored');}else msgs.push('Shield is already full');break;}
+  case 'launch':c.vel.y=Math.max(c.vel.y,16*Math.sqrt(power));c.onGround=false;c.noFallT=gameTime+2+power*2;sfx('jump');any=true;msgs.push('Launch!');break;
+  case 'ammo':{c.ammo=c.ammo||{};let n=0;for(const s of c.slots)if(s&&s.type==='gun'){const a=GUNS[s.id].ammo;c.ammo[a]=Math.min(999,(c.ammo[a]||0)+Math.round(AMMO[a].give*2*power));s.mag=GUNS[s.id].mag;n++;}
+    if(n){any=true;sfx('pickup');msgs.push('Ammo refilled');}else msgs.push('No guns to refill');break;}
+  case 'mats':{const amt=Math.round(100*power);for(const m of MAT_ORDER)c.mats[m]=Math.min(999,(c.mats[m]||0)+amt);any=true;sfx('pickup');msgs.push('+'+amt+' materials');break;}
+  case 'speed':c.speedBoostT=Math.max(c.speedBoostT||0,gameTime)+8*power;any=true;sfx('whoosh');msgs.push('Speed boost '+Math.round(8*power)+'s');break;}}
+  if(!any){if(me)toast(msgs[0]||'This remote has no valid program');return;}
+  r.cooldownUntil=gameTime+(r.cd||0);
+  if(r.uses>0){r.usesLeft=(r.usesLeft??r.uses)-1;if(r.usesLeft<=0&&d.t!=='remote'&&c.slots){const i=c.slots.indexOf(r);if(i>=0)c.slots[i]=null;if(me)toast('Remote used up');}}
+  if(me)centerMsg('REMOTE ACTIVATED',msgs.join(' · '));}
+function useCustomDevice(d,c){if(d.t==='dropper'){const res=dispenseCustomDropper(d,'interact');if(res!==true&&c===player)toast(DROP_FAIL[res]||'This dropper has no valid item');}
   else if(d.t==='remote')runRemoteCommand(d,c);
-  else if(d.t==='medstation'){const hp=Math.min(100,c.hp+50),shield=Math.min(100,c.shield+25);if(hp===c.hp&&shield===c.shield){if(c===player)toast('Health and shield are already full');return;}c.hp=hp;c.shield=shield;sfx('heal');if(c===player)centerMsg('HEALING STATION','Health and shield restored');}}
-function updateCustomDevices(dt){if(MODE.id!=='custom'||!CM)return;
+  else if(d.t==='medstation'){if(d.readyAt>gameTime){if(c===player)toast('Healing station is recharging · '+Math.ceil(d.readyAt-gameTime)+'s');return;}
+    const hp=Math.min(100,c.hp+(d.hp??50)),shield=Math.min(100,c.shield+(d.sh??25));if(hp===c.hp&&shield===c.shield){if(c===player)toast('Health and shield are already full');return;}
+    c.hp=hp;c.shield=shield;d.readyAt=gameTime+(+d.cd||0);setMedLook(d);sfx('heal');if(c===player)centerMsg('HEALING STATION','Health and shield restored');}}
+function updateCustomDevices(dt){if(!editorDevices.length)return;
+  for(const d of editorDevices)if(d.t==='medstation')setMedLook(d);
+  for(const d of editorDevices)if(d.t==='dropper'&&d.refillAt&&gameTime>=d.refillAt)resetDropper(d);
   if(!player||!player.alive)return;
   for(const c of chars){if(!c.alive||c.state!=='ground'||c.vehicle||(c.teleportT||0)>gameTime)continue;
     if(c.gizmoT>gameTime)continue;
     const bounce=editorDevices.find(d=>d.t==='bounce'&&Math.hypot(c.pos.x-d.x,c.pos.z-d.z)<1.1&&c.pos.y<=d.y+1.4&&c.pos.y>=d.y-.2);
     if(bounce&&c.vel.y<=0){c.vel.y=17;c.onGround=false;c.noFallT=gameTime+2;c.gizmoT=gameTime+1.2;sfx('jump');continue;}
-    const from=editorDevices.find(d=>d.t==='teleporter'&&Math.hypot(c.pos.x-d.x,c.pos.z-d.z)<1.25);if(!from)continue;
+    const from=editorDevices.find(d=>d.t==='teleporter'&&teleMode(d)!=='out'&&Math.hypot(c.pos.x-d.x,c.pos.z-d.z)<1.25&&Math.abs(c.pos.y-d.y)<2.5);if(!from)continue;
     teleportCustomChar(c,from.channel,from);
   }}
 // build one map object with the game's own systems (used for play and in the editor)
@@ -4957,16 +5131,18 @@ function destroyHandle(h){for(const p of h.pieces){if(pieces.has(p.key)){if(p.gl
   for(const o of h.scene)scene.remove(o);}
 function buildCustomWorld(){CM.handles=[];for(const o of CM.objs){const h=captureBuild(()=>placeObj(o));CM.handles.push(h);}}
 // ---------- the editor ----------
-const ED={tool:'hand',pan:false,spriteT:'air',R:10,S:1,rot:0,house:{w:3,d:3,st:2,m:'brick'},mat:'wood',treeV:0,rockS:1.2,carV:'sedan',towerSt:5,poiName:'',dropItem:'gun:ar',teleporterChannel:1,remoteCommand:'drop',
+const ED={tool:'hand',pan:false,spriteT:'air',R:10,S:1,rot:0,house:{w:3,d:3,st:2,m:'brick'},mat:'wood',treeV:0,rockS:1.2,carV:'sedan',towerSt:5,poiName:'',dropItem:'gun:ar',teleporterChannel:1,teleMode:'two',med:{hp:50,sh:25,cd:0},remoteCommand:'drop',drop:{items:['gun:ar','','',''],order:'random',uses:0,amount:1,cd:0,refill:0,act:'both',on:1,hide:0},buttonKey:'cremote:0',
   pos:new V3(0,60,150),yaw:0,pitch:-.45,keys:{},look:false,mx:0,my:0,down:false,hit:null,undo:[],dirty:false,stroke:null,flatY:0,texT:0,exitArm:0,strokeT:0};
 const ED_TOOLS=[['View',[['hand','Move view']]],['Terrain',[['raise','Raise'],['lower','Lower'],['flatten','Flatten'],['smooth','Smooth']]],['Paint',CM_PAINT.map((p,i)=>['p'+i,p[0]])],
   ['Buildings',[['house','House'],['tower','Tower'],['warehouse','Warehouse']]],['Build pieces',[['wall','Wall'],['floor','Floor'],['ramp','Stairs'],['cone','Roof']]],
   ['Nature',[['tree','Tree'],['rock','Rock']]],['Vehicles',[['car','Car']]],['Loot',[['chest','Chest'],['llama','Loot Llama'],['loot','Floor loot'],['dropper','Item dropper']]],
-  ['Gizmos',[['teleporter','Teleporter'],['bounce','Bounce pad'],['medstation','Healing station'],['spawn','Player spawn']]],
+  ['Gizmos',[['teleporter','Teleporter'],['bounce','Bounce pad'],['medstation','Healing station'],['remote','Remote button'],['spawn','Player spawn']]],
   ['Props',[['barrel','Barrel'],['lamp','Street lamp'],['vend','Vending'],['gas','Gas station'],['pad','Launch pad']]],['Map',[['poi','Named place'],['erase','Erase']]]];
 const TERRAIN_TOOLS=['raise','lower','flatten','smooth','p0','p1','p2','p3','p4'];
 const REMOTE_CHANNELS=[[1,'Blue · 1'],[2,'Gold · 2'],[3,'Purple · 3'],[4,'Green · 4']];
-const CUSTOM_ITEM_CHOICES=[['','Empty'],...Object.keys(GUNS).map(id=>['gun:'+id,GUNS[id].name]),...Object.keys(EXOTIC_BY_GUN).map(id=>['exotic:'+EXOTIC_BY_GUN[id],EXOTIC_NAMES[EXOTIC_BY_GUN[id]]]),...Object.keys(HEALS).map(id=>['heal:'+id,HEALS[id].name]),...Object.keys(THROWS).map(id=>['throw:'+id,THROWS[id].name]),...Object.keys(FOOD).map(id=>['food:'+id,FOOD[id].name]),...REMOTE_COMMANDS.flatMap(([command,label])=>REMOTE_CHANNELS.map(([channel,color])=>[`remote:${command}:${channel}`,`Remote · ${label} · ${color}`]))];
+function remoteChoices(){return [...customRemotePresets().map((r,i)=>['cremote:'+i,'★ '+(r.name||'Custom remote '+(i+1))]),...REMOTE_COMMANDS.filter(([c])=>QUICK_REMOTE_COMMANDS.includes(c)).flatMap(([command,label])=>REMOTE_CHANNELS.map(([channel,color])=>[`remote:${command}:${channel}`,`Remote · ${label} · ${color}`]))];}
+function customItemChoices(){return [['','Empty'],...Object.keys(GUNS).map(id=>['gun:'+id,GUNS[id].name]),...Object.keys(EXOTIC_BY_GUN).map(id=>['exotic:'+EXOTIC_BY_GUN[id],EXOTIC_NAMES[EXOTIC_BY_GUN[id]]]),...Object.keys(HEALS).map(id=>['heal:'+id,HEALS[id].name]),...Object.keys(THROWS).map(id=>['throw:'+id,THROWS[id].name]),...Object.keys(FOOD).map(id=>['food:'+id,FOOD[id].name]),...remoteChoices()];}
+const DROP_USES=[[0,'Infinite'],[1,'1'],[2,'2'],[3,'3'],[5,'5'],[10,'10'],[25,'25'],[50,'50'],[100,'100']],DROP_CD=[[0,'None'],[1,'1s'],[2,'2s'],[3,'3s'],[5,'5s'],[10,'10s'],[30,'30s'],[60,'1 min']],DROP_REFILL=[[0,'Never'],[10,'After 10s'],[30,'After 30s'],[60,'After 1 min'],[120,'After 2 min'],[300,'After 5 min']];
 let edRing=null,edBox=null;
 function enterEditor(){gameState='edit';$('menu').classList.add('hidden');$('modes').classList.add('hidden');$('hud').classList.add('hidden');$('editor').classList.remove('hidden');
   if(LOBBY.char){removeCharModel(LOBBY.char);LOBBY.char=null;}if(LOBBY.grp){scene.remove(LOBBY.grp);LOBBY.grp=null;}if(LOBBY.pet){scene.remove(LOBBY.pet.wrap);LOBBY.pet=null;}
@@ -4984,13 +5160,22 @@ function renderEdOpts(){const t=ED.tool;let h='';const rng=(k,l,min,max,st,v)=>`
   if(t==='tree')h+=`<label>Type ${edSel('tv',[[0,'Pine'],[1,'Tall pine'],[2,'Oak'],[3,'Round oak'],[4,'Birch']],ED.treeV)}</label>`;
   if(t==='rock')h+=rng('rs','Size',.6,2.4,.1,ED.rockS);
   if(t==='car')h+=`<label>Type ${edSel('cv',[['sedan','Sedan'],['pickup','Pickup'],['sports','Sports car'],['buggy','Buggy']],ED.carV)}</label><p class="edp">R rotates.</p>`;
-  if(t==='dropper')h+=`<label>Item ${edSel('dropItem',CUSTOM_ITEM_CHOICES.filter(([v])=>v),ED.dropItem)}</label><label>Remote channel ${edSel('teleChannel',REMOTE_CHANNELS,ED.teleporterChannel)}</label><p class="edp">Interact to dispense one item. A held remote on the same channel can activate it too.</p>`;
-  if(t==='teleporter')h+=`<label>Link channel ${edSel('teleChannel',REMOTE_CHANNELS,ED.teleporterChannel)}</label><p class="edp">Place two or more matching channels. Walking into one transports you to the nearest other one.</p>`;
+  if(t==='dropper'){const D=ED.drop,choices=customItemChoices();h+=`<label>Item 1 ${edSel('di0',choices.filter(([v])=>v),D.items[0])}</label>${[1,2,3].map(i=>`<label>Item ${i+1} ${edSel('di'+i,[['','None'],...choices.filter(([v])=>v)],D.items[i]||'')}</label>`).join('')}
+    <label>Pick ${edSel('dord',[['random','Random item'],['cycle','In order (1→4)'],['all','All items at once']],D.order)}</label><label>Amount per use ${edSel('damt',[[1,'1'],[2,'2'],[3,'3'],[5,'5'],[10,'10']],D.amount)}</label>
+    <label>Total uses ${edSel('duse',DROP_USES,D.uses)}</label><label>Cooldown ${edSel('dcd',DROP_CD,D.cd)}</label><label>Refill when empty ${edSel('dref',DROP_REFILL,D.refill)}</label>
+    <label>Activated by ${edSel('dact',[['both','Interact + remote'],['interact','Interact only'],['remote','Remote only']],D.act)}</label><label>Starts ${edSel('don',[[1,'On'],[0,'Off (turn on with a remote)']],D.on)}</label><label>When empty or off ${edSel('dhide',[[0,'Stay visible (grey)'],[1,'Hide']],D.hide)}</label>
+    <label>Remote channel ${edSel('teleChannel',REMOTE_CHANNELS,ED.teleporterChannel)}</label><p class="edp">Remotes on the same channel can dispense, refill or turn this dropper on/off. Set up custom remotes under Match settings.</p>`;}
+  if(t==='remote')h+=`<label>Remote program ${edSel('btnKey',remoteChoices(),ED.buttonKey)}</label><p class="edp">A button anyone can press to run a remote's programs. Edit ★ custom remotes under Match settings.</p>`;
+  if(t==='teleporter')h+=`<label>Type ${edSel('teleMode',Object.entries(TELE_MODES).map(([k,[l]])=>[k,l+(k==='two'?' (green)':k==='in'?' (yellow)':' (red)')]),ED.teleMode)}</label><label>Link channel ${edSel('teleChannel',REMOTE_CHANNELS,ED.teleporterChannel)}</label><p class="edp">Green two-way teleporters link to each other. A yellow entrance sends you to a red exit on the same channel; the red exit can't send you back.</p>`;
+  if(t==='medstation')h+=`<label>Health ${edSel('mhp',[[0,'None'],[25,'+25'],[50,'+50'],[75,'+75'],[100,'+100 (full)']],ED.med.hp)}</label><label>Shield ${edSel('msh',[[0,'None'],[25,'+25'],[50,'+50'],[75,'+75'],[100,'+100 (full)']],ED.med.sh)}</label><label>Cooldown ${edSel('mcd',DROP_CD,ED.med.cd)}</label><p class="edp">Turns grey while recharging.</p>`;
   if(t==='poi')h+=`<label>Name<input data-k="pn" maxlength="22" placeholder="e.g. Pleasant Park" value="${escHTML(ED.poiName)}"></label><p class="edp">Named places show on the map and bots drop there.</p>`;
 
   if(t==='erase')h+=`<p class="edp">Click anything you placed to remove it.</p>`;
   const starting=Array.isArray(CM.meta.startingInventory)?CM.meta.startingInventory:[];
-  h+=`<hr><b class="edh">Match settings</b>${rng('bots','Bots',0,29,1,CM.meta.bots??15)}<label>Building ${edSel('bld',[[1,'On'],[0,'Off (No Build)']],CM.meta.build===false?0:1)}</label><label>Plane drop ${edSel('plane',[[1,'On'],[0,'Off · spawn on map']],CM.meta.plane===false?0:1)}</label><p class="edp">Player spawn points also skip the plane and start everyone at a placed point.</p><label><input type="checkbox" data-k="imat" ${CM.meta.infiniteMats===true?'checked':''}> Infinite materials</label><label><input type="checkbox" data-k="noDamage" ${CM.meta.noDamage===true?'checked':''}> No damage</label><details class="edloadout"><summary>Starting inventory</summary>${Array.from({length:NSLOT},(_,i)=>`<label>Slot ${i+1} ${edSel('start'+i,CUSTOM_ITEM_CHOICES,starting[i]||'')}</label>`).join('')}</details>`;
+  h+=`<hr><b class="edh">Match settings</b>${rng('bots','Bots',0,29,1,CM.meta.bots??15)}<label>Building ${edSel('bld',[[1,'On'],[0,'Off (No Build)']],CM.meta.build===false?0:1)}</label><label>Plane drop ${edSel('plane',[[1,'On'],[0,'Off · spawn on map']],CM.meta.plane===false?0:1)}</label><p class="edp">Player spawn points also skip the plane and start everyone at a placed point.</p><label><input type="checkbox" data-k="imat" ${CM.meta.infiniteMats===true?'checked':''}> Infinite materials</label><label><input type="checkbox" data-k="noDamage" ${CM.meta.noDamage===true?'checked':''}> No damage</label><details class="edloadout"><summary>Starting inventory</summary>${Array.from({length:NSLOT},(_,i)=>`<label>Slot ${i+1} ${edSel('start'+i,customItemChoices(),starting[i]||'')}</label>`).join('')}</details>`;
+  h+=`<details class="edremotes"${ED.remotesOpen?' open':''}><summary>Custom remotes</summary><p class="edp">Pick any mix of programs. One click runs them all. Give these remotes out from droppers, starting inventory or remote buttons.</p>${customRemotePresets().map((r,i)=>`<div class="edrm"><label>Name<input data-k="rm${i}_name" maxlength="24" value="${escHTML(r.name||'')}"></label>
+    ${REMOTE_COMMANDS.map(([c,l])=>`<label class="edchk"><input type="checkbox" data-k="rm${i}_c_${c}" ${r.cmds.includes(c)?'checked':''}> ${l}</label>`).join('')}
+    <label>Channel ${edSel('rm'+i+'_channel',REMOTE_CHANNELS,r.channel)}</label><label>Uses ${edSel('rm'+i+'_uses',DROP_USES,r.uses)}</label><label>Cooldown ${edSel('rm'+i+'_cd',DROP_CD,r.cd)}</label><label>Power ${edSel('rm'+i+'_power',[[.5,'Half'],[1,'Normal'],[2,'Double'],[3,'Triple']],r.power||1)}</label></div>`).join('')}</details>`;
   $('edOpts').innerHTML=h;}
 function edStatus(){$('edStat').textContent=`${CM.objs.length} objects${ED.dirty?' · unsaved changes':' · saved'}`;}
 function edSave(){CM.meta.name=($('edName').value.trim()||'My Map').slice(0,32);const enc=cmEncode();const all=loadMaps();const m=Object.assign(CM.meta,{hm:enc.hm,pm:enc.pm,objs:CM.objs,updated:Date.now(),thumb:cmThumb()});
@@ -5040,10 +5225,12 @@ function edPlace(){const h=ED.hit;if(!h)return;const t=ED.tool;let o=null;const 
   else if(t==='rock')o={t,x:h.x,z:h.z,s:ED.rockS,v:randi(0,2)};
   
   else if(t==='car')o={t,x:h.x,z:h.z,v:ED.carV,r};
-  else if(t==='dropper'){if(!customItemFromKey(ED.dropItem)){toast('Choose an item for the dropper');return;}o={t,x:h.x,z:h.z,itemKey:ED.dropItem,channel:ED.teleporterChannel};}
-  else if(t==='remote')o={t,x:h.x,z:h.z,command:ED.remoteCommand,channel:ED.teleporterChannel,r};
-  else if(t==='teleporter')o={t,x:h.x,z:h.z,channel:ED.teleporterChannel,r};
-  else if(t==='bounce'||t==='medstation')o={t,x:h.x,z:h.z,r};
+  else if(t==='dropper'){const D=ED.drop,items=D.items.filter(k=>customItemFromKey(k));if(!items.length){toast('Choose an item for the dropper');return;}
+    o={t,x:h.x,z:h.z,itemKey:items[0],items,order:D.order,amount:D.amount,uses:D.uses,cd:D.cd,refill:D.refill,act:D.act,on:D.on,hide:D.hide,channel:ED.teleporterChannel};}
+  else if(t==='remote'){if(!customItemFromKey(ED.buttonKey)){toast('Choose a remote program');return;}o={t,x:h.x,z:h.z,itemKey:ED.buttonKey,r};}
+  else if(t==='teleporter')o={t,x:h.x,z:h.z,channel:ED.teleporterChannel,mode:ED.teleMode,r};
+  else if(t==='medstation'){if(!ED.med.hp&&!ED.med.sh){toast('Choose health or shield for the station');return;}o={t,x:h.x,z:h.z,hp:ED.med.hp,sh:ED.med.sh,cd:ED.med.cd,r};}
+  else if(t==='bounce')o={t,x:h.x,z:h.z,r};
   else if(t==='spawn')o={t,x:h.x,z:h.z};
   else if(t==='poi'){const nm=(ED.poiName||'').trim();if(!nm){toast('Type a name for this place first');return;}o={t,x:h.x,z:h.z,name:nm};}
   else o={t,x:h.x,z:h.z,r};
@@ -5237,10 +5424,16 @@ function initEditorUI(){const cv=canvas;
     if(k==='R')ED.R=+v;else if(k==='S')ED.S=+v;else if(k==='hw')ED.house.w=+v;else if(k==='hd')ED.house.d=+v;else if(k==='hs')ED.house.st=+v;else if(k==='hm')ED.house.m=v;else if(k==='ts')ED.towerSt=+v;
     else if(k==='pm')ED.mat=v;else if(k==='tv')ED.treeV=+v;else if(k==='rs')ED.rockS=+v;else if(k==='cv')ED.carV=v;else if(k==='pn')ED.poiName=v;else if(k==='sp')ED.spriteT=v;
     else if(k==='dropItem')ED.dropItem=v;else if(k==='remoteCommand')ED.remoteCommand=v;else if(k==='teleChannel')ED.teleporterChannel=+v;
+    else if(/^di[0-3]$/.test(k)){ED.drop.items[+k[2]]=v;if(k==='di0')ED.dropItem=v;}else if(k==='dord')ED.drop.order=v;else if(k==='damt')ED.drop.amount=+v;else if(k==='duse')ED.drop.uses=+v;
+    else if(k==='dcd')ED.drop.cd=+v;else if(k==='dref')ED.drop.refill=+v;else if(k==='dact')ED.drop.act=v;else if(k==='don')ED.drop.on=+v;else if(k==='dhide')ED.drop.hide=+v;else if(k==='btnKey')ED.buttonKey=v;else if(k==='teleMode')ED.teleMode=v;else if(k==='mhp')ED.med.hp=+v;else if(k==='msh')ED.med.sh=+v;else if(k==='mcd')ED.med.cd=+v;
+    else if(/^rm[0-3]_/.test(k)){const r=customRemotePresets()[+k[2]],f=k.slice(4);
+      if(f==='name')r.name=v.slice(0,24);else if(f.startsWith('c_')){const c=f.slice(2);r.cmds=r.cmds.filter(x=>x!==c);if(el.checked)r.cmds.push(c);r.cmds.sort((a,b)=>REMOTE_COMMANDS.findIndex(([x])=>x===a)-REMOTE_COMMANDS.findIndex(([x])=>x===b));if(!r.cmds.length){r.cmds=[c];el.checked=true;toast('A remote needs at least one program');}}
+      else if(f==='channel')r.channel=+v;else if(f==='uses')r.uses=+v;else if(f==='cd')r.cd=+v;else if(f==='power')r.power=+v;ED.dirty=true;edStatus();}
     else if(k==='bots'){CM.meta.bots=+v;ED.dirty=true;edStatus();}else if(k==='bld'){CM.meta.build=v==='1';ED.dirty=true;edStatus();}
     else if(k==='plane'){CM.meta.plane=v==='1';ED.dirty=true;edStatus();}else if(k==='imat'){CM.meta.infiniteMats=el.checked;ED.dirty=true;edStatus();}
     else if(k==='noDamage'){CM.meta.noDamage=el.checked;ED.dirty=true;edStatus();}
     else if(/^start\d+$/.test(k)){const slots=Array.isArray(CM.meta.startingInventory)?CM.meta.startingInventory.slice():[];slots[+k.slice(5)]=v;CM.meta.startingInventory=slots;ED.dirty=true;edStatus();}};
+  $('edOpts').addEventListener('toggle',e=>{if(e.target.classList&&e.target.classList.contains('edremotes'))ED.remotesOpen=e.target.open;},true);
   $('edSave').onclick=()=>{edSave();};$('edUndoB').onclick=()=>edUndo();$('edRot').onclick=()=>{ED.rot=(ED.rot+1)%4;sfx('click');toast('Rotation '+ED.rot*90+'°');};$('edPlay').onclick=()=>{if(edSave())edLeave(true);};
   $('edExit').onclick=()=>{const b=$('edExit');if(ED.dirty&& !b.dataset.armed){b.dataset.armed='1';b.textContent='Exit without saving?';ED.exitArm=3;return;}edLeave(false);};
   $('edName').oninput=()=>{ED.dirty=true;edStatus();};
@@ -5378,7 +5571,20 @@ function buildCity(){
   const wm=new THREE.Mesh(mergeParts(walk),VC_STD);wm.receiveShadow=true;scene.add(wm);scene.add(new THREE.Mesh(mergeParts(lines),new THREE.MeshBasicMaterial({vertexColors:true})));
   for(let i=-4;i<=4;i++)for(const j of [-4,-2,0,2,4]){const x=(i*6+.5)*T,z=(j*6+.5)*T;addProp('lamp',x,4.05,z+2,rand(0,6.28),0);}
   for(let i=0;i<14;i++){const along=Math.random()<.5,lane=(randi(-4,4)*6+.5)*T,pos=rand(-110,110);spawnVehicle(along?lane+1.6:pos,along?pos:lane+1.6,along?0:Math.PI/2,pick(['sedan','sedan','pickup','sports','buggy']));}
-  for(let i=0;i<10;i++){const x=(randi(-4,4)*6+.5)*T+rand(-2,2),z=rand(-110,110);addProp('barrel',x,4.05,z,0,0);}}
+  for(let i=0;i<10;i++){const x=(randi(-4,4)*6+.5)*T+rand(-2,2),z=rand(-110,110);addProp('barrel',x,4.05,z,0,0);}
+  addWorldDevicesCity();}
+// healing stations are rare in normal maps and recharge for 10 seconds; teleporters link towns
+const WORLD_MED={t:'medstation',hp:50,sh:25,cd:10};
+function addWorldDevicesIsland(){const towns=POIS.filter(p=>p.name!=='Cornucopia');if(!towns.length)return;
+  const order=towns.slice().sort(()=>Math.random()-.5);
+  const tele=(p,channel,mode)=>createEditorDevice({t:'teleporter',x:p.x+2,z:p.z-17,channel,mode,r:0},p.lvl*H);
+  if(order.length>=2){tele(order[0],1,'two');tele(order[1],1,'two');}
+  if(order.length>=4){tele(order[2],2,'in');tele(order[3],2,'out');}
+  let n=0;for(const p of order){if(n<1||Math.random()<.2){createEditorDevice({...WORLD_MED,x:p.x-6,z:p.z+16,r:0},p.lvl*H);n++;}if(n>=3)break;}}
+function addWorldDevicesCity(){const at=(i,j)=>({x:i*6*T,z:j*6*T});const tele=(i,j,channel,mode)=>{const q=at(i,j);createEditorDevice({t:'teleporter',x:q.x,z:q.z,channel,mode,r:0},4.06);};
+  tele(-3,-3,1,'two');tele(3,3,1,'two');tele(-3,3,2,'in');tele(3,-3,2,'out');
+  const spots=[[0,2],[0,-2],[2,0],[-2,0],[-1,-1],[1,1]].sort(()=>Math.random()-.5).slice(0,2);
+  for(const [i,j] of spots){const q=at(i,j);createEditorDevice({...WORLD_MED,x:q.x+3.5,z:q.z+3.5,r:0},4.06);}}
 function buildCityBuilding(ix0,iz0,w,d,S,mat){w=Math.max(2,w);d=Math.max(2,d);const rc=[[0,0,0],[w-1,d-1,2]];const door=randi(0,w-1);
   for(let s=0;s<=S;s++){const iy=1+s;const hole=s>0?rc[(s-1)%2]:null;
     for(let i=0;i<w;i++)for(let k=0;k<d;k++){if(hole&& hole[0]===i&& hole[1]===k)continue;addPiece('floor',ix0+i,iy,iz0+k,0,s===0?'brick':s===S?'metal':'wood',true);}
