@@ -2,6 +2,9 @@
 
 A 3D battle royale that runs in your browser, built with three.js. Drop from a cargo plane, loot chests and llamas, build, fight 30 players and outlast the storm. Or play the Hunger Games, Team Deathmatch, or a map you made yourself.
 
+## website
+go to https://stormfall-io.orbixstudio.dev/stormfall to play it 🔴LIVE.
+
 ## Season 2
 v2 is no longer going to be posted on this repository, visit, Stormfall Season 2 repo for later realeases.
 
